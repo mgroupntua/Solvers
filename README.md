@@ -1,7 +1,7 @@
 ![alt text](http://mgroup.ntua.gr/wp-content/uploads/2018/05/MGroup52.png "MGroup")
 
 # MSolve.Solvers
-This library is featuring linear algebra solvers for the solution of spatially and temporally discretized mechanics problems. In its core, it serves as a binding between the MSolve.LinearAlgebra and MSolve.Discertization repos.
+This library is featuring linear algebra solvers for the solution of spatially and temporally discretized mechanics problems. In its core, it serves as a binding between the [LinearAlgebra](https://github.com/mgroupntua/linearalgebra) and the [MSolve.Core](https://github.com/mgroupntua/MSolve.Core) repos.
 
 ## Features
 
@@ -17,7 +17,7 @@ This library is featuring linear algebra solvers for the solution of spatially a
 - **Iterative solvers:** Solvers that rely on "guessing" the solution by performing iterations are implemented, including the PCG and GMRES methods
   
 - **Domain decomposition solvers:** Solvers that rely on the geometric and/or algebraic partitioning of the model at hand are implemented, including:
-  * Overlapping methods: The Scharz method is implemented
+  * Overlapping methods: The Schwarz method is implemented
   * Dual methods: A series of variants of the FETI method are implemented
 
 ## Installation instructions
