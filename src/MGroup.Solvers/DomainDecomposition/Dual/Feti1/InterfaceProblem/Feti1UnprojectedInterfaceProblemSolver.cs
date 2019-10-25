@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using MGroup.LinearAlgebra.Iterative;
 using MGroup.LinearAlgebra.Iterative.Termination;
 using MGroup.LinearAlgebra.Vectors;
+using MGroup.MSolve.Logging.DomainDecomposition;
+using MGroup.MSolve.Solvers.Commons;
 using MGroup.Solvers.Commons;
 using MGroup.Solvers.DomainDecomposition.Dual.Feti1.Projection;
 using MGroup.Solvers.DomainDecomposition.Dual.Pcg;
@@ -33,7 +35,7 @@ namespace MGroup.Solvers.DomainDecomposition.Dual.Feti1.InterfaceProblem
 
         public Vector CalcLagrangeMultipliers(Feti1FlexibilityMatrix flexibility, IFetiPreconditioner preconditioner, 
             Feti1Projection projection, Vector disconnectedDisplacements, Vector rigidBodyModesWork, double globalForcesNorm,
-            SolverLogger logger)
+            ISolverLogger logger)
         {
             // PCPG starts from the particular lagrange multipliers: λ0 = Q * G * inv(G^T * Q * G) * e
             Vector lagranges = projection.CalcParticularLagrangeMultipliers(rigidBodyModesWork);

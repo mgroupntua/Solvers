@@ -5,6 +5,7 @@ using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Triangulation;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Solvers;
 using MGroup.Solvers.Assemblers;
 using MGroup.Solvers.Ordering;
 using MGroup.Solvers.Ordering.Reordering;

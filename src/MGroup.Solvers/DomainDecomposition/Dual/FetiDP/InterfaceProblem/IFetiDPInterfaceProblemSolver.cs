@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
+using MGroup.MSolve.Logging.DomainDecomposition;
 using MGroup.Solvers.DomainDecomposition.Dual.FetiDP.Matrices;
 using MGroup.Solvers.DomainDecomposition.Dual.Pcg;
 
@@ -13,6 +14,6 @@ namespace MGroup.Solvers.DomainDecomposition.Dual.FetiDP.InterfaceProblem
     {
         (Vector lagrangeMultipliers, Vector cornerDisplacements) SolveInterfaceProblem(FetiDPFlexibilityMatrix flexibility, 
             IFetiPreconditioner preconditioner, IFetiDPCoarseProblemSolver coarseProblemSolver, Vector globalFcStar, Vector dr,
-            double globalForcesNorm, SolverLogger logger);
+            double globalForcesNorm, ISolverLogger logger);
     }
 }

@@ -9,6 +9,8 @@ using MGroup.LinearAlgebra.Iterative.Preconditioning;
 using MGroup.LinearAlgebra.Iterative.Termination;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
+using MGroup.MSolve.Logging.DomainDecomposition;
+using MGroup.MSolve.Solvers.Commons;
 using MGroup.Solvers.Commons;
 using MGroup.Solvers.DomainDecomposition.Dual.FetiDP.Matrices;
 using MGroup.Solvers.DomainDecomposition.Dual.Pcg;
@@ -36,7 +38,7 @@ namespace MGroup.Solvers.DomainDecomposition.Dual.FetiDP.InterfaceProblem
 
         public (Vector lagrangeMultipliers, Vector cornerDisplacements) SolveInterfaceProblem(FetiDPFlexibilityMatrix flexibility, 
             IFetiPreconditioner preconditioner, IFetiDPCoarseProblemSolver coarseProblemSolver, 
-            Vector globalFcStar, Vector dr, double globalForcesNorm, SolverLogger logger)
+            Vector globalFcStar, Vector dr, double globalForcesNorm, ISolverLogger logger)
         {
             int systemOrder = flexibility.Order;
 

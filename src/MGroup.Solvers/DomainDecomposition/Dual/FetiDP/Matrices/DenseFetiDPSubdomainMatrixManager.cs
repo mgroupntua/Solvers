@@ -7,6 +7,7 @@ using MGroup.LinearAlgebra.Triangulation;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization.FreedomDegrees;
 using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Solvers.LinearSystems;
 using MGroup.Solvers.Assemblers;
 using MGroup.Solvers.DomainDecomposition.Dual.FetiDP.InterfaceProblem;
 using MGroup.Solvers.LinearSystems;

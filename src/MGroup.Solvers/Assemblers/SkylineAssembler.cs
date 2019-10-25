@@ -4,6 +4,7 @@ using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Matrices.Builders;
 using MGroup.MSolve.Discretization.FreedomDegrees;
 using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Solvers.Assemblers;
 
 //TODO: The F = Ff - Kfc*Fc should not be done in the solver. The solver should only operate on the final linear systems.
 //      It could be done here or in the analyzer.

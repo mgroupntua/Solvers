@@ -5,6 +5,8 @@ using MGroup.LinearAlgebra.Iterative.GeneralizedMinimalResidual;
 using MGroup.LinearAlgebra.Iterative.Preconditioning;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Solvers;
+using MGroup.MSolve.Solvers.Commons;
 using MGroup.Solvers.Assemblers;
 using MGroup.Solvers.Commons;
 using MGroup.Solvers.Ordering;

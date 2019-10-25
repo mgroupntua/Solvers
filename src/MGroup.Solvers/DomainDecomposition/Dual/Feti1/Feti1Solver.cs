@@ -7,6 +7,10 @@ using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization.Commons;
 using MGroup.MSolve.Discretization.FreedomDegrees;
 using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Logging.DomainDecomposition;
+using MGroup.MSolve.Solvers;
+using MGroup.MSolve.Solvers.Commons;
+using MGroup.MSolve.Solvers.LinearSystems;
 using MGroup.Solvers.Commons;
 using MGroup.Solvers.DomainDecomposition.Dual.Feti1.InterfaceProblem;
 using MGroup.Solvers.DomainDecomposition.Dual.Feti1.Matrices;
@@ -104,7 +108,7 @@ namespace MGroup.Solvers.DomainDecomposition.Dual.Feti1
         }
 
         public IReadOnlyDictionary<int, ILinearSystem> LinearSystems { get; }
-        public SolverLogger Logger { get; } = new SolverLogger(name);
+        public ISolverLogger Logger { get; } = new SolverLogger(name);
         public string Name => name;
 
         public Dictionary<int, IMatrix> BuildGlobalMatrices(IElementMatrixProvider elementMatrixProvider)

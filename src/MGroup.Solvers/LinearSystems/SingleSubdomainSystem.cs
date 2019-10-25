@@ -2,6 +2,7 @@ using System;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Solvers.LinearSystems;
 
 namespace MGroup.Solvers.LinearSystems
 {

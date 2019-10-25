@@ -3,6 +3,7 @@ using System.Diagnostics;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.MSolve.Discretization.FreedomDegrees;
 using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Solvers.Assemblers;
 
 namespace MGroup.Solvers.Assemblers
 {

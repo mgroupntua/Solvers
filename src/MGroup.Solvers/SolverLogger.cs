@@ -1,14 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using MGroup.MSolve.Logging.DomainDecomposition;
 
 //TODO: Use enums instead of strings for the solver task and dof category. Or use interfaces & enum classes, to adhere to 
 //      open-closed principle.
 namespace MGroup.Solvers
 {
-    public class SolverLogger
+    public class SolverLogger : ISolverLogger
     {
         private readonly string solverName;
         private readonly List<(int iterations, double residualNormRatio)> iterativeAlgorithmData = new List<(int, double)>();

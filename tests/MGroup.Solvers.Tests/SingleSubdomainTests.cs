@@ -2,6 +2,7 @@ using System.Linq;
 using MGroup.Analyzers;
 using MGroup.LinearAlgebra;
 using MGroup.MSolve.Discretization.Commons;
+using MGroup.MSolve.Solvers;
 using MGroup.Problems;
 using MGroup.Solvers.Direct;
 using MGroup.Solvers.Iterative;

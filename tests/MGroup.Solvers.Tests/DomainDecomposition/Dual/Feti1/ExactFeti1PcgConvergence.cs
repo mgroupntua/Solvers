@@ -9,6 +9,7 @@ using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 using MGroup.LinearAlgebra.Iterative.Termination;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
+using MGroup.MSolve.Solvers;
 using MGroup.Solvers.Commons;
 using MGroup.Solvers.DomainDecomposition.Dual.Feti1;
 using MGroup.Solvers.DomainDecomposition.Dual.Feti1.InterfaceProblem;

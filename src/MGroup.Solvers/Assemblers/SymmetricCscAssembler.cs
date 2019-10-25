@@ -4,6 +4,7 @@ using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Matrices.Builders;
 using MGroup.MSolve.Discretization.FreedomDegrees;
 using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Solvers.Assemblers;
 using MGroup.Solvers.Commons;
 
 //TODO: Instead of storing the raw CSC arrays, use a reusable DOK or SymmCscIndexer class. That class should provide methods to 

@@ -7,6 +7,11 @@ using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization.Commons;
 using MGroup.MSolve.Discretization.FreedomDegrees;
 using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Logging.DomainDecomposition;
+using MGroup.MSolve.Solvers;
+using MGroup.MSolve.Solvers.Assemblers;
+using MGroup.MSolve.Solvers.Commons;
+using MGroup.MSolve.Solvers.LinearSystems;
 using MGroup.Solvers.Assemblers;
 using MGroup.Solvers.Commons;
 using MGroup.Solvers.LinearSystems;
@@ -48,7 +53,7 @@ namespace MGroup.Solvers
         }
 
         public IReadOnlyDictionary<int, ILinearSystem> LinearSystems { get; }
-        public SolverLogger Logger { get; }
+        public ISolverLogger Logger { get; }
         public string Name { get; }
 
         public virtual Dictionary<int, IMatrix> BuildGlobalMatrices(IElementMatrixProvider elementMatrixProvider)

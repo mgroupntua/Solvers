@@ -4,6 +4,7 @@ using MGroup.LinearAlgebra.Exceptions;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Solvers.LinearSystems;
 
 //TODO: add state management
 //TODO: should this and its implementations be internal? Analyzers and providers should work with ILinearSystem only. 

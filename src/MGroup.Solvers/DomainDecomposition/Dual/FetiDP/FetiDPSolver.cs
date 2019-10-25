@@ -8,6 +8,10 @@ using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization.Commons;
 using MGroup.MSolve.Discretization.FreedomDegrees;
 using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Logging.DomainDecomposition;
+using MGroup.MSolve.Solvers;
+using MGroup.MSolve.Solvers.Commons;
+using MGroup.MSolve.Solvers.LinearSystems;
 using MGroup.Solvers.Assemblers;
 using MGroup.Solvers.Commons;
 using MGroup.Solvers.DomainDecomposition.Dual.FetiDP.CornerNodes;
@@ -105,7 +109,7 @@ namespace MGroup.Solvers.DomainDecomposition.Dual.FetiDP
 
         public Dictionary<int, HashSet<INode>> CornerNodesOfSubdomains { get; private set; }
         public IReadOnlyDictionary<int, ILinearSystem> LinearSystems { get; }
-        public SolverLogger Logger { get; } = new SolverLogger(name);
+        public ISolverLogger Logger { get; } = new SolverLogger(name);
         public string Name => name;
 
         public Dictionary<int, IMatrix> BuildGlobalMatrices(IElementMatrixProvider elementMatrixProvider)
