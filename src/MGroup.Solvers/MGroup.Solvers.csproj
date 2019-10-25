@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Product>MSolve</Product>
+    <Authors>George Stavroulakis, Serafeim Bakalakos</Authors>
+    <PackageProjectUrl>http://mgroup.ntua.gr</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mgroupntua/MGroup.Solvers</RepositoryUrl>
+    <Description>A series of classes combining LinearAlgebra and MSolve.Core features for the implementation of custom-tailored solvers for the solution of computational mechanics problems</Description>
   </PropertyGroup>
 
   <ItemGroup>
