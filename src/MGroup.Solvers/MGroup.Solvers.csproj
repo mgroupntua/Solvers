@@ -11,9 +11,9 @@
 
   <ItemGroup>
     <PackageReference Include="MGroup.LinearAlgebra" Version="1.0.251" />
-    <PackageReference Include="MGroup.MSolve.Discretization" Version="1.0.292" />
-    <PackageReference Include="MGroup.MSolve.Geometry" Version="1.0.292" />
-    <PackageReference Include="MGroup.MSolve.Logging" Version="1.0.292" />
-    <PackageReference Include="MGroup.MSolve.Solvers" Version="1.0.292" />
+    <PackageReference Include="MGroup.MSolve.Discretization" Version="1.0.294" />
+    <PackageReference Include="MGroup.MSolve.Geometry" Version="1.0.294" />
+    <PackageReference Include="MGroup.MSolve.Logging" Version="1.0.294" />
+    <PackageReference Include="MGroup.MSolve.Solvers" Version="1.0.294" />
   </ItemGroup>
 </Project>
