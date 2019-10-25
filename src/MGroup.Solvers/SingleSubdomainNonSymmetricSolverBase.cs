@@ -15,6 +15,7 @@ using MGroup.MSolve.Solvers.LinearSystems;
 using MGroup.Solvers.Assemblers;
 using MGroup.Solvers.Commons;
 using MGroup.Solvers.LinearSystems;
+using MGroup.Solvers.Logging;
 using MGroup.Solvers.Ordering;
 
 namespace MGroup.Solvers

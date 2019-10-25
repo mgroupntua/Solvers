@@ -20,6 +20,7 @@ using MGroup.Solvers.DomainDecomposition.Dual.Pcg;
 using MGroup.Solvers.DomainDecomposition.Dual.Preconditioning;
 using MGroup.Solvers.DomainDecomposition.Dual.StiffnessDistribution;
 using MGroup.Solvers.LinearSystems;
+using MGroup.Solvers.Logging;
 using MGroup.Solvers.Ordering;
 using MGroup.Solvers.Ordering.Reordering;
 
