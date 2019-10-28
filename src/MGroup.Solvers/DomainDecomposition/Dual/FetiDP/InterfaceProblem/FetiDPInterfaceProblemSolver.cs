@@ -10,9 +10,7 @@ using MGroup.LinearAlgebra.Iterative.Termination;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Logging.DomainDecomposition;
-using MGroup.MSolve.Solvers.Commons;
-using MGroup.Solvers.Commons;
-using MGroup.Solvers.DomainDecomposition.Dual.FetiDP.Matrices;
+using MGroup.MSolve.Solution.Commons;
 using MGroup.Solvers.DomainDecomposition.Dual.Pcg;
 
 //TODO: Should the matrix managers be injected into the constructor?

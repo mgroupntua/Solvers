@@ -8,10 +8,9 @@ using MGroup.LinearAlgebra.Iterative.Preconditioning;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization.Interfaces;
-using MGroup.MSolve.Solvers;
-using MGroup.MSolve.Solvers.Commons;
+using MGroup.MSolve.Solution;
+using MGroup.MSolve.Solution.Commons;
 using MGroup.Solvers.Assemblers;
-using MGroup.Solvers.Commons;
 using MGroup.Solvers.Ordering;
 using MGroup.Solvers.Ordering.Reordering;
 

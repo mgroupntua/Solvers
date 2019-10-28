@@ -3,9 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.MSolve.Discretization.Interfaces;
-using MGroup.MSolve.Solvers;
+using MGroup.MSolve.Solution;
 using MGroup.Solvers.Assemblers;
-using MGroup.Solvers.Commons;
 using MGroup.Solvers.Ordering;
 using MGroup.Solvers.Ordering.Reordering;
 

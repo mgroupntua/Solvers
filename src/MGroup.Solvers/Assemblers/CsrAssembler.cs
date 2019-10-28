@@ -4,7 +4,7 @@ using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Matrices.Builders;
 using MGroup.MSolve.Discretization.FreedomDegrees;
 using MGroup.MSolve.Discretization.Interfaces;
-using MGroup.MSolve.Solvers.Assemblers;
+using MGroup.MSolve.Solution.Assemblers;
 using MGroup.Solvers.Commons;
 
 //TODO: Instead of storing the raw CSR arrays, use a reusable DOK or CsrIndexer class. That class should provide methods to 

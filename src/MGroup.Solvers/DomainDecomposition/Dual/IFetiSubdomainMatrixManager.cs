@@ -5,7 +5,7 @@ using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization.FreedomDegrees;
 using MGroup.MSolve.Discretization.Interfaces;
-using MGroup.MSolve.Solvers.LinearSystems;
+using MGroup.MSolve.Solution.LinearSystems;
 using MGroup.Solvers.LinearSystems;
 
 //TODO: perhaps IFeti1SubdomainMatrixManager and IFetiDPSubdomainMatrixManager should not inherit from this one.

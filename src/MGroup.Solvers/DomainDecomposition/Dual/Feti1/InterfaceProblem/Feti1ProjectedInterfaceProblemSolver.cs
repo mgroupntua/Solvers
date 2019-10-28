@@ -7,8 +7,7 @@ using MGroup.LinearAlgebra.Iterative.Preconditioning;
 using MGroup.LinearAlgebra.Iterative.Termination;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Logging.DomainDecomposition;
-using MGroup.MSolve.Solvers.Commons;
-using MGroup.Solvers.Commons;
+using MGroup.MSolve.Solution.Commons;
 using MGroup.Solvers.DomainDecomposition.Dual.Feti1.Projection;
 using MGroup.Solvers.DomainDecomposition.Dual.Pcg;
 
