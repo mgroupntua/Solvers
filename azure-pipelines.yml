@@ -34,7 +34,7 @@ steps:
     SonarCloud: 'SonarCloud'
     organization: 'mgroupntua'
     scannerMode: 'MSBuild'
-    projectKey: 'MSolve.Solvers'
+    projectKey: 'Solvers'
     extraProperties: 'sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/coverage/coverage.opencover.xml'
 
 
