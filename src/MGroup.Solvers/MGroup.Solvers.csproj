@@ -5,9 +5,9 @@
     <Product>MSolve</Product>
     <Authors>George Stavroulakis, Serafeim Bakalakos</Authors>
     <PackageProjectUrl>http://mgroup.ntua.gr</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/mgroupntua/MGroup.Solvers</RepositoryUrl>
+    <RepositoryUrl>https://github.com/mgroupntua/Solvers</RepositoryUrl>
     <Description>A collection of classes combining LinearAlgebra and MSolve.Core features for the implementation of custom-tailored solvers for the solution of computational mechanics problems</Description>
-    <PackageIconUrl>https://github.com/mgroupntua/LinearAlgebra/raw/develop/MGroupSolvers.png</PackageIconUrl>
+    <PackageIconUrl>https://github.com/mgroupntua/Solvers/raw/develop/MGroupSolvers.png</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>
