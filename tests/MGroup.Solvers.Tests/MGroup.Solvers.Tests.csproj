@@ -11,6 +11,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="MGroup.Constitutive" Version="1.0.327" />
+    <PackageReference Include="MGroup.FEM" Version="1.0.326" />
+    <PackageReference Include="MGroup.MSolve.Discretization" Version="1.0.322" />
+    <PackageReference Include="MGroup.MSolve.Solution" Version="1.0.322" />
+    <PackageReference Include="MGroup.NumericalAnalyzers" Version="1.0.324" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="Moq" Version="4.13.0" />
     <PackageReference Include="OpenCover" Version="4.7.922" />
