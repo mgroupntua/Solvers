@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using MGroup.FEM.Entities;
 using MGroup.LinearAlgebra.Matrices;
-using MGroup.Problems;
 using MGroup.Solvers.Direct;
 using MGroup.MSolve.Solution.LinearSystems;
 using Xunit;
+using MGroup.Constitutive.Structural;
 
 namespace MGroup.Solvers.Tests
 {

@@ -11,7 +11,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MGroup.Constitutive" Version="1.0.327" />
+    <PackageReference Include="MGroup.Constitutive" Version="1.0.329" />
     <PackageReference Include="MGroup.FEM" Version="1.0.326" />
     <PackageReference Include="MGroup.MSolve.Discretization" Version="1.0.322" />
     <PackageReference Include="MGroup.MSolve.Solution" Version="1.0.322" />

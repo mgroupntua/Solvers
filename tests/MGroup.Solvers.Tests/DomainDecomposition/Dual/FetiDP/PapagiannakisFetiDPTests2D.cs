@@ -7,7 +7,6 @@ using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization.FreedomDegrees;
 using MGroup.MSolve.Discretization.Interfaces;
 using MGroup.MSolve.Logging.DomainDecomposition;
-using MGroup.Problems;
 using MGroup.Solvers.Direct;
 using MGroup.Solvers.DomainDecomposition.Dual.FetiDP;
 using MGroup.Solvers.DomainDecomposition.Dual.FetiDP.CornerNodes;
@@ -16,6 +15,7 @@ using MGroup.Solvers.DomainDecomposition.Dual.FetiDP.Matrices;
 using MGroup.Solvers.DomainDecomposition.Dual.Pcg;
 using MGroup.Solvers.DomainDecomposition.Dual.Preconditioning;
 using Xunit;
+using MGroup.Constitutive.Structural;
 
 namespace MGroup.Solvers.Tests.DomainDecomposition.Dual.FetiDP
 {

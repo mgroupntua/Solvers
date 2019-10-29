@@ -1,5 +1,5 @@
+using MGroup.Constitutive.Structural;
 using MGroup.NumericalAnalyzers;
-using MGroup.Problems;
 using MGroup.Solvers.Direct;
 
 namespace MGroup.Solvers.Tests

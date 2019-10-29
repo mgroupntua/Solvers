@@ -3,12 +3,12 @@ using MGroup.NumericalAnalyzers;
 using MGroup.LinearAlgebra;
 using MGroup.MSolve.Discretization.Commons;
 using MGroup.MSolve.Solution;
-using MGroup.Problems;
 using MGroup.Solvers.Direct;
 using MGroup.Solvers.Iterative;
 using MGroup.Solvers.Ordering;
 using MGroup.Solvers.Ordering.Reordering;
 using Xunit;
+using MGroup.Constitutive.Structural;
 
 //TODO: add performance logging for solvers and gather all these in the same method.
 namespace MGroup.Solvers.Tests

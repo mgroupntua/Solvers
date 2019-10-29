@@ -6,12 +6,12 @@ using MGroup.LinearAlgebra.Reordering;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization.FreedomDegrees;
 using MGroup.MSolve.Logging.DomainDecomposition;
-using MGroup.Problems;
 using MGroup.Solvers.Direct;
 using MGroup.Solvers.DomainDecomposition.Dual.Feti1;
 using MGroup.Solvers.DomainDecomposition.Dual.Feti1.Matrices;
 using MGroup.Solvers.DomainDecomposition.Dual.Preconditioning;
 using Xunit;
+using MGroup.Constitutive.Structural;
 
 namespace MGroup.Solvers.Tests.DomainDecomposition.Dual.Feti1
 {
