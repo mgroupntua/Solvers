@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MGroup.MSolve.Discretization;
+using MGroup.MSolve.Discretization.DofOrdering;
 
 //TODO: This should be thread safe.
 namespace MGroup.Solvers.DofOrdering
