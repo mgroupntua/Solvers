@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Matrices.Builders;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
+using MGroup.MSolve.Discretization.DofOrdering;
 using MGroup.MSolve.Solution.Assemblers;
 
 //TODO: The F = Ff - Kfc*Fc should not be done in the solver. The solver should only operate on the final linear systems.

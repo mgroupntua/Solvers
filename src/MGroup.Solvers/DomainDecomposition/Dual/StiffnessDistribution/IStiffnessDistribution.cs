@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Matrices.Operators;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.Solvers.DomainDecomposition.Dual.LagrangeMultipliers;
 
 //TODO: This should be an enum class. There are only 2 possible cases.

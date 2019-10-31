@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using MGroup.LinearAlgebra.Matrices.Operators;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
+using MGroup.MSolve.Discretization.DofOrdering;
 
 //TODO: This should only calculate them. Another object should manage them.
 //TODO: The enumeration code is quite complex and error prone. It should be simplified and decomposed into smaller methods, as

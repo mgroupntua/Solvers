@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using MGroup.LinearAlgebra.Vectors;
+using MGroup.MSolve.Discretization;
 using MGroup.MSolve.Discretization.Commons;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
 using MGroup.Solvers.DomainDecomposition.Dual.StiffnessDistribution;
 
 namespace MGroup.Solvers.DomainDecomposition.Dual.FetiDP

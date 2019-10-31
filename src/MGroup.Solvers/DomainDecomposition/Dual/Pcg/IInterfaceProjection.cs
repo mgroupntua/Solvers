@@ -1,5 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
 using MGroup.LinearAlgebra.Vectors;
 
 namespace MGroup.Solvers.DomainDecomposition.Dual.Pcg

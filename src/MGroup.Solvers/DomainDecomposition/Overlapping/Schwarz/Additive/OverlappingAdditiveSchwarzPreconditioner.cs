@@ -1,14 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using MGroup.LinearAlgebra.Commons;
 using MGroup.LinearAlgebra.Iterative.Preconditioning;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.Solvers.DomainDecomposition.Overlapping.Schwarz.Additive.CoarseProblem;
 using MGroup.Solvers.DomainDecomposition.Overlapping.Schwarz.Additive.Interfaces;
-using MGroup.Solvers.Ordering;
 
 namespace MGroup.Solvers.DomainDecomposition.Overlapping.Schwarz.Additive
 {

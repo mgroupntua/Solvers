@@ -1,5 +1,5 @@
 using System;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 
 namespace MGroup.Solvers.DomainDecomposition.Dual.FetiDP.CornerNodes
 {

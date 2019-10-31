@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
-using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.MSolve.Discretization.Interfaces;
-using MGroup.Solvers.Assemblers;
-using MGroup.Solvers.LinearSystems;
+using MGroup.MSolve.Discretization;
 
 //TODO: During initialization, the solver and its verious strategies should inform IFetiDPSubdomainMatrixManager what matrices
 //      will be necessary. IFetiDPSubdomainMatrixManager should then determine the correct order they must be created in and

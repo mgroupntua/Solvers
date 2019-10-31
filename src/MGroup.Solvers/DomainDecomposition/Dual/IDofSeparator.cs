@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
+using MGroup.MSolve.Discretization.DofOrdering;
 
 //TODO: The semantics of boundary & internal dofs is different for each domain decomposition method. Perhaps this interface 
 //      should not exist. Instead the Feti1DofSeparator, FetiDPDofSeparator, etc. would follow the same design and compose the 

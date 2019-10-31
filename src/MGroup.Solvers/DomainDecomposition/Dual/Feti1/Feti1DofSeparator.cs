@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
-using MGroup.Solvers.DomainDecomposition.Dual.Feti1.Matrices;
+using MGroup.MSolve.Discretization;
 
 //TODO: Needs a proper name. This probably cannot be incorporated in the ISubdomainDofOrdering, as the intent is different and
 //      depending on the DD method the dof categories may be different (e.g. FETI-1: internal/boundary, 

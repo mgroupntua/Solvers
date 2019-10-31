@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MGroup.LinearAlgebra.Exceptions;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.MSolve.Solution.LinearSystems;
 
 //TODO: add state management

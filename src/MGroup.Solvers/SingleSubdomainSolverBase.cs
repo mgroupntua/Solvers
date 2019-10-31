@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
+using MGroup.MSolve.Discretization;
 using MGroup.MSolve.Discretization.Commons;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization.DofOrdering;
 using MGroup.MSolve.Logging.DomainDecomposition;
 using MGroup.MSolve.Solution;
 using MGroup.MSolve.Solution.Assemblers;
@@ -14,7 +14,7 @@ using MGroup.MSolve.Solution.Commons;
 using MGroup.MSolve.Solution.LinearSystems;
 using MGroup.Solvers.LinearSystems;
 using MGroup.Solvers.Logging;
-using MGroup.Solvers.Ordering;
+using MGroup.Solvers.DofOrdering;
 
 //TODO: not sure this class should be in this namespace
 namespace MGroup.Solvers

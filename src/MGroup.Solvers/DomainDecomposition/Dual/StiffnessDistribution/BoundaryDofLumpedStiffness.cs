@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using MGroup.LinearAlgebra.Matrices;
+using MGroup.MSolve.Discretization;
 using MGroup.MSolve.Discretization.Commons;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
 
 //TODO: there are algebraic expressions for these. E.g. inv(Lb^T * Db * Lb) for the inverse of total stiffness. Should I use 
 //      those instead?

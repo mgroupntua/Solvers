@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Logging.DomainDecomposition;
-using MGroup.Solvers.DomainDecomposition.Dual.FetiDP.Matrices;
 using MGroup.Solvers.DomainDecomposition.Dual.Pcg;
 
 //TODO: This could be split into an interface with the same name and an IFtiDPCoarseProblemSolver.

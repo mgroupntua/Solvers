@@ -1,17 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Matrices.Builders;
 using MGroup.LinearAlgebra.Matrices.Operators;
 using MGroup.LinearAlgebra.Reordering;
 using MGroup.LinearAlgebra.Triangulation;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.Solvers.DomainDecomposition.Dual.FetiDP.Matrices;
-using MGroup.Solvers.Ordering.Reordering;
+using MGroup.Solvers.DofOrdering.Reordering;
 
 //TODO: Use Skyline assembler instead of reimplementing it.
 namespace MGroup.Solvers.DomainDecomposition.Dual.FetiDP.InterfaceProblem

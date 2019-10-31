@@ -1,6 +1,4 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using MGroup.LinearAlgebra.Matrices.Operators;
 
 namespace MGroup.Solvers.DomainDecomposition.Dual.LagrangeMultipliers

@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-//using MGroup.LinearAlgebra.Matrices;
 using MGroup.Solvers.DomainDecomposition.Dual.StiffnessDistribution;
 using MGroup.Solvers.DomainDecomposition.Dual.LagrangeMultipliers;
 using MGroup.Solvers.DomainDecomposition.Dual.Pcg;
 using MGroup.LinearAlgebra.Matrices.Operators;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 
 //TODO: perhaps these helper methods should be somewhere more centrally, which will also include extracting Kib, Kii
 //TODO: Reanalysis: if the global lagranges have not changed, Bpb can be reused.

@@ -6,13 +6,13 @@ using MGroup.LinearAlgebra.Reordering;
 using MGroup.LinearAlgebra.SchurComplements;
 using MGroup.LinearAlgebra.Triangulation;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
+using MGroup.MSolve.Discretization.DofOrdering;
 using MGroup.MSolve.Solution.LinearSystems;
 using MGroup.Solvers.Assemblers;
 using MGroup.Solvers.DomainDecomposition.Dual.FetiDP.InterfaceProblem;
 using MGroup.Solvers.LinearSystems;
-using MGroup.Solvers.Ordering.Reordering;
+using MGroup.Solvers.DofOrdering.Reordering;
 
 //TODO: Kff should probably be a DOK. It will only be used to extract Krr, Krc, Kcc. 
 //      What about dynamic problems, where Kff needs to do linear combinations and matrix-vector multiplications

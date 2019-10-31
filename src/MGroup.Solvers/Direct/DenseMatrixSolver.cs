@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using MGroup.LinearAlgebra.Matrices;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.MSolve.Solution;
 using MGroup.Solvers.Assemblers;
-using MGroup.Solvers.Ordering;
-using MGroup.Solvers.Ordering.Reordering;
+using MGroup.Solvers.DofOrdering;
+using MGroup.Solvers.DofOrdering.Reordering;
 
 namespace MGroup.Solvers.Direct
 {
@@ -16,7 +15,7 @@ namespace MGroup.Solvers.Direct
     /// from FEM .
     /// Authors: Serafeim Bakalakos
     /// </summary>
-    public class DenseMatrixSolver: SingleSubdomainSolverBase<Matrix>
+    public class DenseMatrixSolver : SingleSubdomainSolverBase<Matrix>
     {
         private readonly bool isMatrixPositiveDefinite; //TODO: actually there should be 3 states: posDef, symmIndef, unsymm
 

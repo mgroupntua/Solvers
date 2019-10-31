@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Logging.DomainDecomposition;
 using MGroup.Solvers.DomainDecomposition.Dual.Feti1.Projection;

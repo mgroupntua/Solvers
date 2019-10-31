@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
+using MGroup.MSolve.Discretization.DofOrdering;
 using MGroup.Solvers.DomainDecomposition.Dual.LagrangeMultipliers;
 
 namespace MGroup.Solvers.DomainDecomposition.Dual.Feti1

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.Solvers.DomainDecomposition.Dual.LagrangeMultipliers;
 
 //TODO: This works for other dual solvers, not only FETI-1

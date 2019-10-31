@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Matrices.Operators;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.Solvers.DomainDecomposition.Dual.FetiDP.Matrices;
 
 namespace MGroup.Solvers.DomainDecomposition.Dual.FetiDP.InterfaceProblem

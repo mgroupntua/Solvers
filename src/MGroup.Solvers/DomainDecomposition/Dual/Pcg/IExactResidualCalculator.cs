@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.Solvers.Ordering;
 
 //TODO: There are various convergence criteria. See Fragakis PhD, section 4.3.1 page 93/299. 
 namespace MGroup.Solvers.DomainDecomposition.Dual.Pcg

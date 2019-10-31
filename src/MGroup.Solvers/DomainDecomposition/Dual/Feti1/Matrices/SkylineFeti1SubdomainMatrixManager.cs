@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using MGroup.LinearAlgebra.Exceptions;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Reordering;
 using MGroup.LinearAlgebra.Triangulation;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
+using MGroup.MSolve.Discretization.DofOrdering;
 using MGroup.MSolve.Solution.LinearSystems;
 using MGroup.Solvers.Assemblers;
 using MGroup.Solvers.LinearSystems;
-using MGroup.Solvers.Ordering.Reordering;
+using MGroup.Solvers.DofOrdering.Reordering;
 
 //TODO: Add state checking for all the managed matrices. A state machine (using State pattern) should help.
 namespace MGroup.Solvers.DomainDecomposition.Dual.Feti1.Matrices

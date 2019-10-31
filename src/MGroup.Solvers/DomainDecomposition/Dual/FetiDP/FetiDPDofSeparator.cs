@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Matrices.Operators;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 
 //TODO: Remove code duplication between this and Feti1DofSeparator
 //TODO: Perhaps I should also find and expose the indices of boundary remainder and internal remainder dofs into the sequence 

@@ -5,8 +5,8 @@ using MGroup.LinearAlgebra.Interpolation;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Matrices.Builders;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
+using MGroup.MSolve.Discretization.DofOrdering;
 using MGroup.MSolve.Geometry.Coordinates;
 using MGroup.Solvers.DomainDecomposition.Overlapping.Schwarz.Additive.CoarseProblem;
 using MGroup.Solvers.DomainDecomposition.Overlapping.Schwarz.Additive.Interfaces;
@@ -163,49 +163,50 @@ namespace MGroup.Solvers.DomainDecomposition.Overlapping.Schwarz.Additive
             return basisFunctions;
         }
 
-        private void CalculateLocalProblems()
+		// TODO: ** Abstract the StructuralDOF references **
+		private void CalculateLocalProblems()
         {
-            //TODO: add dofOrderer to ignored constrainedDofs of each subdomain
-            var numberOfSubdomainKsi = _ksiDecomposition.NumberOfAxisSubdomains;
-            var numberOfSubdomainHeta = _hetaDecomposition.NumberOfAxisSubdomains;
-            _connectivity = new List<int>[numberOfSubdomainKsi * numberOfSubdomainHeta];
+            ////TODO: add dofOrderer to ignored constrainedDofs of each subdomain
+            //var numberOfSubdomainKsi = _ksiDecomposition.NumberOfAxisSubdomains;
+            //var numberOfSubdomainHeta = _hetaDecomposition.NumberOfAxisSubdomains;
+            //_connectivity = new List<int>[numberOfSubdomainKsi * numberOfSubdomainHeta];
             
-            var indexSubdomain = -1;
-            for (int i = 0; i < numberOfSubdomainKsi; i++)
-            {
-                var subdomainKsiConnectivity = _ksiDecomposition.GetAxisIndicesOfSubdomain(i);
-                for (int j = 0; j < numberOfSubdomainHeta; j++)
-                {
-                    var subdomainHetaConnectivity = _hetaDecomposition.GetAxisIndicesOfSubdomain(j);
-                    indexSubdomain++;
-                    _connectivity[indexSubdomain] =
-                        new List<int>();
+            //var indexSubdomain = -1;
+            //for (int i = 0; i < numberOfSubdomainKsi; i++)
+            //{
+            //    var subdomainKsiConnectivity = _ksiDecomposition.GetAxisIndicesOfSubdomain(i);
+            //    for (int j = 0; j < numberOfSubdomainHeta; j++)
+            //    {
+            //        var subdomainHetaConnectivity = _hetaDecomposition.GetAxisIndicesOfSubdomain(j);
+            //        indexSubdomain++;
+            //        _connectivity[indexSubdomain] =
+            //            new List<int>();
 
-                    freeSubdomainDofs=new List<int>();
-                    foreach (var controlPoint in _patchControlPoints)
-                    {
-                        if (_model.GlobalColDofOrdering.GlobalFreeDofs.Contains(controlPoint, StructuralDof.TranslationX))
-                            freeSubdomainDofs.Add(2*controlPoint.ID);
+            //        freeSubdomainDofs=new List<int>();
+            //        foreach (var controlPoint in _patchControlPoints)
+            //        {
+            //            if (_model.GlobalColDofOrdering.GlobalFreeDofs.Contains(controlPoint, StructuralDof.TranslationX))
+            //                freeSubdomainDofs.Add(2*controlPoint.ID);
 
-                        if (_model.GlobalColDofOrdering.GlobalFreeDofs.Contains(controlPoint, StructuralDof.TranslationX))
-                            freeSubdomainDofs.Add(2 * controlPoint.ID+1);
-                    }
+            //            if (_model.GlobalColDofOrdering.GlobalFreeDofs.Contains(controlPoint, StructuralDof.TranslationX))
+            //                freeSubdomainDofs.Add(2 * controlPoint.ID+1);
+            //        }
 
-                    foreach (var indexKsi in subdomainKsiConnectivity)
-                    {
-                        foreach (var indexHeta in subdomainHetaConnectivity)
-                        {
-                            var indexCP = indexKsi * _numberOfCpHeta + indexHeta;
-                            var node = _patchControlPoints[indexCP] as INode;
-                            if (_model.GlobalColDofOrdering.GlobalFreeDofs.Contains(node, StructuralDof.TranslationX))
-                                _connectivity[indexSubdomain].Add(_model.GlobalColDofOrdering.GlobalFreeDofs[node, StructuralDof.TranslationX]);
-                            if (_model.GlobalColDofOrdering.GlobalFreeDofs.Contains(node, StructuralDof.TranslationY))
-                                _connectivity[indexSubdomain].Add(_model.GlobalColDofOrdering.GlobalFreeDofs[node, StructuralDof.TranslationY]);
+            //        foreach (var indexKsi in subdomainKsiConnectivity)
+            //        {
+            //            foreach (var indexHeta in subdomainHetaConnectivity)
+            //            {
+            //                var indexCP = indexKsi * _numberOfCpHeta + indexHeta;
+            //                var node = _patchControlPoints[indexCP] as INode;
+            //                if (_model.GlobalColDofOrdering.GlobalFreeDofs.Contains(node, StructuralDof.TranslationX))
+            //                    _connectivity[indexSubdomain].Add(_model.GlobalColDofOrdering.GlobalFreeDofs[node, StructuralDof.TranslationX]);
+            //                if (_model.GlobalColDofOrdering.GlobalFreeDofs.Contains(node, StructuralDof.TranslationY))
+            //                    _connectivity[indexSubdomain].Add(_model.GlobalColDofOrdering.GlobalFreeDofs[node, StructuralDof.TranslationY]);
 
-                        }
-                    }
-                }
-            }
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         public int[] GetConnectivityOfSubdomain(int indexSubdomain) => _connectivity[indexSubdomain].ToArray();

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.MSolve.Geometry.Coordinates;
 using MGroup.MSolve.Geometry.Shapes;
 

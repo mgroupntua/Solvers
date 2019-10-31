@@ -4,7 +4,7 @@ using System.Linq;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Matrices.Operators;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.Solvers.DomainDecomposition.Dual.LagrangeMultipliers;
 using MGroup.Solvers.DomainDecomposition.Dual.Pcg;
 using MGroup.Solvers.DomainDecomposition.Dual.StiffnessDistribution;

@@ -1,14 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Triangulation;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.MSolve.Solution;
 using MGroup.Solvers.Assemblers;
-using MGroup.Solvers.Ordering;
-using MGroup.Solvers.Ordering.Reordering;
+using MGroup.Solvers.DofOrdering;
+using MGroup.Solvers.DofOrdering.Reordering;
 
 namespace MGroup.Solvers.Direct
 {

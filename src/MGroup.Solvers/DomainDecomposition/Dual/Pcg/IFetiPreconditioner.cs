@@ -1,5 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
 

@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
-using MGroup.LinearAlgebra.Matrices;
 using MGroup.Solvers.DomainDecomposition.Dual.StiffnessDistribution;
 using MGroup.Solvers.DomainDecomposition.Dual.LagrangeMultipliers;
 using MGroup.Solvers.DomainDecomposition.Dual.Pcg;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 
 //TODO: Also add ReorderInternalDofsForMultiplication and ReorderBoundaryDofsForMultiplication
 namespace MGroup.Solvers.DomainDecomposition.Dual.Preconditioning

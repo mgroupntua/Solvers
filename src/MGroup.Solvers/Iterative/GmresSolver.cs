@@ -4,12 +4,12 @@ using MGroup.LinearAlgebra.Iterative;
 using MGroup.LinearAlgebra.Iterative.GeneralizedMinimalResidual;
 using MGroup.LinearAlgebra.Iterative.Preconditioning;
 using MGroup.LinearAlgebra.Matrices;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.MSolve.Solution;
 using MGroup.MSolve.Solution.Commons;
 using MGroup.Solvers.Assemblers;
-using MGroup.Solvers.Ordering;
-using MGroup.Solvers.Ordering.Reordering;
+using MGroup.Solvers.DofOrdering;
+using MGroup.Solvers.DofOrdering.Reordering;
 
 namespace MGroup.Solvers.Iterative
 {

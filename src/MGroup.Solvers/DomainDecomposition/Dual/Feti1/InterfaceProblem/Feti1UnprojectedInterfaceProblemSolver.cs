@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using MGroup.LinearAlgebra.Iterative;
 using MGroup.LinearAlgebra.Iterative.Termination;
 using MGroup.LinearAlgebra.Vectors;

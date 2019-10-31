@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using MGroup.LinearAlgebra.Iterative;
 using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 using MGroup.LinearAlgebra.Iterative.Preconditioning;

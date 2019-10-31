@@ -1,5 +1,4 @@
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 
 //TODO: perhaps I should also store the dof indices in each subdomain. In that case, creating the boolean matrices can be 
 //      decoupled from the lagrange enumeration.

@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
+using MGroup.MSolve.Discretization.DofOrdering;
 
 //TODO: This should be a static class that will be called by the DofSeparator of each FETI method to create the common data structures.
 //TODO: Should this be abstract or not suffixed with "Base".

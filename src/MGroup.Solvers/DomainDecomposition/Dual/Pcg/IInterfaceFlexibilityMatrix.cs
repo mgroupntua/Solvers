@@ -1,6 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using MGroup.LinearAlgebra.Vectors;
 
 //TODO: Not sure if there needs to be an interface. In FETI-1 there is only one flexibility matrix. However in FETI-DP there is

@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 
 namespace MGroup.Solvers.DomainDecomposition.Dual.LagrangeMultipliers
 {

@@ -5,9 +5,9 @@ using System.Linq;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Matrices.Operators;
 using MGroup.LinearAlgebra.Vectors;
+using MGroup.MSolve.Discretization;
 using MGroup.MSolve.Discretization.Commons;
-using MGroup.MSolve.Discretization.FreedomDegrees;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization.DofOrdering;
 using MGroup.MSolve.Logging.DomainDecomposition;
 using MGroup.MSolve.Solution;
 using MGroup.MSolve.Solution.Commons;
@@ -20,8 +20,8 @@ using MGroup.Solvers.DomainDecomposition.Dual.Pcg;
 using MGroup.Solvers.DomainDecomposition.Dual.Preconditioning;
 using MGroup.Solvers.DomainDecomposition.Dual.StiffnessDistribution;
 using MGroup.Solvers.Logging;
-using MGroup.Solvers.Ordering;
-using MGroup.Solvers.Ordering.Reordering;
+using MGroup.Solvers.DofOrdering;
+using MGroup.Solvers.DofOrdering.Reordering;
 
 //TODO: Rigid body modes do not have to be computed each time the stiffness matrix changes. 
 //TODO: Optimizations for the case that stiffness changes, but connectivity remains the same!

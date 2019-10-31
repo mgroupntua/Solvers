@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.Solvers.DomainDecomposition.Dual.FetiDP.InterfaceProblem;
 
 namespace MGroup.Solvers.DomainDecomposition.Dual.FetiDP.Matrices

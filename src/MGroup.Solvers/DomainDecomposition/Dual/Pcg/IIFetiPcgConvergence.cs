@@ -1,6 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 using MGroup.LinearAlgebra.Vectors;
 

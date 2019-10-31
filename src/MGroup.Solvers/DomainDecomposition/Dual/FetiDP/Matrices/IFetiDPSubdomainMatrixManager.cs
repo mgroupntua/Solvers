@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.MSolve.Discretization.Interfaces;
+using MGroup.MSolve.Discretization;
 using MGroup.Solvers.DomainDecomposition.Dual.Feti1;
 
 //TODO: During initialization, the solver and its verious strategies should inform IFetiDPSubdomainMatrixManager what matrices
