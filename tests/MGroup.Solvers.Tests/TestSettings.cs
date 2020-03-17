@@ -1,11 +1,13 @@
 using System;
+
 using MGroup.LinearAlgebra;
+
 using Xunit;
 
 namespace MGroup.Solvers.Tests
 {
-    // Currently SuiteSparse dlls call MKL dll
-    public enum TestSuiteSparseAndMklLibs
+	// Currently SuiteSparse dlls call MKL dll
+	public enum TestSuiteSparseAndMklLibs
     {
         Neither, MklOnly, Both
     }
