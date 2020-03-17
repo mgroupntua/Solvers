@@ -6,6 +6,11 @@
 trigger:
 - develop
 
+pr:
+  branches:
+    include:
+    - develop
+
 pool:
   vmImage: 'VS2017-Win2016'
 
@@ -73,6 +78,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   name: dotnetPack
+  condition: ne(variables['Build.Reason'], 'PullRequest')
   displayName: "Packages new nugets"
   inputs:
     command: 'pack'
@@ -82,12 +88,14 @@ steps:
 
 - task: PublishBuildArtifacts@1
   name: publishToFeed
+  condition: ne(variables['Build.Reason'], 'PullRequest')
   displayName: "Publishes to pipeline artifacts"
   inputs:
     ArtifactName: 'drop'
 
 - task: DotNetCoreCLI@2
   name: dotnetPushNuget
+  condition: ne(variables['Build.Reason'], 'PullRequest')
   displayName: "Push nugets to feed"
   inputs:
     command: 'push'
@@ -97,6 +105,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   enabled: false
+  condition: ne(variables['Build.Reason'], 'PullRequest')
   name: dotnetPushSymbol
   displayName: "Publishes symbol nugets"
   inputs:
