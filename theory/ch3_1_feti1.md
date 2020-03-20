@@ -1,14 +1,14 @@
-# Intro
+# FETI-1 Introduction
 FETI-1 or simply FETI (Finite Element Tearing & Interconnecting) is a DDM method introduced by Farhat et al. (1991). It is the first implementation of a family of FETI methods, which use Lagrange multipliers to describe the forces between the subdomains and define the interface problem in terms of those. The Lagrange multipliers are dual quantities (e.g. forces in elasticity problems, while displacements are primal), these methods are often called **dual**. Later, other dual DDMs were developed as simpler and in many cases more efficient, alternatives. 
 
 Before continuing to the theory presented next, it is recommended to read the [general DDM chapter](ch3_ddm_solvers.md). For a more detailed description of FETI-1, see [the original publication](https://www.researchgate.net/publication/227701161_A_Method_of_Finite_Element_Tearing_and_Interconnecting_and_Its_Parallel_Solution_Algorithm).
 
-# Theory
+# FETI-1 Theory
 
-## Lagrange multipliers
+## Lagrange multipliers & dual DOFs
 <img src="img/langrange_multipliers.svg" alt="Lagrange multipliers" width="500"/>
 
-In FETI-1 method, the domain is divided into disconnected subdomains as in the above figure and the continuity between them is retained by enforcing equal displacements for instances of the same boundary DOF (degree of freedom). E.g. if subdomains `s=1,2` share the same boundary dof `k`:
+In FETI-1 method, the domain is divided into disconnected subdomains as in the above figure and the continuity between them is retained by enforcing equal displacements for instances of the same boundary DOF (degree of freedom). E.g. if subdomains *s=1,2* share the same boundary dof *k*:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\begin{bmatrix}&space;1&space;&&space;-1&space;\end{bmatrix}&space;\cdot&space;\begin{bmatrix}&space;u_k^{(1)}&space;\\&space;u_k^{(2)}&space;\end{bmatrix}&space;=&space;0" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\begin{bmatrix}&space;1&space;&&space;-1&space;\end{bmatrix}&space;\cdot&space;\begin{bmatrix}&space;u_k^{(1)}&space;\\&space;u_k^{(2)}&space;\end{bmatrix}&space;=&space;0" title="\begin{bmatrix} 1 & -1 \end{bmatrix} \cdot \begin{bmatrix} u_k^{(1)} \\ u_k^{(2)} \end{bmatrix} = 0" /></a>
 
@@ -61,7 +61,7 @@ where
 
 Finally we calculate the displacements depending on if the subdomain is floating or not:
 
-<<a href="https://www.codecogs.com/eqnedit.php?latex=\mathbf{u}^{s}&space;=&space;(\mathbf{K}^{s})^{&plus;}&space;(\mathbf{f}^{s}&space;-&space;(\mathbf{B}^{s})^{T}&space;\mathbf{\lambda})&space;&plus;&space;\mathbf{R}^{s}\mathbf{a}^{s}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathbf{u}^{s}&space;=&space;(\mathbf{K}^{s})^{&plus;}&space;(\mathbf{f}^{s}&space;-&space;(\mathbf{B}^{s})^{T}&space;\mathbf{\lambda})&space;&plus;&space;\mathbf{R}^{s}\mathbf{a}^{s}" title="\mathbf{u}^{s} = (\mathbf{K}^{s})^{+} (\mathbf{f}^{s} - (\mathbf{B}^{s})^{T} \mathbf{\lambda}) + \mathbf{R}^{s}\mathbf{a}^{s}" /></a>
+<a href="https://www.codecogs.com/eqnedit.php?latex=\mathbf{u}^{s}&space;=&space;(\mathbf{K}^{s})^{&plus;}&space;(\mathbf{f}^{s}&space;-&space;(\mathbf{B}^{s})^{T}&space;\mathbf{\lambda})&space;&plus;&space;\mathbf{R}^{s}\mathbf{a}^{s}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathbf{u}^{s}&space;=&space;(\mathbf{K}^{s})^{&plus;}&space;(\mathbf{f}^{s}&space;-&space;(\mathbf{B}^{s})^{T}&space;\mathbf{\lambda})&space;&plus;&space;\mathbf{R}^{s}\mathbf{a}^{s}" title="\mathbf{u}^{s} = (\mathbf{K}^{s})^{+} (\mathbf{f}^{s} - (\mathbf{B}^{s})^{T} \mathbf{\lambda}) + \mathbf{R}^{s}\mathbf{a}^{s}" /></a>
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\mathbf{u}^{s}&space;=&space;(\mathbf{K}^{s})^{-1}&space;(\mathbf{f}^{s}&space;-&space;(\mathbf{B}^{s})^{T}&space;\mathbf{\lambda})" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathbf{u}^{s}&space;=&space;(\mathbf{K}^{s})^{-1}&space;(\mathbf{f}^{s}&space;-&space;(\mathbf{B}^{s})^{T}&space;\mathbf{\lambda})" title="\mathbf{u}^{s} = (\mathbf{K}^{s})^{-1} (\mathbf{f}^{s} - (\mathbf{B}^{s})^{T} \mathbf{\lambda})" /></a>
 
@@ -108,5 +108,5 @@ In general, the computational cost of computing and implementing a diagonal Diri
 preconditioner, as well as the resulting reduction of PCG iterations falls 
 between that of Dirichlet and lumped preconditioner.
 
-# Remarks
-FETI-1 is an efficient DDM that exhibits good scalability, namely the iterations required to converge do not increase as the number of subdomain increases. This makes it applicable to large scale simulations run on computing systems with a lot of networked computers. Its disadvantages are caused by the existence of floating subdomains, the processing of which is difficult and very sensitive to accuracy loss. Floating subdomains and rigid body motions also cause problems when FETI-1 is applied to dynamic problems.
+# FETI-1 Remarks
+FETI-1 is an efficient DDM that exhibits good scalability, namely the iterations required to converge do not increase as the number of subdomains increases. This makes it applicable to large scale simulations run on computing systems with a lot of networked computers. Its disadvantages are caused by the existence of floating subdomains, the processing of which is difficult and very sensitive to accuracy loss. Floating subdomains and rigid body motions also cause problems when FETI-1 is applied to dynamic problems.

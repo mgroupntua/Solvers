@@ -1,7 +1,7 @@
 # General
 Domain Decomposition Methods (DDM) divide the original physical model into smaller subdomains, which are processed independently and periodically coordinate to solve the original problem. This section lists some common characteristics of most DDMs.
 
-Freedom degrees (dofs) of each subdomain are divided into boundary, which correspond to nodes on the boundary between two or more subdomains, and internal, which correspond to nodes belonging only to one subdomain. E.g. in an elasticity problem, if **u** are the displacements corresponding to the dofs of subdomain *s*, *b* denotes boundary dofs and *i* denotes internal dofs:
+Freedom degrees (dofs) of each subdomain are divided into boundary, which correspond to nodes on the boundary between two or more subdomains, and internal, which correspond to nodes belonging only to one subdomain. E.g. in an elasticity problem, if **u**<sup>s</sup> are the displacements corresponding to the dofs of subdomain *s*, *b* denotes boundary dofs and *i* denotes internal dofs:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\mathbf{u}^s&space;=&space;\begin{bmatrix}&space;\mathbf{u}^s_b&space;\\&space;\mathbf{u}^s_i&space;\end{bmatrix}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathbf{u}^s&space;=&space;\begin{bmatrix}&space;\mathbf{u}^s_b&space;\\&space;\mathbf{u}^s_i&space;\end{bmatrix}" title="\mathbf{u}^s = \begin{bmatrix} \mathbf{u}^s_b \\ \mathbf{u}^s_i \end{bmatrix}" /></a>
 
@@ -15,6 +15,7 @@ Apart from the examples above, many other operations may be used by specific sol
 <a href="https://www.codecogs.com/eqnedit.php?latex=\mathbf{u}^s_b&space;=&space;\mathbf{L}^s_b&space;\cdot&space;\mathbf{\bar{u}}_b" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathbf{u}^s_b&space;=&space;\mathbf{L}^s_b&space;\cdot&space;\mathbf{\bar{u}}_b" title="\mathbf{u}^s_b = \mathbf{L}^s_b \cdot \mathbf{\bar{u}}_b" /></a>
 
 In addition, global forces and stiffnesses can be obtained by adding the contribution of each subdomain after applying the inverse map:
+
 <a href="https://www.codecogs.com/eqnedit.php?latex=\mathbf{\bar{f}}_b&space;=&space;\sum_{s=1}^{N_s}&space;\left(&space;\mathbf{L}^s_b&space;\right&space;)^T&space;\cdot&space;\mathbf{f}^s_b" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathbf{\bar{f}}_b&space;=&space;\sum_{s=1}^{N_s}&space;\left(&space;\mathbf{L}^s_b&space;\right&space;)^T&space;\cdot&space;\mathbf{f}^s_b" title="\mathbf{\bar{f}}_b = \sum_{s=1}^{N_s} \left( \mathbf{L}^s_b \right )^T \cdot \mathbf{f}^s_b" /></a>
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\mathbf{\bar{K}}_{bb}&space;=&space;\sum_{s=1}^{N_s}&space;\left(&space;\mathbf{L}^s_b&space;\right&space;)^T&space;\cdot&space;\mathbf{K}^s_{bb}&space;\cdot&space;\mathbf{L}^s_b" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathbf{\bar{K}}_{bb}&space;=&space;\sum_{s=1}^{N_s}&space;\left(&space;\mathbf{L}^s_b&space;\right&space;)^T&space;\cdot&space;\mathbf{K}^s_{bb}&space;\cdot&space;\mathbf{L}^s_b" title="\mathbf{\bar{K}}_{bb} = \sum_{s=1}^{N_s} \left( \mathbf{L}^s_b \right )^T \cdot \mathbf{K}^s_{bb} \cdot \mathbf{L}^s_b" /></a>
