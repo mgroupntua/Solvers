@@ -16,8 +16,8 @@ The factorization step is the most computationally intensive, while the solution
 
 The performance of direct solvers greatly depends on the sparsity of the linear system matrix. Sparse matrix formats appropriate for each factorization algorithm are used for the matrix. The sparsity pattern determines the bandwidth of the matrix, that is the number of non-zero entries of each row/colum required to represent the factorization matrices. If the bandwidth is large, direct solvers are inefficient or even inapplicable due to excessive memory requirements. The bandwidth of the matrix resutling from FEM discretization is largest for 3D problems, then 2D problems, then 1D problems. 
 
-# Dense LUP solver
-This solver creates the linear system matrix `A` in full matrix format. The factorization step uses the LUP factorization algorithm `A = P*L*U`, where `P (n x n)` is a permutation matrix. The matrices `L,U` can overwrite the original matrix `A`. The solution step performs back&forward substitutions with the matrices `L,U,P`. 
+# Dense solver
+This solver creates the linear system matrix `A` in full matrix format. If the matrix is symmetric positive definite, the factorization step uses the LUP factorization algorithm `A = P*L*U`, where `P (n x n)` is a permutation matrix. The matrices `L,U` can overwrite the original matrix `A`. The solution step performs back & forward substitutions with the matrices `L,U,P`. Otherwise the LDL factorization algorithm `A=L*D*L^T` will be used and the matrix `L` can overwrite the original matrix `A`. The solution step performs back & forward substitutions with the matrix `L`. 
 
 This solver is applicable for all invertible matrices. It does not take advantage of the sparsity pattern of a matrix. Therefore it can only be used for small linear systems.
 
