@@ -130,7 +130,7 @@ namespace MGroup.Solvers.Iterative
             return solutionVectors;
         }
 
-        public class Builder : ISolverBuilder
+        public class Builder
         {
             public IDofOrderer DofOrderer { get; set; }
                 = new DofOrderer(new NodeMajorDofOrderingStrategy(), new NullReordering());
@@ -139,7 +139,6 @@ namespace MGroup.Solvers.Iterative
 
             public IPreconditionerFactory PreconditionerFactory { get; set; } = new JacobiPreconditioner.Factory();
 
-            ISolver ISolverBuilder.BuildSolver(IModel model) => BuildSolver(model);
 
             public PcgSolver BuildSolver(IModel model) 
                 => new PcgSolver(model, PcgAlgorithm, PreconditionerFactory, DofOrderer);

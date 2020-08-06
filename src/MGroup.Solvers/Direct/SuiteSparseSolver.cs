@@ -150,7 +150,7 @@ namespace MGroup.Solvers.Direct
             }
         }
 
-        public class Builder : ISolverBuilder
+        public class Builder
         {
             public Builder() { }
 
@@ -158,9 +158,7 @@ namespace MGroup.Solvers.Direct
                 = new DofOrderer(new NodeMajorDofOrderingStrategy(), AmdReordering.CreateWithSuiteSparseAmd());
 
             public double FactorizationPivotTolerance { get; set; } = 1E-15;
-
-            ISolver ISolverBuilder.BuildSolver(IModel model) => BuildSolver(model);
-
+			
             public SuiteSparseSolver BuildSolver(IModel model)
                 => new SuiteSparseSolver(model, FactorizationPivotTolerance, DofOrderer);
         }

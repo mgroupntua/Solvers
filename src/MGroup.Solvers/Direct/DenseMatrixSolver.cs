@@ -146,7 +146,7 @@ namespace MGroup.Solvers.Direct
             return result;
         }
 
-        public class Builder: ISolverBuilder
+        public class Builder
         {
             public Builder() { }
 
@@ -154,9 +154,7 @@ namespace MGroup.Solvers.Direct
                 = new DofOrderer(new NodeMajorDofOrderingStrategy(), new NullReordering());
 
             public bool IsMatrixPositiveDefinite { get; set; } = true;
-
-            ISolver ISolverBuilder.BuildSolver(IModel model) => BuildSolver(model);
-
+			
             public DenseMatrixSolver BuildSolver(IModel model)
                 => new DenseMatrixSolver(model, DofOrderer, IsMatrixPositiveDefinite);
         }

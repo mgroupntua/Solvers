@@ -81,29 +81,13 @@ namespace MGroup.Solvers.LinearSystems
             SolutionConcrete = null;
             Matrix = null;
 
-            if (Subdomain is IAsymmetricSubdomain asymmetricSubdomain)
+            if (Subdomain.FreeDofOrdering == null)
             {
-                if (asymmetricSubdomain.FreeDofRowOrdering == null)
-                {
-                    throw new InvalidOperationException("The freedom degrees of a subdomain must"
-                        + " be ordered before defining the size of its corresponding linear system.");
-                }
-                if (asymmetricSubdomain.FreeDofColOrdering == null)
-                {
-                    throw new InvalidOperationException("The freedom degrees of a subdomain must"
-                        + " be ordered before defining the size of its corresponding linear system.");
-                }
-                Size = asymmetricSubdomain.FreeDofColOrdering.NumFreeDofs;
+                throw new InvalidOperationException("The freedom degrees of a subdomain must"
+                    + " be ordered before defining the size of its corresponding linear system.");
             }
-            else
-            {
-                if (Subdomain.FreeDofOrdering == null)
-                {
-                    throw new InvalidOperationException("The freedom degrees of a subdomain must"
-                        + " be ordered before defining the size of its corresponding linear system.");
-                }
-                Size = Subdomain.FreeDofOrdering.NumFreeDofs;
-            }
+            Size = Subdomain.FreeDofOrdering.NumFreeDofs;
+            
         }
 
         public abstract IVector CreateZeroVector();

@@ -120,7 +120,7 @@ namespace MGroup.Solvers.Direct
             return solutionVectors;
         }
 
-        public class Builder : ISolverBuilder
+        public class Builder 
         {
             public Builder() { }
 
@@ -128,9 +128,7 @@ namespace MGroup.Solvers.Direct
                 = new DofOrderer(new NodeMajorDofOrderingStrategy(), new NullReordering());
 
             public double FactorizationPivotTolerance { get; set; } = 1E-15;
-
-            ISolver ISolverBuilder.BuildSolver(IModel model) => BuildSolver(model);
-
+			
             public SkylineSolver BuildSolver(IModel model)
             {
                 return new SkylineSolver(model, FactorizationPivotTolerance, DofOrderer);
