@@ -17,6 +17,30 @@ namespace MGroup.Solvers.Tests
 {
 	public static class SingleSubdomainTests
     {
+		[Fact]
+		internal static void TestCSparseLUSolver()
+		{
+			CantileverBeam benchmark = BuildCantileverBenchmark();
+
+			var solverBuilder = new CSparseLUSolver.Builder();
+			solverBuilder.DofOrderer = new DofOrderer(new NodeMajorDofOrderingStrategy(), new NullReordering());
+			ISolver solver = solverBuilder.BuildSolver(benchmark.Model);
+
+			RunAnalysisAndCheck(benchmark, solver);
+		}
+
+		[Fact]
+		internal static void TestCSparseLUSolverWithAmdReordering()
+		{
+			CantileverBeam benchmark = BuildCantileverBenchmark();
+
+			var solverBuilder = new CSparseLUSolver.Builder();
+			solverBuilder.DofOrderer = new DofOrderer(new NodeMajorDofOrderingStrategy(), AmdReordering.CreateWithCSparseAmd());
+			ISolver solver = solverBuilder.BuildSolver(benchmark.Model);
+
+			RunAnalysisAndCheck(benchmark, solver);
+		}
+
 		[SkippableFact]
 		internal static void TestDenseSolver()
 		{
@@ -33,6 +57,17 @@ namespace MGroup.Solvers.Tests
 
 				RunAnalysisAndCheck(benchmark, solver);
 			});
+		}
+
+		[Fact]
+		internal static void TestGmresSolver()
+		{
+			CantileverBeam benchmark = BuildCantileverBenchmark();
+
+			var solverBuilder = new GmresSolver.Builder();
+			GmresSolver solver = solverBuilder.BuildSolver(benchmark.Model);
+
+			RunAnalysisAndCheck(benchmark, solver);
 		}
 
 		[Fact]
@@ -86,8 +121,8 @@ namespace MGroup.Solvers.Tests
 			solverBuilder.DofOrderer = new DofOrderer(
 				new NodeMajorDofOrderingStrategy(), AmdReordering.CreateWithCSparseAmd());
 			ISolver solver = solverBuilder.BuildSolver(benchmark.Model);
-			RunAnalysisAndCheck(benchmark, solver);
 
+			RunAnalysisAndCheck(benchmark, solver);
 		}
 
 		[SkippableFact]
