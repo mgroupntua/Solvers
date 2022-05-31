@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using MGroup.MSolve.Discretization;
-using MGroup.MSolve.Discretization.DofOrdering;
+using MGroup.MSolve.Discretization.Entities;
 
 namespace MGroup.Solvers.DofOrdering.Reordering
 {

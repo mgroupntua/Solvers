@@ -1,26 +1,21 @@
-using MGroup.MSolve.Discretization;
-using MGroup.MSolve.Discretization.DofOrdering;
+using MGroup.MSolve.Discretization.Entities;
+using MGroup.MSolve.Solution.AlgebraicModel;
 
 namespace MGroup.Solvers.DofOrdering
 {
-    /// <summary>
-    /// Orders the unconstrained freedom degrees (dofs) of the physical model, by assigning an index to each unique dof. These 
-    /// indices are used in vectors and matrices that contain quantities for the whole model (or its subdomains) to locate the 
-    /// contribution of each dof.
-    /// Authors: Serafeim Bakalakos
-    /// </summary>
-    public interface IDofOrderer
-    {
-        /// <summary>
-        /// Finds an ordering for the constrained freedom degrees of a subdomain.
-        /// </summary>
-        /// <param name="subdomain">A subdomain, whose constrained dofs must have been assigned correctly.</param>
-        ISubdomainConstrainedDofOrdering OrderConstrainedDofs(ISubdomain subdomain);
-
-        /// <summary>
-        /// Finds an ordering for the unconstrained freedom degrees of the physical model and its subdomains.
-        /// </summary>
-        /// <param name="model">The physical model.</param>
-        IGlobalFreeDofOrdering OrderFreeDofs(IModel model);
-    }
+	/// <summary>
+	/// Orders the unconstrained freedom degrees (dofs) of the physical model's subdomains, by assigning an index to each unique 
+	/// (node, dof) pair. These indices are used in vectors and matrices that contain quantities for a whole subdomain to locate 
+	/// the contribution of each dof.
+	/// Authors: Serafeim Bakalakos
+	/// </summary>
+	public interface IDofOrderer
+	{
+		/// <summary>
+		/// Finds an ordering for the unconstrained freedom degrees of one of the physical model's subdomains.
+		/// </summary>
+		/// <param name="subdomain">A subdomain consisting of a subset of the nodes and elements of the total model.</param>
+		/// <param name="boundaryConditionsInterpreter"></param>
+		ISubdomainFreeDofOrdering OrderFreeDofs(ISubdomain subdomain, IAlgebraicModelInterpreter boundaryConditionsInterpreter);
+	}
 }

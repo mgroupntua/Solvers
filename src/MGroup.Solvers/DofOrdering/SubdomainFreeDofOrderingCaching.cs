@@ -1,40 +1,45 @@
 using System.Collections.Generic;
+using System.Linq;
 using MGroup.LinearAlgebra.Reordering;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization;
-using MGroup.MSolve.Discretization.DofOrdering;
+using MGroup.MSolve.Discretization.Dofs;
+using MGroup.MSolve.Discretization.Entities;
 
 //TODO: This should be thread safe.
 namespace MGroup.Solvers.DofOrdering
 {
 	public class SubdomainFreeDofOrderingCaching : ISubdomainFreeDofOrdering
     {
-        private readonly Dictionary<IElement, (int numAllDofs, int[] elementDofIndices, int[] subdomainDofIndices)> 
-            elementDofsCache = new Dictionary<IElement, (int numAllDofs, int[] elementDofIndices, int[] subdomainDofIndices)>();
+        private readonly ActiveDofs allDofs;
+        private readonly Dictionary<IElementType, (int numAllDofs, int[] elementDofIndices, int[] subdomainDofIndices)> 
+            elementDofsCache = new Dictionary<IElementType, (int numAllDofs, int[] elementDofIndices, int[] subdomainDofIndices)>();
 
-        public SubdomainFreeDofOrderingCaching(int numFreeDofs, DofTable subdomainFreeDofs)
-        {
+        public SubdomainFreeDofOrderingCaching(int numFreeDofs, IntDofTable subdomainFreeDofs, ActiveDofs allDofs)
+		{
             this.NumFreeDofs = numFreeDofs;
             this.FreeDofs = subdomainFreeDofs;
+			this.allDofs = allDofs;
         }
 
-        public DofTable FreeDofs { get; }
+		public IntDofTable FreeDofs { get; }
+
         public int NumFreeDofs { get; }
 
-        public void AddVectorElementToSubdomain(IElement element, double[] elementVector, IVector subdomainVector)
+        public void AddVectorElementToSubdomain(IElementType element, double[] elementVector, IVector subdomainVector)
         {
             (int numAllDofs, int[] elementDofIndices, int[] subdomainDofIndices) = GetElementData(element);
             subdomainVector.AddIntoThisNonContiguouslyFrom(
                 subdomainDofIndices, Vector.CreateFromArray(elementVector), elementDofIndices);
         }
 
-        public int CountElementDofs(IElement element)
+        public int CountElementDofs(IElementType element)
         {
             (int numAllDofs, int[] elementDofIndices, int[] subdomainDofIndices) = GetElementData(element);
             return numAllDofs;
         }
 
-        public double[] ExtractVectorElementFromSubdomain(IElement element, IVectorView subdomainVector)
+        public double[] ExtractVectorElementFromSubdomain(IElementType element, IVectorView subdomainVector)
         {
             (int numAllDofs, int[] elementDofIndices, int[] subdomainDofIndices) = GetElementData(element);
             var elementVector = new double[numAllDofs];
@@ -52,7 +57,7 @@ namespace MGroup.Solvers.DofOrdering
             //return elementVector;
         }
 
-        public (int[] elementDofIndices, int[] subdomainDofIndices) MapFreeDofsElementToSubdomain(IElement element)
+        public (int[] elementDofIndices, int[] subdomainDofIndices) MapFreeDofsElementToSubdomain(IElementType element)
         {
             (int numAllDofs, int[] elementDofIndices, int[] subdomainDofIndices) = GetElementData(element);
             return (elementDofIndices, subdomainDofIndices);
@@ -62,7 +67,7 @@ namespace MGroup.Solvers.DofOrdering
         {
             elementDofsCache.Clear();
             var pattern = SparsityPatternSymmetric.CreateEmpty(NumFreeDofs);
-            foreach (var element in subdomain.Elements)
+            foreach (var element in subdomain.EnumerateElements())
             {
                 // Do not cache anything at this point
                 (int numAllElementDofs, int[] elementDofIndices, int[] subdomainDofIndices) = ProcessElement(element);
@@ -74,13 +79,13 @@ namespace MGroup.Solvers.DofOrdering
             FreeDofs.Reorder(permutation, oldToNew);
         }
 
-        public void ReorderNodeMajor(IReadOnlyList<INode> sortedNodes)
-        {
-            elementDofsCache.Clear();
-            FreeDofs.ReorderNodeMajor(sortedNodes);
+		public void ReorderNodeMajor(IEnumerable<INode> sortedNodes)
+		{
+			elementDofsCache.Clear();
+			FreeDofs.ReorderNodeMajor(sortedNodes.Select(n => n.ID).ToList());
         }
 
-        private (int numAllDofs, int[] elementDofIndices, int[] subdomainDofIndices) GetElementData(IElement element)
+        private (int numAllDofs, int[] elementDofIndices, int[] subdomainDofIndices) GetElementData(IElementType element)
         {
             bool isStored = elementDofsCache.TryGetValue(element, out (int, int[], int[]) elementData);
             if (isStored) return elementData;
@@ -92,10 +97,10 @@ namespace MGroup.Solvers.DofOrdering
             }
         }
 
-        private (int numAllElementDofs, int[] elementDofIndices, int[] subdomainDofIndices) ProcessElement(IElement element)
+        private (int numAllElementDofs, int[] elementDofIndices, int[] subdomainDofIndices) ProcessElement(IElementType element)
         {
-            IReadOnlyList<INode> elementNodes = element.ElementType.DofEnumerator.GetNodesForMatrixAssembly(element);
-            IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.ElementType.DofEnumerator.GetDofTypesForMatrixAssembly(element);
+            IReadOnlyList<INode> elementNodes = element.DofEnumerator.GetNodesForMatrixAssembly(element);
+            IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.DofEnumerator.GetDofTypesForMatrixAssembly(element);
 
             // Count the dof superset (free and constrained) to allocate enough memory and avoid resizing
             int allElementDofs = 0;
@@ -108,8 +113,8 @@ namespace MGroup.Solvers.DofOrdering
             {
                 for (int dofIdx = 0; dofIdx < elementDofs[nodeIdx].Count; ++dofIdx)
                 {
-                    bool isFree = FreeDofs.TryGetValue(elementNodes[nodeIdx], elementDofs[nodeIdx][dofIdx],
-                        out int subdomainDofIdx);
+					int dofID = allDofs.GetIdOfDof(elementDofs[nodeIdx][dofIdx]);
+					bool isFree = FreeDofs.TryGetValue(elementNodes[nodeIdx].ID, dofID, out int subdomainDofIdx);
                     if (isFree)
                     {
                         elementDofIndices.Add(elementDofIdx);

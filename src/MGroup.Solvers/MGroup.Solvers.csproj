@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Product>MSolve</Product>
     <Authors>George Stavroulakis, Serafeim Bakalakos</Authors>
     <PackageProjectUrl>http://mgroup.ntua.gr</PackageProjectUrl>
@@ -11,10 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MGroup.LinearAlgebra" Version="0.1.0-unstable.34" />
-    <PackageReference Include="MGroup.MSolve.Discretization" Version="0.1.0-unstable.62" />
-    <PackageReference Include="MGroup.MSolve.Geometry" Version="0.1.0-unstable.62" />
-    <PackageReference Include="MGroup.MSolve.Logging" Version="0.1.0-unstable.62" />
-    <PackageReference Include="MGroup.MSolve.Solution" Version="0.1.0-unstable.62" />
+    <None Remove="MGroup.LinearAlgebra" />
+    <None Remove="MGroup.MSolve.Core" />
+    <None Remove="MGroup.LinearAlgebra.Distributed" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MGroup.LinearAlgebra" Version="0.1.0-unstable.66" />
+    <PackageReference Include="MGroup.MSolve.Core" Version="0.2.0-unstable.33" />
+    <PackageReference Include="MGroup.LinearAlgebra.Distributed" Version="0.1.0-unstable.66" />
   </ItemGroup>
 </Project>

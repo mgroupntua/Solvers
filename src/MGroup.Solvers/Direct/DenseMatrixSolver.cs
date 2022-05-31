@@ -1,162 +1,130 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using MGroup.LinearAlgebra.Matrices;
+using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization;
-using MGroup.MSolve.Solution;
+using MGroup.MSolve.Discretization.Entities;
+using MGroup.MSolve.Solution.LinearSystem;
+using MGroup.Solvers.AlgebraicModel;
 using MGroup.Solvers.Assemblers;
 using MGroup.Solvers.DofOrdering;
 using MGroup.Solvers.DofOrdering.Reordering;
+using MGroup.Solvers.LinearSystem;
 
 namespace MGroup.Solvers.Direct
 {
-    /// <summary>
-    /// Direct solver for models with only 1 subdomain. Uses Cholesky factorization on symmetric positive definite matrices
-    /// stored in full format. Its purpose is mainly for testing, since it is inefficient for large linear systems resulting 
-    /// from FEM .
-    /// Authors: Serafeim Bakalakos
-    /// </summary>
-    public class DenseMatrixSolver : SingleSubdomainSolverBase<Matrix>
-    {
-        private readonly bool isMatrixPositiveDefinite; //TODO: actually there should be 3 states: posDef, symmIndef, unsymm
+	/// <summary>
+	/// Direct solver for models with only 1 subdomain. Uses Cholesky factorization on symmetric positive definite matrices
+	/// stored in full format. Its purpose is mainly for testing, since it is inefficient for large linear systems resulting 
+	/// from FEM .
+	/// Authors: Serafeim Bakalakos
+	/// </summary>
+	public class DenseMatrixSolver : SingleSubdomainSolverBase<Matrix>
+	{
+		private readonly bool isMatrixPositiveDefinite; //TODO: actually there should be 3 states: posDef, symmIndef, unsymm
 
-        private bool factorizeInPlace = true;
-        private bool mustInvert = true;
-        private Matrix inverse;
+		private bool factorizeInPlace = true;
+		private bool mustInvert = true;
+		private Matrix inverse;
 
-        private DenseMatrixSolver(IModel model, IDofOrderer dofOrderer, bool isMatrixPositiveDefinite) :
-            base(model, dofOrderer, new DenseMatrixAssembler(), "DenseMatrixSolver")
-        {
-            this.isMatrixPositiveDefinite = isMatrixPositiveDefinite;
-        }
+		private DenseMatrixSolver(GlobalAlgebraicModel<Matrix> model, bool isMatrixPositiveDefinite)
+			: base(model, "DenseMatrixSolver")
+		{
+			this.isMatrixPositiveDefinite = isMatrixPositiveDefinite;
+		}
 
-        public override Dictionary<int, IMatrix> BuildGlobalMatrices(IElementMatrixProvider elementMatrixProvider)
-        {
-            #region Code to facilitate debugging
-            //var writer = new FullMatrixWriter();
-            //writer.NumericFormat = new ExponentialFormat() { NumDecimalDigits = 2 };
+		public override void HandleMatrixWillBeSet()
+		{
+			mustInvert = true;
+			inverse = null;
+		}
 
-            //var dofOrderingSimple = (new SimpleDofOrderer()).OrderDofs(model, subdomain);
-            //Matrix simpleOrderK = (Matrix)assembler.BuildGlobalMatrix(
-            //    dofOrderingSimple, subdomain.Elements, elementMatrixProvider);
+		public override void Initialize() { }
 
-            //Console.WriteLine();
-            //Console.WriteLine("Global matrix with simple ordering");
-            //writer.WriteToConsole(simpleOrderK);
+		public override void PreventFromOverwrittingSystemMatrices() => factorizeInPlace = false;
 
-            //var dofOrderingNodeMajor = (new NodeMajorDofOrderer()).OrderDofs(model, subdomain);
-            //Matrix nodeMajorK = (Matrix)assembler.BuildGlobalMatrix(
-            //    dofOrderingNodeMajor, subdomain.Elements, elementMatrixProvider);
+		/// <summary>
+		/// Solves the linear system with back-forward substitution. If the matrix has been modified, it will be refactorized.
+		/// </summary>
+		public override void Solve()
+		{
+			var watch = new Stopwatch();
+			if (LinearSystem.Solution.SingleVector == null)
+			{
+				LinearSystem.Solution.SingleVector = Vector.CreateZero(LinearSystem.Matrix.SingleMatrix.NumRows);
+			}
+			else LinearSystem.Solution.Clear(); // no need to waste computational time on this in a direct solver
 
-            //Console.WriteLine();
-            //Console.WriteLine("Global matrix with node major ordering");
-            //writer.WriteToConsole(nodeMajorK);
+			// Factorization
+			if (mustInvert)
+			{
+				watch.Start();
+				var matrix = LinearSystem.Matrix.SingleMatrix;
+				if (isMatrixPositiveDefinite)
+				{
+					inverse = matrix.FactorCholesky(factorizeInPlace).Invert(true);
+				}
+				else
+				{
+					inverse = matrix.FactorLU(factorizeInPlace).Invert(true);
+				}
+				watch.Stop();
+				Logger.LogTaskDuration("Matrix factorization", watch.ElapsedMilliseconds);
+				watch.Reset();
+				mustInvert = false;
+			}
 
-            //var permutationNodeMajorToSimple = new int[dofOrderingNodeMajor.NumFreeDofs];
-            //foreach ((INode node, DOFType dofType, int nodeMajorIdx) in dofOrderingNodeMajor.FreeDofs)
-            //{
-            //    permutationNodeMajorToSimple[nodeMajorIdx] = dofOrderingSimple.FreeDofs[node, dofType];
-            //}
+			// Substitutions
+			watch.Start();
+			inverse.MultiplyIntoResult(LinearSystem.RhsVector.SingleVector, LinearSystem.Solution.SingleVector);
+			watch.Stop();
+			Logger.LogTaskDuration("Back/forward substitutions", watch.ElapsedMilliseconds);
+			Logger.IncrementAnalysisStep();
+		}
 
-            //Matrix reorderedK = nodeMajorK.Reorder(permutationNodeMajorToSimple, true);
+		protected override Matrix InverseSystemMatrixTimesOtherMatrix(IMatrixView otherMatrix)
+		{
+			var watch = new Stopwatch();
+			if (mustInvert)
+			{
+				watch.Start();
+				var matrix = LinearSystem.Matrix.SingleMatrix;
+				if (isMatrixPositiveDefinite)
+				{
+					inverse = matrix.FactorCholesky(factorizeInPlace).Invert(true);
+				}
+				else
+				{
+					inverse = matrix.FactorLU(factorizeInPlace).Invert(true);
+				}
+				watch.Stop();
+				Logger.LogTaskDuration("Matrix factorization", watch.ElapsedMilliseconds);
+				watch.Reset();
+				mustInvert = false;
+			}
+			watch.Start();
+			Matrix result = inverse.MultiplyRight(otherMatrix);
+			watch.Stop();
+			Logger.LogTaskDuration("Back/forward substitutions", watch.ElapsedMilliseconds);
+			Logger.IncrementAnalysisStep();
+			return result;
+		}
 
-            //Console.WriteLine();
-            //Console.WriteLine("Global matrix with node major ordering, reordered to simple");
-            //writer.WriteToConsole(reorderedK);
+		public class Factory
+		{
+			public Factory() { }
 
-            //Console.WriteLine("Existing global dof enumeration:");
-            //Utilities.PrintDofOrder(subdomain);
+			public IDofOrderer DofOrderer { get; set; }
+				= new DofOrderer(new NodeMajorDofOrderingStrategy(), new NullReordering());
 
-            //Console.WriteLine();
-            //Console.WriteLine("Using dof orderer:");
-            //Console.WriteLine(dofOrderer.FreeDofs.ToString());
+			public bool IsMatrixPositiveDefinite { get; set; } = true;
 
-            //Console.WriteLine();
-            //Console.WriteLine("Global matrix");
-            //SkylineMatrix matrix = assembler.BuildGlobalMatrix(dofOrderer, subdomain.ΙElementsDictionary.Values, elementMatrixProvider);
-            //var writer = new FullMatrixWriter();
-            //writer.NumericFormat = new ExponentialFormat() { NumDecimalDigits = 2 };
-            //writer.WriteToConsole(matrix);
-            #endregion
+			public DenseMatrixSolver BuildSolver(GlobalAlgebraicModel<Matrix> model)
+				=> new DenseMatrixSolver(model, IsMatrixPositiveDefinite);
 
-            var watch = new Stopwatch();
-            watch.Start();
-            Matrix matrix = assembler.BuildGlobalMatrix(subdomain.FreeDofOrdering, subdomain.Elements, elementMatrixProvider);
-            watch.Stop();
-            Logger.LogTaskDuration("Matrix assembly", watch.ElapsedMilliseconds);
-            return new Dictionary<int, IMatrix> { { subdomain.ID, matrix } };
-        }
-
-        public override void HandleMatrixWillBeSet()
-        {
-            mustInvert = true;
-            inverse = null;
-        }
-
-        public override void Initialize() {}
-
-        public override void PreventFromOverwrittingSystemMatrices() => factorizeInPlace = false;
-
-        /// <summary>
-        /// Solves the linear system with back-forward substitution. If the matrix has been modified, it will be refactorized.
-        /// </summary>
-        public override void Solve()
-        {
-            var watch = new Stopwatch();
-            if (linearSystem.SolutionConcrete == null) linearSystem.SolutionConcrete = linearSystem.CreateZeroVectorConcrete();
-            //else linearSystem.Solution.Clear(); // no need to waste computational time on this in a direct solver
-
-            // Factorization
-            if (mustInvert)
-            {
-                watch.Start();
-                if (isMatrixPositiveDefinite) inverse = linearSystem.Matrix.FactorCholesky(factorizeInPlace).Invert(true);
-                else inverse = linearSystem.Matrix.FactorLU(factorizeInPlace).Invert(true);
-                watch.Stop();
-                Logger.LogTaskDuration("Matrix factorization", watch.ElapsedMilliseconds);
-                watch.Reset();
-                mustInvert = false;
-            }
-
-            // Substitutions
-            watch.Start();
-            inverse.MultiplyIntoResult(linearSystem.RhsConcrete, linearSystem.SolutionConcrete);
-            watch.Stop();
-            Logger.LogTaskDuration("Back/forward substitutions", watch.ElapsedMilliseconds);
-            Logger.IncrementAnalysisStep();
-        }
-
-        protected override Matrix InverseSystemMatrixTimesOtherMatrix(IMatrixView otherMatrix)
-        {
-            var watch = new Stopwatch();
-            if (mustInvert)
-            {
-                watch.Start();
-                if (isMatrixPositiveDefinite) inverse = linearSystem.Matrix.FactorCholesky(factorizeInPlace).Invert(true);
-                else inverse = linearSystem.Matrix.FactorLU(factorizeInPlace).Invert(true);
-                watch.Stop();
-                Logger.LogTaskDuration("Matrix factorization", watch.ElapsedMilliseconds);
-                watch.Reset();
-                mustInvert = false;
-            }
-            watch.Start();
-            Matrix result = inverse.MultiplyRight(otherMatrix);
-            watch.Stop();
-            Logger.LogTaskDuration("Back/forward substitutions", watch.ElapsedMilliseconds);
-            Logger.IncrementAnalysisStep();
-            return result;
-        }
-
-        public class Builder
-        {
-            public Builder() { }
-
-            public IDofOrderer DofOrderer { get; set; }
-                = new DofOrderer(new NodeMajorDofOrderingStrategy(), new NullReordering());
-
-            public bool IsMatrixPositiveDefinite { get; set; } = true;
-			
-            public DenseMatrixSolver BuildSolver(IModel model)
-                => new DenseMatrixSolver(model, DofOrderer, IsMatrixPositiveDefinite);
-        }
-    }
+			public GlobalAlgebraicModel<Matrix> BuildAlgebraicModel(IModel model)
+				=> new GlobalAlgebraicModel<Matrix>(model, DofOrderer, new DenseMatrixAssembler());
+		}
+	}
 }

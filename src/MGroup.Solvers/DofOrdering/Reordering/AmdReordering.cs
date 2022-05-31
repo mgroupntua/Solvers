@@ -1,6 +1,6 @@
 using MGroup.LinearAlgebra.Reordering;
 using MGroup.MSolve.Discretization;
-using MGroup.MSolve.Discretization.DofOrdering;
+using MGroup.MSolve.Discretization.Entities;
 
 //TODO: The static factory methods are fine for now (and as defaults), but if the algorithm classes need options, then the user 
 //      must instantiate them. There should probably be an IAmdAlgorithm interface. Or this class should not be named AMD.

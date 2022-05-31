@@ -1,34 +1,40 @@
 using System.Collections.Generic;
+using System.Linq;
 using MGroup.LinearAlgebra.Reordering;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization;
-using MGroup.MSolve.Discretization.DofOrdering;
+using MGroup.MSolve.Discretization.Dofs;
+using MGroup.MSolve.Discretization.Entities;
 
 namespace MGroup.Solvers.DofOrdering
 {
 	public class SubdomainFreeDofOrderingGeneral: ISubdomainFreeDofOrdering
     {
-        public SubdomainFreeDofOrderingGeneral(int numFreeDofs, DofTable subdomainFreeDofs)
-        {
+        private readonly ActiveDofs allDofs;
+
+		public SubdomainFreeDofOrderingGeneral(int numFreeDofs, IntDofTable subdomainFreeDofs, ActiveDofs allDofs)
+		{
             this.NumFreeDofs = numFreeDofs;
             this.FreeDofs = subdomainFreeDofs;
+			this.allDofs = allDofs;
         }
 
-        public DofTable FreeDofs { get; }
+		public IntDofTable FreeDofs { get; }
+
         public int NumFreeDofs { get; }
 
-        public void AddVectorElementToSubdomain(IElement element, double[] elementVector, IVector subdomainVector)
+        public void AddVectorElementToSubdomain(IElementType element, double[] elementVector, IVector subdomainVector)
         {
-            IReadOnlyList<INode> elementNodes = element.ElementType.DofEnumerator.GetNodesForMatrixAssembly(element);
-            IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.ElementType.DofEnumerator.GetDofTypesForMatrixAssembly(element);
+            IReadOnlyList<INode> elementNodes = element.DofEnumerator.GetNodesForMatrixAssembly(element);
+            IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.DofEnumerator.GetDofTypesForMatrixAssembly(element);
 
             int elementDofIdx = 0;
             for (int nodeIdx = 0; nodeIdx < elementNodes.Count; ++nodeIdx)
             {
                 for (int dofIdx = 0; dofIdx < elementDofs[nodeIdx].Count; ++dofIdx)
                 {
-                    bool isFree = FreeDofs.TryGetValue(elementNodes[nodeIdx], elementDofs[nodeIdx][dofIdx],
-                        out int subdomainDofIdx);
+					int dofID = allDofs.GetIdOfDof(elementDofs[nodeIdx][dofIdx]);
+					bool isFree = FreeDofs.TryGetValue(elementNodes[nodeIdx].ID, dofID, out int subdomainDofIdx);
                     if (isFree)
                     {
                         subdomainVector.Set(subdomainDofIdx, subdomainVector[subdomainDofIdx] + elementVector[elementDofIdx]);
@@ -38,19 +44,19 @@ namespace MGroup.Solvers.DofOrdering
             }
         }
 
-        public int CountElementDofs(IElement element)
+        public int CountElementDofs(IElementType element)
         {
-            IReadOnlyList<INode> elementNodes = element.ElementType.DofEnumerator.GetNodesForMatrixAssembly(element);
-            IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.ElementType.DofEnumerator.GetDofTypesForMatrixAssembly(element);
+            IReadOnlyList<INode> elementNodes = element.DofEnumerator.GetNodesForMatrixAssembly(element);
+            IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.DofEnumerator.GetDofTypesForMatrixAssembly(element);
             int numElementDofs = 0;
             for (int nodeIdx = 0; nodeIdx < elementDofs.Count; ++nodeIdx) numElementDofs += elementDofs[nodeIdx].Count;
             return numElementDofs;
         }
 
-        public double[] ExtractVectorElementFromSubdomain(IElement element, IVectorView subdomainVector)
+        public double[] ExtractVectorElementFromSubdomain(IElementType element, IVectorView subdomainVector)
         {
-            IReadOnlyList<INode> elementNodes = element.ElementType.DofEnumerator.GetNodesForMatrixAssembly(element);
-            IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.ElementType.DofEnumerator.GetDofTypesForMatrixAssembly(element);
+            IReadOnlyList<INode> elementNodes = element.DofEnumerator.GetNodesForMatrixAssembly(element);
+            IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.DofEnumerator.GetDofTypesForMatrixAssembly(element);
 
             int numElementDofs = 0;
             for (int nodeIdx = 0; nodeIdx < elementDofs.Count; ++nodeIdx) numElementDofs += elementDofs[nodeIdx].Count;
@@ -61,8 +67,8 @@ namespace MGroup.Solvers.DofOrdering
             {
                 for (int dofIdx = 0; dofIdx < elementDofs[nodeIdx].Count; ++dofIdx)
                 {
-                    bool isFree = FreeDofs.TryGetValue(elementNodes[nodeIdx], elementDofs[nodeIdx][dofIdx],
-                        out int subdomainDofIdx);
+					int dofID = allDofs.GetIdOfDof(elementDofs[nodeIdx][dofIdx]);
+					bool isFree = FreeDofs.TryGetValue(elementNodes[nodeIdx].ID, dofID, out int subdomainDofIdx);
                     if (isFree) elementVector[elementDofIdx] = subdomainVector[subdomainDofIdx];
                     // Else, the quantity of interest is 0.0 at all constrained dofs.
                     ++elementDofIdx; // This must be incremented for constrained dofs as well
@@ -72,10 +78,10 @@ namespace MGroup.Solvers.DofOrdering
             return elementVector;
         }
 
-        public void ExtractVectorElementFromSubdomain(IElement element, IVectorView subdomainVector, IVector elementVector)
+        public void ExtractVectorElementFromSubdomain(IElementType element, IVectorView subdomainVector, IVector elementVector)
         {
-            IReadOnlyList<INode> elementNodes = element.ElementType.DofEnumerator.GetNodesForMatrixAssembly(element);
-            IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.ElementType.DofEnumerator.GetDofTypesForMatrixAssembly(element);
+            IReadOnlyList<INode> elementNodes = element.DofEnumerator.GetNodesForMatrixAssembly(element);
+            IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.DofEnumerator.GetDofTypesForMatrixAssembly(element);
             //int numElementDofs = 0;
             //for (int nodeIdx = 0; nodeIdx < elementDofs.Count; ++nodeIdx) numElementDofs += elementDofs[nodeIdx].Count;
 
@@ -84,8 +90,8 @@ namespace MGroup.Solvers.DofOrdering
             {
                 for (int dofIdx = 0; dofIdx < elementDofs[nodeIdx].Count; ++dofIdx)
                 {
-                    bool isFree = FreeDofs.TryGetValue(elementNodes[nodeIdx], elementDofs[nodeIdx][dofIdx],
-                        out int subdomainDofIdx);
+					int dofID = allDofs.GetIdOfDof(elementDofs[nodeIdx][dofIdx]);
+					bool isFree = FreeDofs.TryGetValue(elementNodes[nodeIdx].ID, dofID, out int subdomainDofIdx);
                     if (isFree) elementVector.Set(elementDofIdx, subdomainVector[subdomainDofIdx]);
                     // Else, the quantity of interest is 0.0 at all constrained dofs.
                     ++elementDofIdx; // This must be incremented for constrained dofs as well
@@ -93,10 +99,10 @@ namespace MGroup.Solvers.DofOrdering
             }
         }
 
-        public (int[] elementDofIndices, int[] subdomainDofIndices) MapFreeDofsElementToSubdomain(IElement element)
+        public (int[] elementDofIndices, int[] subdomainDofIndices) MapFreeDofsElementToSubdomain(IElementType element)
         {
-            IReadOnlyList<INode> elementNodes = element.ElementType.DofEnumerator.GetNodesForMatrixAssembly(element);
-            IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.ElementType.DofEnumerator.GetDofTypesForMatrixAssembly(element);
+            IReadOnlyList<INode> elementNodes = element.DofEnumerator.GetNodesForMatrixAssembly(element);
+            IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.DofEnumerator.GetDofTypesForMatrixAssembly(element);
 
             // Count the dof superset (free and constrained) to allocate enough memory and avoid resizing
             int allElementDofs = 0;
@@ -109,8 +115,8 @@ namespace MGroup.Solvers.DofOrdering
             {
                 for (int dofIdx = 0; dofIdx < elementDofs[nodeIdx].Count; ++dofIdx)
                 {
-                    bool isFree = FreeDofs.TryGetValue(elementNodes[nodeIdx], elementDofs[nodeIdx][dofIdx],
-                        out int subdomainDofIdx);
+					int dofID = allDofs.GetIdOfDof(elementDofs[nodeIdx][dofIdx]);
+					bool isFree = FreeDofs.TryGetValue(elementNodes[nodeIdx].ID, dofID, out int subdomainDofIdx);
                     if (isFree)
                     {
                         elementDofIndices.Add(elementDofIdx);
@@ -125,7 +131,7 @@ namespace MGroup.Solvers.DofOrdering
         public void Reorder(IReorderingAlgorithm reorderingAlgorithm, ISubdomain subdomain)
         {
             var pattern = SparsityPatternSymmetric.CreateEmpty(NumFreeDofs);
-            foreach (var element in subdomain.Elements)
+            foreach (var element in subdomain.EnumerateElements())
             {
                 (int[] elementDofIndices, int[] subdomainDofIndices) = MapFreeDofsElementToSubdomain(element);
 
@@ -136,7 +142,8 @@ namespace MGroup.Solvers.DofOrdering
             FreeDofs.Reorder(permutation, oldToNew);
         }
 
-        public void ReorderNodeMajor(IReadOnlyList<INode> sortedNodes) => FreeDofs.ReorderNodeMajor(sortedNodes);
+		public void ReorderNodeMajor(IEnumerable<INode> sortedNodes) 
+			=> FreeDofs.ReorderNodeMajor(sortedNodes.Select(n => n.ID).ToList());
 
         //public IReadOnlyDictionary<int, int> MapFreeDofsElementToSubdomain(IElement element)
         //{

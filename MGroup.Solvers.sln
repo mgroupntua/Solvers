@@ -8,8 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9516266B-5BD
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4A89674A-819D-4A6D-9AA7-FE8232AE6F3C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGroup.Solvers", "src\MGroup.Solvers\MGroup.Solvers.csproj", "{90A9B907-EBB8-4E98-9515-D93AE229992B}"
 EndProject
 Global
