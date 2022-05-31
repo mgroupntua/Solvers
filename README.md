@@ -3,6 +3,8 @@
 # Solvers
 This library is featuring linear algebra solvers for the solution of spatially and temporally discretized mechanics problems. In its core, it serves as a binding between the [LinearAlgebra](https://github.com/mgroupntua/linearalgebra) and the [MSolve.Core](https://github.com/mgroupntua/MSolve.Core) repos.
 
+[![Build Status](https://dev.azure.com/mgroupntua/MSolve/_apis/build/status/mgroupntua.Solvers?branchName=develop)](https://dev.azure.com/mgroupntua/MSolve/_build/latest?definitionId=14&branchName=develop)
+
 ## Features
 
 - **Assemblers:** Global matrix assemblers that take under consideration the connectivity of the underlying model supporting various formats including:
