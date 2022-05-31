@@ -97,7 +97,7 @@ steps:
   name: dotnetPack
   condition: ne(variables['Build.Reason'], 'PullRequest')
   displayName: "Packages new nugets"
-    inputs:
+  inputs:
     command: 'pack'
     arguments: '--nologo --no-restore'
     nobuild: true
