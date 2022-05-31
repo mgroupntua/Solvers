@@ -9,17 +9,13 @@
     <Description>A collection of classes combining LinearAlgebra and MSolve.Core features for the implementation of custom-tailored solvers for the solution of computational mechanics problems</Description>
     <PackageIconUrl>https://github.com/mgroupntua/Solvers/raw/develop/MGroupSolvers.png</PackageIconUrl>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="MGroup.LinearAlgebra.Distributed" Version="0.1.0-unstable.66" />
     <PackageReference Include="MGroup.MSolve.Core" Version="0.2.0-unstable.33" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="MGroup.MSolve.Core" />
-    <None Remove="Microsoft.SourceLink.GitHub" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 </Project>
