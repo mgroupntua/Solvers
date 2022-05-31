@@ -11,13 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="MGroup.LinearAlgebra" />
-    <None Remove="MGroup.MSolve.Core" />
-    <None Remove="MGroup.LinearAlgebra.Distributed" />
+    <PackageReference Include="MGroup.LinearAlgebra.Distributed" Version="0.1.0-unstable.66" />
+    <PackageReference Include="MGroup.MSolve.Core" Version="0.2.0-unstable.33" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MGroup.LinearAlgebra" Version="0.1.0-unstable.66" />
-    <PackageReference Include="MGroup.MSolve.Core" Version="0.2.0-unstable.33" />
-    <PackageReference Include="MGroup.LinearAlgebra.Distributed" Version="0.1.0-unstable.66" />
+    <None Remove="MGroup.MSolve.Core" />
+    <None Remove="Microsoft.SourceLink.GitHub" />
   </ItemGroup>
 </Project>
