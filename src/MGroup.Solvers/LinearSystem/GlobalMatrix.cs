@@ -20,9 +20,9 @@ namespace MGroup.Solvers.LinearSystem
 		private readonly Func<IGlobalVector, GlobalVector> checkCompatibleVector;
 		private readonly Func<IGlobalMatrix, GlobalMatrix<TMatrix>> checkCompatibleMatrix;
 
-		public GlobalMatrix(Guid format, Func<IGlobalVector, GlobalVector> checkCompatibleVector, 
-			Func<IGlobalMatrix, GlobalMatrix<TMatrix>> checkCompatibleMatrix)
+		public GlobalMatrix(Guid format, Func<IGlobalVector, GlobalVector> checkCompatibleVector, Func<IGlobalMatrix, GlobalMatrix<TMatrix>> checkCompatibleMatrix)
 		{
+			this.CheckForCompatibility = true;
 			this.Format = format;
 			this.checkCompatibleVector = checkCompatibleVector;
 			this.checkCompatibleMatrix = checkCompatibleMatrix;
@@ -31,6 +31,8 @@ namespace MGroup.Solvers.LinearSystem
 		internal Guid Format { get; }
 
 		public TMatrix SingleMatrix { get; set; }
+
+		public bool CheckForCompatibility { get; set; }
 
 		public void AxpyIntoThis(IGlobalMatrix otherMatrix, double otherCoefficient)
 		{

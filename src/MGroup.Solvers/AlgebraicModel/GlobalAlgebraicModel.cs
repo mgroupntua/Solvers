@@ -294,11 +294,12 @@ namespace MGroup.Solvers.AlgebraicModel
 			// Casting inside here is usually safe since all global matrices should be created by this object
 			if (matrix is GlobalMatrix<TMatrix> globalMatrix)
 			{
-				if (globalMatrix.Format == this.Format)
+				if (matrix.CheckForCompatibility == false || globalMatrix.Format == this.Format)
 				{
 					return globalMatrix;
 				}
 			}
+
 			throw new NonMatchingFormatException("The provided matrix has a different format than the current linear system."
 				+ $" Make sure it was created by the linear system with format = {Format}"
 				+ $" and that the type {typeof(TMatrix)} is used.");
@@ -309,11 +310,12 @@ namespace MGroup.Solvers.AlgebraicModel
 			// Casting inside here is usually safe since all global vectors should be created by the this object
 			if (vector is GlobalVector globalVector)
 			{
-				if (globalVector.Format == this.Format)
+				if (vector.CheckForCompatibility == false || globalVector.Format == this.Format)
 				{
 					return globalVector;
 				}
 			}
+
 			throw new NonMatchingFormatException("The provided vector has a different format than the current linear system."
 				+ $" Make sure it was created by the linear system with format = {Format}.");
 		}
