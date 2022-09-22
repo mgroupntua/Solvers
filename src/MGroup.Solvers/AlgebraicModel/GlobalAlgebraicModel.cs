@@ -294,7 +294,7 @@ namespace MGroup.Solvers.AlgebraicModel
 			// Casting inside here is usually safe since all global matrices should be created by this object
 			if (matrix is GlobalMatrix<TMatrix> globalMatrix)
 			{
-				if (globalMatrix.Format == this.Format)
+				if (globalMatrix.CheckForCompatibility == false ||  globalMatrix.Format == this.Format)
 				{
 					return globalMatrix;
 				}
@@ -309,7 +309,7 @@ namespace MGroup.Solvers.AlgebraicModel
 			// Casting inside here is usually safe since all global vectors should be created by the this object
 			if (vector is GlobalVector globalVector)
 			{
-				if (globalVector.Format == this.Format)
+				if (globalVector.CheckForCompatibility == false || globalVector.Format == this.Format)
 				{
 					return globalVector;
 				}

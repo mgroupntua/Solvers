@@ -19,6 +19,8 @@ namespace MGroup.Solvers.LinearSystem
 			this.checkCompatibleVector = checkCompatibleVector;
 		}
 
+		public bool CheckForCompatibility { get; set; } = true;
+
 		internal Guid Format { get; }
 
 		public int Length => SingleVector.Length;
