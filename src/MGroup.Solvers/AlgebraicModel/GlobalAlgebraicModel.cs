@@ -299,6 +299,7 @@ namespace MGroup.Solvers.AlgebraicModel
 					return globalMatrix;
 				}
 			}
+
 			throw new NonMatchingFormatException("The provided matrix has a different format than the current linear system."
 				+ $" Make sure it was created by the linear system with format = {Format}"
 				+ $" and that the type {typeof(TMatrix)} is used.");
@@ -314,6 +315,7 @@ namespace MGroup.Solvers.AlgebraicModel
 					return globalVector;
 				}
 			}
+
 			throw new NonMatchingFormatException("The provided vector has a different format than the current linear system."
 				+ $" Make sure it was created by the linear system with format = {Format}.");
 		}
