@@ -73,7 +73,7 @@ namespace MGroup.Solvers.AlgebraicModel
 			subdomainVectorAssembler.AddToSubdomainVector(elements, globalVector.SingleVector, vectorProvider, subdomainDofs);
 		}
 
-		public void AddToGlobalVector(Func<int, IEnumerable<INodalBoundaryCondition<IDofType>>> accessLoads, IGlobalVector vector)
+		public void AddToGlobalVector(Func<int, IEnumerable<INodalModelQuantity<IDofType>>> accessLoads, IGlobalVector vector)
 		{
 			GlobalVector globalVector = CheckCompatibleVector(vector);
 			ISubdomainFreeDofOrdering subdomainDofs = SubdomainFreeDofOrdering;
@@ -89,7 +89,7 @@ namespace MGroup.Solvers.AlgebraicModel
 		//	subdomainVectorAssembler.AddToSubdomainVector(loads, globalVector.SingleVector, subdomainDofs);
 		//}
 
-		public void AddToGlobalVector(IEnumerable<IDomainBoundaryCondition<IDofType>> loads, IGlobalVector vector)
+		public void AddToGlobalVector(IEnumerable<IDomainModelQuantity<IDofType>> loads, IGlobalVector vector)
 		{
 			GlobalVector globalVector = CheckCompatibleVector(vector);
 			ISubdomainFreeDofOrdering subdomainDofs = SubdomainFreeDofOrdering;

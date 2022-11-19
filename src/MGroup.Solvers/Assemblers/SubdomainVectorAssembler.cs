@@ -41,7 +41,7 @@ namespace MGroup.Solvers.Assemblers
 		//	}
 		//}
 
-		public void AddToSubdomainVector(IEnumerable<INodalBoundaryCondition<IDofType>> loads, Vector subdomainVector,
+		public void AddToSubdomainVector(IEnumerable<INodalModelQuantity<IDofType>> loads, Vector subdomainVector,
 			ISubdomainFreeDofOrdering dofOrdering)
 		{
 			foreach (var load in loads)
@@ -51,7 +51,7 @@ namespace MGroup.Solvers.Assemblers
 			}
 		}
 
-		public void AddToSubdomainVector(IEnumerable<IDomainBoundaryCondition<IDofType>> loads, Vector subdomainVector,
+		public void AddToSubdomainVector(IEnumerable<IDomainModelQuantity<IDofType>> loads, Vector subdomainVector,
 			ISubdomainFreeDofOrdering dofOrdering)
 		{
 			foreach (int node in dofOrdering.FreeDofs.GetRows())
