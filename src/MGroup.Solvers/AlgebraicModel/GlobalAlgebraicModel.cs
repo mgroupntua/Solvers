@@ -29,6 +29,7 @@ namespace MGroup.Solvers.AlgebraicModel
 		private readonly ISubdomainMatrixAssembler<TMatrix> subdomainMatrixAssembler;
 		private SubdomainVectorAssembler subdomainVectorAssembler;
 		private IAlgebraicModelInterpreter boundaryConditionsInterpreter;
+		private bool dofsHaveBeenOrdered = false;
 
 		public GlobalAlgebraicModel(IModel model, IDofOrderer dofOrderer,
 			ISubdomainMatrixAssembler<TMatrix> subdomainMatrixAssembler)
@@ -209,7 +210,7 @@ namespace MGroup.Solvers.AlgebraicModel
 			}
 		}
 
-		public virtual void OrderDofs()
+		protected virtual void OrderDofsInternal()
 		{
 			SubdomainFreeDofOrdering = dofOrderer.OrderFreeDofs(subdomain, BoundaryConditionsInterpreter);
 			foreach (IAlgebraicModelObserver observer in Observers)
@@ -223,9 +224,16 @@ namespace MGroup.Solvers.AlgebraicModel
 			LinearSystem.Matrix = null;
 			LinearSystem.RhsVector = CreateZeroVector();
 			LinearSystem.Solution = CreateZeroVector();
+			dofsHaveBeenOrdered = true;
 		}
 
-		public virtual void ReorderDofs() => OrderDofs();
+		public void OrderDofs()
+		{
+			model.ConnectDataStructures();
+			OrderDofsInternal();
+		}
+
+		public virtual void ReorderDofs() => OrderDofsInternal();
 
 		public void RebuildGlobalMatrixPartially(
 			IGlobalMatrix currentMatrix, Func<int, IEnumerable<IElementType>> accessElements,
