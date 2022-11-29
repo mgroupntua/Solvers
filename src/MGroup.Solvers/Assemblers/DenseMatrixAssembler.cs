@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using MGroup.LinearAlgebra.Matrices;
@@ -14,10 +15,12 @@ namespace MGroup.Solvers.Assemblers
     /// </summary>
     public class DenseMatrixAssembler: ISubdomainMatrixAssembler<Matrix>
     {
-        //TODO: we need dense matrices for the constrained dofs as well.
-        //private ConstrainedMatricesAssembler constrainedAssembler = new ConstrainedMatricesAssembler();
+		//TODO: we need dense matrices for the constrained dofs as well.
+		//private ConstrainedMatricesAssembler constrainedAssembler = new ConstrainedMatricesAssembler();
 
-        public Matrix BuildGlobalMatrix(ISubdomainFreeDofOrdering dofOrdering, IEnumerable<IElementType> elements, 
+		public Matrix CreateEmptyMatrix(ISubdomainFreeDofOrdering dofOrdering) => Matrix.CreateZero(dofOrdering.NumFreeDofs, dofOrdering.NumFreeDofs);
+
+		public Matrix BuildGlobalMatrix(ISubdomainFreeDofOrdering dofOrdering, IEnumerable<IElementType> elements, 
             IElementMatrixProvider elementMatrixProvider)
         {
             int numFreeDofs = dofOrdering.NumFreeDofs;

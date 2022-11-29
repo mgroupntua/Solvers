@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using MGroup.LinearAlgebra.Matrices;
@@ -40,7 +41,10 @@ namespace MGroup.Solvers.Assemblers
             this.sortColsOfEachRow = sortColsOfEachRow;
         }
 
-        public CsrMatrix BuildGlobalMatrix(ISubdomainFreeDofOrdering dofOrdering, IEnumerable<IElementType> elements, 
+		public CsrMatrix CreateEmptyMatrix(ISubdomainFreeDofOrdering dofOrdering) =>
+			CsrMatrix.CreateFromArrays(dofOrdering.NumFreeDofs, dofOrdering.NumFreeDofs, Array.Empty<double>(), Array.Empty<int>(), new int[dofOrdering.NumFreeDofs + 1], true);
+
+		public CsrMatrix BuildGlobalMatrix(ISubdomainFreeDofOrdering dofOrdering, IEnumerable<IElementType> elements, 
             IElementMatrixProvider matrixProvider)
         {
             int numFreeDofs = dofOrdering.NumFreeDofs;

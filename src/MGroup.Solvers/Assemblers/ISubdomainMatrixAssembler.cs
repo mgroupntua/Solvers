@@ -16,13 +16,15 @@ namespace MGroup.Solvers.Assemblers
     public interface ISubdomainMatrixAssembler<TMatrix>
         where TMatrix : class, IMatrix
     {
-        /// <summary>
-        /// Builds the linear system matrix that corresponds to the free freedom degrees of a subdomain.
-        /// </summary>
-        /// <param name="dofOrdering">The free freedom degree ordering of the subdomain.</param>
-        /// <param name="elements">The (finite) elements of the subdomain.</param>
-        /// <param name="matrixProvider">Determines the matrix calculated for each element (e.g. stiffness, mass, etc.)</param>
-        TMatrix BuildGlobalMatrix(ISubdomainFreeDofOrdering dofOrdering, IEnumerable<IElementType> elements,
+		TMatrix CreateEmptyMatrix(ISubdomainFreeDofOrdering dofOrdering);
+		
+		/// <summary>
+		/// Builds the linear system matrix that corresponds to the free freedom degrees of a subdomain.
+		/// </summary>
+		/// <param name="dofOrdering">The free freedom degree ordering of the subdomain.</param>
+		/// <param name="elements">The (finite) elements of the subdomain.</param>
+		/// <param name="matrixProvider">Determines the matrix calculated for each element (e.g. stiffness, mass, etc.)</param>
+		TMatrix BuildGlobalMatrix(ISubdomainFreeDofOrdering dofOrdering, IEnumerable<IElementType> elements,
             IElementMatrixProvider matrixProvider);
 
 		ISubdomainMatrixAssembler<TMatrix> Clone();

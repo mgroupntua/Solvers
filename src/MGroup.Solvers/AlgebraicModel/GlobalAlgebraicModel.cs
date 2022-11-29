@@ -107,7 +107,14 @@ namespace MGroup.Solvers.AlgebraicModel
 
 		IGlobalVector IGlobalVectorAssembler.CreateZeroVector() => CreateZeroVector();
 
-		//TODO: Should there also be a CreateZeroMatrix()?
+		public IGlobalMatrix CreateEmptyMatrix()
+		{
+			ISubdomainFreeDofOrdering subdomainDofs = SubdomainFreeDofOrdering;
+			var globalMatrix = new GlobalMatrix<TMatrix>(Format, CheckCompatibleVector, CheckCompatibleMatrix);
+			globalMatrix.SingleMatrix = subdomainMatrixAssembler.CreateEmptyMatrix(subdomainDofs);
+			return globalMatrix;
+		}
+
 		public GlobalVector CreateZeroVector()
 		{
 			var result = new GlobalVector(Format, CheckCompatibleVector);

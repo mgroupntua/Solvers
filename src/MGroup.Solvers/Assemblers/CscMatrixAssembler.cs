@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using MGroup.LinearAlgebra.Matrices;
@@ -40,6 +41,9 @@ namespace MGroup.Solvers.Assemblers
 			this.isSymmetric = isSymmetric;
 			this.sortRowsOfEachCol = sortRowsOfEachCol;
 		}
+
+		public CscMatrix CreateEmptyMatrix(ISubdomainFreeDofOrdering dofOrdering) =>
+			CscMatrix.CreateFromArrays(dofOrdering.NumFreeDofs, dofOrdering.NumFreeDofs, Array.Empty<double>(), Array.Empty<int>(), new int[dofOrdering.NumFreeDofs + 1], true);
 
 		public CscMatrix BuildGlobalMatrix(ISubdomainFreeDofOrdering dofOrdering, IEnumerable<IElementType> elements, 
 			IElementMatrixProvider matrixProvider)

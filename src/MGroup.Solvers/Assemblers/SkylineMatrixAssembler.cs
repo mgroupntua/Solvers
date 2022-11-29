@@ -28,6 +28,9 @@ namespace MGroup.Solvers.Assemblers
 		private SkylineBuilder skylineBuilder;
 		//private ConstrainedMatricesAssembler constrainedAssembler = new ConstrainedMatricesAssembler();
 
+		public SkylineMatrix CreateEmptyMatrix(ISubdomainFreeDofOrdering dofOrdering) =>
+			SkylineMatrix.CreateFromArrays(dofOrdering.NumFreeDofs, Array.Empty<double>(), new int[dofOrdering.NumFreeDofs + 1], true);
+
 		public SkylineMatrix BuildGlobalMatrix(ISubdomainFreeDofOrdering dofOrdering, IEnumerable<IElementType> elements,
 			IElementMatrixProvider matrixProvider)
 		{

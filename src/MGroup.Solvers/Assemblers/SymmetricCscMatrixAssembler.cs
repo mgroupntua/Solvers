@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Matrices.Builders;
 using MGroup.MSolve.Discretization;
 using MGroup.MSolve.Discretization.Providers;
+using MGroup.MSolve.Solution.LinearSystem;
 using MGroup.Solvers.Commons;
 using MGroup.Solvers.DofOrdering;
+using MGroup.Solvers.LinearSystem;
 
 //TODO: Instead of storing the raw CSC arrays, use a reusable DOK or SymmCscIndexer class. That class should provide methods to 
 //      assemble the values part of the global matrix more efficiently than the general purpose DOK. The general purpose DOK 
@@ -40,7 +43,10 @@ namespace MGroup.Solvers.Assemblers
             this.sortColsOfEachRow = sortColsOfEachRow;
         }
 
-        public SymmetricCscMatrix BuildGlobalMatrix(ISubdomainFreeDofOrdering dofOrdering, IEnumerable<IElementType> elements,
+		public SymmetricCscMatrix CreateEmptyMatrix(ISubdomainFreeDofOrdering dofOrdering) =>
+			SymmetricCscMatrix.CreateFromArrays(dofOrdering.NumFreeDofs, Array.Empty<double>(), Array.Empty<int>(), new int[dofOrdering.NumFreeDofs + 1], true);
+		
+		public SymmetricCscMatrix BuildGlobalMatrix(ISubdomainFreeDofOrdering dofOrdering, IEnumerable<IElementType> elements,
             IElementMatrixProvider matrixProvider)
         {
             int numFreeDofs = dofOrdering.NumFreeDofs;
