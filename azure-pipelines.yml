@@ -31,7 +31,7 @@ steps:
   displayName: Set SemVer from git history and update AssemblyInfo
   inputs:
     targetType: inline
-    script: ../dotnet-gitversion /updateassemblyinfo AssemblyInfo.cs AssemblyVersionInfo.cs /output buildserver 
+    script: ../dotnet-gitversion /updateassemblyinfo AssemblyInfo.cs AssemblyVersionInfo.cs /output buildserver
     pwsh: true
 
 - task: DotNetCoreCLI@2
@@ -72,6 +72,62 @@ steps:
     arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
     publishTestResults: true
 
+- task: PowerShell@2
+  enabled: true
+  displayName: Clone MSolve.Tests
+  inputs:
+    targetType: inline
+    script: mkdir integrationTests ; cd integrationTests ; git clone https://github.com/mgroupntua/MSolve.Tests.git
+    pwsh: true
+
+- task: CopyFiles@2
+  enabled: true
+  displayName: Copy Solvers project on MSolve.Tests
+  inputs:
+    sourceFolder: 'D:\a\1\s'
+    Contents: |
+      **/*
+      !integrationTests/**/*
+    targetFolder: 'D:\a\1\s\integrationTests\Solvers'
+    cleanTargetFolder: true # Optional
+
+- script: dotnet remove D:\a\1\s\integrationTests\MSolve.Tests\tests\MGroup.FEM.Structural.Tests\MGroup.FEM.Structural.Tests.csproj package MGroup.Solvers
+  displayName: Remove Package Solvers from FEM.Structural.Tests
+  enabled: true
+
+- script: dotnet add D:\a\1\s\integrationTests\MSolve.Tests\tests\MGroup.FEM.Structural.Tests\MGroup.FEM.Structural.Tests.csproj reference D:\a\1\s\integrationTests\Solvers\src\MGroup.Solvers\MGroup.Solvers.csproj
+  displayName: Add Project Solvers to FEM.Structural.Tests
+  enabled: true
+
+- script: dotnet remove D:\a\1\s\integrationTests\MSolve.Tests\tests\MGroup.FEM.Thermal.Tests\MGroup.FEM.Thermal.Tests.csproj package MGroup.Solvers
+  displayName: Remove Package Solvers from FEM.Thermal.Tests
+  enabled: true
+
+- script: dotnet add D:\a\1\s\integrationTests\MSolve.Tests\tests\MGroup.FEM.Thermal.Tests\MGroup.FEM.Thermal.Tests.csproj reference D:\a\1\s\integrationTests\Solvers\src\MGroup.Solvers\MGroup.Solvers.csproj
+  displayName: Add Project Solvers to FEM.Thermal.Tests
+  enabled: true
+
+- script: dotnet remove D:\a\1\s\integrationTests\MSolve.Tests\tests\MGroup.FEM.ConvectionDiffusion.Tests\MGroup.FEM.ConvectionDiffusion.Tests.csproj package MGroup.Solvers
+  displayName: Remove Package Solvers from FEM.ConvectionDiffusion.Tests
+  enabled: true
+
+- script: dotnet add D:\a\1\s\integrationTests\MSolve.Tests\tests\MGroup.FEM.ConvectionDiffusion.Tests\MGroup.FEM.ConvectionDiffusion.Tests.csproj reference D:\a\1\s\integrationTests\Solvers\src\MGroup.Solvers\MGroup.Solvers.csproj
+  displayName: Add Project Solvers to FEM.ConvectionDiffusion.Tests
+  enabled: true
+
+- task: DotNetCoreCLI@2
+  enabled: true
+  displayName: Runs MSolve.Tests (master)
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/develop')
+  inputs:
+    command: 'test'
+    projects: |
+      D:\a\1\s\integrationTests\MSolve.Tests\tests\MGroup.FEM.Structural.Tests\MGroup.FEM.Structural.Tests.csproj
+      D:\a\1\s\integrationTests\MSolve.Tests\tests\MGroup.FEM.Thermal.Tests\MGroup.FEM.Thermal.Tests.csproj
+      D:\a\1\s\integrationTests\MSolve.Tests\tests\MGroup.FEM.ConvectionDiffusion.Tests\MGroup.FEM.ConvectionDiffusion.Tests.csproj
+    arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+    publishTestResults: true
+
 - task: PublishSymbols@2
   displayName: "Publish symbols to Azure Devops artifacts"
   inputs:
@@ -95,6 +151,12 @@ steps:
     summaryFileLocation: $(Build.SourcesDirectory)/coverage/Cobertura/Cobertura.xml
     reportDirectory: $(Build.SourcesDirectory)/coverage/Cobertura
     codecoverageTool: cobertura
+
+- task: DeleteFiles@1
+  displayName: 'Remove integration tests dir'
+  inputs:
+    contents: |
+      **/integrationTests/*
 
 - task: DotNetCoreCLI@2
   name: dotnetPack
