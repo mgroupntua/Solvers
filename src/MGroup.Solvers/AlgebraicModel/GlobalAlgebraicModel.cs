@@ -89,12 +89,12 @@ namespace MGroup.Solvers.AlgebraicModel
 		//	subdomainVectorAssembler.AddToSubdomainVector(loads, globalVector.SingleVector, subdomainDofs);
 		//}
 
-		public void AddToGlobalVector(IEnumerable<IDomainModelQuantity<IDofType>> loads, IGlobalVector vector)
-		{
-			GlobalVector globalVector = CheckCompatibleVector(vector);
-			ISubdomainFreeDofOrdering subdomainDofs = SubdomainFreeDofOrdering;
-			subdomainVectorAssembler.AddToSubdomainVector(loads, globalVector.SingleVector, subdomainDofs);
-		}
+		//public void AddToGlobalVector(IEnumerable<IDomainModelQuantity<IDofType>> loads, IGlobalVector vector)
+		//{
+		//	GlobalVector globalVector = CheckCompatibleVector(vector);
+		//	ISubdomainFreeDofOrdering subdomainDofs = SubdomainFreeDofOrdering;
+		//	subdomainVectorAssembler.AddToSubdomainVector(loads, globalVector.SingleVector, subdomainDofs);
+		//}
 
 		public IGlobalMatrix BuildGlobalMatrix(IElementMatrixProvider elementMatrixProvider)
 		{
@@ -150,7 +150,9 @@ namespace MGroup.Solvers.AlgebraicModel
 			//		results[node.ID, model.AllDofs.GetIdOfDof(dirichlet.DOF)] = dirichlet.Amount;
 			//	}
 			//}
-			var constraints = model.EnumerateBoundaryConditions(subdomain.ID).SelectMany(x => x.EnumerateNodalBoundaryConditions()).OfType<INodalDirichletBoundaryCondition<IDofType>>();
+			var constraints = model.EnumerateBoundaryConditions(subdomain.ID)
+				.SelectMany(x => x.EnumerateNodalBoundaryConditions(model.EnumerateElements(subdomain.ID)))
+				.OfType<INodalDirichletBoundaryCondition<IDofType>>();
 			foreach (var constraint in constraints)
 			{
 				results[constraint.Node.ID, boundaryConditionsInterpreter.ActiveDofs.GetIdOfDof(constraint.DOF)] = constraint.Amount;
@@ -171,7 +173,7 @@ namespace MGroup.Solvers.AlgebraicModel
 			GlobalVector globalVector = CheckCompatibleVector(vector);
 			ISubdomainFreeDofOrdering subdomainDofs = SubdomainFreeDofOrdering;
 			var nodeConstraints = model.EnumerateBoundaryConditions(subdomain.ID)
-				.Select(x => x.EnumerateNodalBoundaryConditions()).OfType<INodalDirichletBoundaryCondition<IDofType>>()
+				.Select(x => x.EnumerateNodalBoundaryConditions(model.EnumerateElements(subdomain.ID))).OfType<INodalDirichletBoundaryCondition<IDofType>>()
 				.Where(x => x.Node.ID == node.ID)
 				.ToArray();
 			var result = new double[dofs.Length];

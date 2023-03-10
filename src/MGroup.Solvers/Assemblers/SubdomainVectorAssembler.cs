@@ -51,25 +51,25 @@ namespace MGroup.Solvers.Assemblers
 			}
 		}
 
-		public void AddToSubdomainVector(IEnumerable<IDomainModelQuantity<IDofType>> loads, Vector subdomainVector,
-			ISubdomainFreeDofOrdering dofOrdering)
-		{
-			foreach (int node in dofOrdering.FreeDofs.GetRows())
-			{
-				foreach (var dofIdxPair in dofOrdering.FreeDofs.GetDataOfRow(node))
-				{
-					int dof = dofIdxPair.Key;
-					int idx = dofIdxPair.Value;
+		//public void AddToSubdomainVector(IEnumerable<IDomainModelQuantity<IDofType>> loads, Vector subdomainVector,
+		//	ISubdomainFreeDofOrdering dofOrdering)
+		//{
+		//	foreach (int node in dofOrdering.FreeDofs.GetRows())
+		//	{
+		//		foreach (var dofIdxPair in dofOrdering.FreeDofs.GetDataOfRow(node))
+		//		{
+		//			int dof = dofIdxPair.Key;
+		//			int idx = dofIdxPair.Value;
 
-					foreach (var load in loads)
-					{
-						if (allDofs.GetIdOfDof(load.DOF) == dof)
-						{
-							subdomainVector[idx] = load.Amount;
-						}
-					}
-				}
-			}
-		}
+		//			foreach (var load in loads)
+		//			{
+		//				if (allDofs.GetIdOfDof(load.DOF) == dof)
+		//				{
+		//					subdomainVector[idx] = load.Amount;
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
 	}
 }
