@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Product>MSolve</Product>
+    <Authors>George Stavroulakis, Serafeim Bakalakos, Yiannis Kalogeris</Authors>
+    <PackageProjectUrl>http://mgroup.ntua.gr</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mgroupntua/Solvers</RepositoryUrl>
+    <Description>A collection of classes combining MachineLearning and Solvers for the implementation of custom-tailored solvers for the solution of computational mechanics problems using AI techniques</Description>
+    <PackageIconUrl>https://github.com/mgroupntua/Solvers/raw/develop/MGroupSolversMachineLearning.png</PackageIconUrl>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="MGroup.Constitutive.Structural.MachineLearning" Version="0.2.0-unstable.34" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\MGroup.Solvers\MGroup.Solvers.csproj" />
+  </ItemGroup>
+</Project>
