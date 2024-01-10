@@ -1,15 +1,15 @@
-namespace MGroup.AISolve.Examples
+namespace MGroup.Solvers.MachineLearning.Tests.Examples
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Reflection.PortableExecutable;
 
-	using global::AISolve.PodAmg;
+	using global::MGroup.Solvers.MachineLearning.PodAmg;
 
 	using MathNet.Numerics.Distributions;
 
-	using MGroup.AISolve.Mesh;
+	using MGroup.Solvers.MachineLearning.Tests.Mesh;
 	using MGroup.Constitutive.Structural;
 	using MGroup.Constitutive.Structural.BoundaryConditions;
 	using MGroup.Constitutive.Structural.Continuum;
@@ -25,6 +25,8 @@ namespace MGroup.AISolve.Examples
 	using MGroup.MSolve.Solution;
 	using MGroup.NumericalAnalyzers;
 	using MGroup.Solvers.Direct;
+	using System.IO;
+	using System.Diagnostics;
 
 	public static class Elasticity3DExample
 	{
@@ -47,7 +49,7 @@ namespace MGroup.AISolve.Examples
 			var responses = new List<double>(numAnalysesTotal);
 			for (int i = 1; i <= numAnalysesTotal; i++)
 			{
-				Console.WriteLine($"*************** Analysis {i}/{numAnalysesTotal} ***************");
+				Debug.WriteLine($"*************** Analysis {i}/{numAnalysesTotal} ***************");
 
 				if (readSolutionsFromFileInsteadOfDiagonalPrecond && (i <= numSolutionsForTraining))
 				{
@@ -58,7 +60,7 @@ namespace MGroup.AISolve.Examples
 					(double response, Vector solution, int numPcgIterations) =
 						RunSingleAnalysis(i, paramsE[i-1], paramsP[i-1], solver);
 					responses.Add(response);
-					Console.WriteLine($"Number of PCG iterations = {numPcgIterations}. Dofs = {solution.Length}.");
+					Debug.WriteLine($"Number of PCG iterations = {numPcgIterations}. Dofs = {solution.Length}.");
 					if (writeSolutionsToFile)
 					{
 						WriteSolutionToFile(solver.LinearSystem.Solution.SingleVector, response, i == 1);
@@ -67,7 +69,7 @@ namespace MGroup.AISolve.Examples
 			}
 
 			double mean = responses.Average();
-			Console.WriteLine($"Total analyses: {numAnalysesTotal}. Training analyses: {numSolutionsForTraining}. " +
+			Debug.WriteLine($"Total analyses: {numAnalysesTotal}. Training analyses: {numSolutionsForTraining}. " +
 				$"Mean uTop={mean}");
 		}
 

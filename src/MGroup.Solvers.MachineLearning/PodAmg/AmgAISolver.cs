@@ -1,4 +1,4 @@
-namespace AISolve.PodAmg
+namespace MGroup.Solvers.MachineLearning
 {
 	using System;
 	using System.Collections.Generic;

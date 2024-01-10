@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Commons\**" />
+    <EmbeddedResource Remove="Commons\**" />
+    <None Remove="Commons\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.msbuild" Version="2.6.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MGroup.Constitutive.Structural.MachineLearning" Version="0.2.0-unstable.34" />
+    <PackageReference Include="MGroup.LinearAlgebra" Version="0.1.0-unstable.123" />
+    <PackageReference Include="MGroup.NumericalAnalyzers" Version="0.2.0-unstable.61" />
+    <PackageReference Include="MGroup.NumericalAnalyzers.Discretization" Version="0.2.0-unstable.61" /> 
+	<PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+    <PackageReference Include="MGroup.FEM.Structural" Version="0.2.0-unstable.131" />
+    <PackageReference Include="MGroup.MSolve.Core" Version="0.2.0-unstable.76" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="Moq" Version="4.13.0" />
+    <PackageReference Include="OpenCover" Version="4.7.922" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Commons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MGroup.Solvers.MachineLearning\MGroup.Solvers.MachineLearning.csproj" />
+  </ItemGroup>
+</Project>

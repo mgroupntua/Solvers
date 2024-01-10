@@ -11,7 +11,7 @@ using MGroup.LinearAlgebra.Vectors;
 //      better to use the DOK instead.
 //TODO: Alternative: instead of demanding the caller to extract the diagonal, this class should read the matrix and only access 
 //      its diagonal. I think this alternative is less flexible and more difficult to implement.
-namespace AISolve.PodAmg
+namespace MGroup.Solvers.MachineLearning.PodAmg
 {
     /// <summary>
     /// Implements the Jacobi or diagonal preconditioner for a square matrix. If A is the original matrix, the Jacobi  
