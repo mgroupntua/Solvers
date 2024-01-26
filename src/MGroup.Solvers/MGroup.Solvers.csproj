@@ -16,7 +16,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="MGroup.LinearAlgebra.Distributed" Version="0.1.0-unstable.123" />
+    <PackageReference Include="MGroup.LinearAlgebra.Distributed" Version="0.1.0-unstable.129" />
     <PackageReference Include="MGroup.MSolve.Core" Version="0.2.0-unstable.76" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
