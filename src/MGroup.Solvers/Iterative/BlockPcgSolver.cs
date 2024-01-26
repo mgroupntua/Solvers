@@ -34,7 +34,7 @@ namespace MGroup.Solvers.Iterative
 
 		private BlockPcgSolver(GlobalAlgebraicModel<CsrMatrix> model, BlockPcgAlgorithm blockPcgAlgorithm, 
 			IPreconditionerFactory preconditionerFactory) 
-			: base(model,"PcgSolver")
+			: base(model, "BlockPcgSolver")
 		{
 			this.blockPcgAlgorithm = blockPcgAlgorithm;
 			this.preconditionerFactory = preconditionerFactory;
