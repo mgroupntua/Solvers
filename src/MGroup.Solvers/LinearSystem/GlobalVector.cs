@@ -20,6 +20,8 @@ namespace MGroup.Solvers.LinearSystem
 			this.checkCompatibleVector = checkCompatibleVector;
 		}
 
+		public bool CheckForCompatibility { get; set; } = true;
+
 		internal Guid Format { get; }
 
 		public int Length => SingleVector.Length;
@@ -27,8 +29,6 @@ namespace MGroup.Solvers.LinearSystem
 		//TODO: perhaps setting this should be done in the construction only
 		//TODO: I would rather this was internal, but it is needed by the test classes
 		public Vector SingleVector { get; set; }
-
-		public bool CheckForCompatibility { get; set; }
 
 		public void AxpyIntoThis(IGlobalVector otherVector, double otherCoefficient)
 		{
