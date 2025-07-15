@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="MGroup.LinearAlgebra.Distributed" Version="0.1.0-unstable.224" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NumSharp" Version="0.30.0" />
   </ItemGroup>
 
   <ItemGroup>
