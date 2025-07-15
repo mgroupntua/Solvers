@@ -2,6 +2,8 @@ namespace MGroup.Solvers.DDM.FetiDP.StiffnessMatrices
 {
 	using MGroup.LinearAlgebra.Implementations;
 	using MGroup.LinearAlgebra.Matrices;
+	using MGroup.LinearAlgebra.Output;
+	using MGroup.LinearAlgebra.Output.Formatting;
 	using MGroup.LinearAlgebra.Reordering;
 	using MGroup.LinearAlgebra.SchurComplements;
 	using MGroup.LinearAlgebra.SchurComplements.SubmatrixExtractors;
@@ -213,6 +215,17 @@ namespace MGroup.Solvers.DDM.FetiDP.StiffnessMatrices
 			inverseKrr = provider.CreateCholeskyTriangulation();
 			inverseKrr.Factorize(Krr);
 
+			#region debug
+			// Write all submatrices to files
+			string workdir = "C:\\Users\\Serafeim\\Desktop\\AISolve\\SurrogateForPfetidpKrr";
+			var writer = new FullMatrixWriter();
+			writer.NumericFormat = new ExponentialFormat { NumDecimalDigits = 12 };
+			writer.ArrayFormat = new Array2DFormat("\n[", "]\n", "[ ", " ]," + Environment.NewLine, ", ");
+			writer.WriteToFile(Kcc, workdir + $"\\Kcc{linearSystem.SubdomainID}.txt");
+			writer.WriteToFile(Kcr, workdir + $"\\Kcr{linearSystem.SubdomainID}.txt");
+			writer.WriteToFile(Krr, workdir + $"\\Krr{linearSystem.SubdomainID}.txt");
+			#endregion
+
 			if (clearKrrAfterFactorization)
 			{
 				Krr = null; // It has not been mutated, but it is no longer needed
@@ -351,7 +364,7 @@ namespace MGroup.Solvers.DDM.FetiDP.StiffnessMatrices
 			public IFetiDPSubdomainMatrixManager CreateMatrixManager(IImplementationProvider provider,
 				SubdomainLinearSystem<SymmetricCscMatrix> linearSystem, FetiDPSubdomainDofs subdomainDofs)
 			{
-				return new FetiDPSubdomainMatrixManagerSymmetricCsc(
+				return new FetiDPSubdomainMatrixManagerSymmetricCscV2(
 					provider, linearSystem, subdomainDofs, clearKrrAfterFactorization);
 			}
 		}

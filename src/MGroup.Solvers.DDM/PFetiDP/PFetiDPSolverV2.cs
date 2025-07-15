@@ -190,7 +190,7 @@ namespace MGroup.Solvers.DDM.PFetiDP
 			public override PsmSolver<SymmetricCscMatrix> BuildSolver(IModel model, DistributedAlgebraicModel<SymmetricCscMatrix> algebraicModel)
 			{
 				DdmLogger logger = EnableLogging ? new DdmLogger(environment, "PFETI-DP Solver", model.NumSubdomains) : null;
-				return new PFetiDPSolver<SymmetricCscMatrix>(environment, model, algebraicModel, provider, PsmMatricesFactory,
+				return new PFetiDPSolverV2(environment, model, algebraicModel, provider, PsmMatricesFactory,
 					ExplicitSubdomainMatrices, null, InterfaceProblemSolverFactory, IsHomogeneousProblem, logger,
 					cornerDofs, CoarseProblemFactory, FetiDPMatricesFactory, ReanalysisOptions);
 			}

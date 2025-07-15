@@ -43,7 +43,7 @@ namespace MGroup.Solvers.DDM.Tests.ExampleModels
 
 		public static int[] NumClusters => new int[] { 1, 1 };
 
-		public static int NumTotalDofs => 80;
+		public static int NumTotalDofs => throw new NotImplementedException();
 
 		public static Model CreateSingleSubdomainModel(double stiffnessRatio)
 		{
