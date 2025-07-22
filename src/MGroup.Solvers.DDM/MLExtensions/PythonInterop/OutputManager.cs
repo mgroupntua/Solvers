@@ -38,13 +38,46 @@ namespace MGroup.Solvers.DDM.MLExtensions.PythonInterop
 				Array loaded = np.LoadMatrix(path);
 				if (loaded == null)
 				{
-					//TODO: Also check that the file exists, before loading numpy arrays.
 					throw new IOException($"Cannot read the array {prop.Name}. The file {path} does not contain a valid array");
 				}
-				prop.SetValue(output, loaded);
+				Array squeezed = ArrayConversions.SqueezeDimensions(loaded);
+				prop.SetValue(output, squeezed);
 			}
 
 			return output;
+		}
+
+		private Array Squeeze(Array originalArray)
+		{
+			int rank = originalArray.Rank;
+			var dimensions = new int[rank];
+			var dimsToKeep = new List<int>(rank);
+			for (int d = 0; d < rank; d++)
+			{
+				if (originalArray.GetLength(d) > 1)
+				{
+					dimsToKeep.Add(d);
+				}
+			}
+
+			if (dimsToKeep.Count == rank)
+			{
+				return originalArray;
+			}
+
+			if (dimsToKeep.Count != 1)
+			{
+				throw new NotImplementedException();
+			}
+
+			int length = originalArray.Length;
+			var result = Array.CreateInstance(originalArray.GetType().GetElementType(), length);
+			for (int i = 0; i < length; i++)
+			{
+				result.SetValue(originalArray.GetValue(i), i);
+			}
+			//Array.Copy(originalArray, result, length); //this throws exception
+			return result;
 		}
 	}
 }

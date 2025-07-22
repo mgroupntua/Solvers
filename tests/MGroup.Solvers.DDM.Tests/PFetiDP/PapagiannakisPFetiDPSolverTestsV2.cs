@@ -27,6 +27,11 @@ namespace MGroup.Solvers.DDM.Tests.PFetiDP
 	[Collection("Sequential")]
 	public static class PapagiannakisPFetiDPSolverTestsV2
 	{
+		private const string ComputerName = "Serafeim";
+		private static string WorkDirectoryPath = "";
+		private static string PythonInterpreterPath = "";
+		private static string PythonProjectDirectoryPath = "";
+
 		public static TheoryData<double, bool, int, double, IEnvironmentChoice, IImplementationProviderChoice> DataForTest_8modified
 		{
 			get
@@ -97,6 +102,15 @@ namespace MGroup.Solvers.DDM.Tests.PFetiDP
 			solverFactory.IsHomogeneousProblem = ignoreHeterogenity || (stiffnessRatio == 1.0);
 			DistributedAlgebraicModel<SymmetricCscMatrix> algebraicModel = solverFactory.BuildAlgebraicModel(model);
 			PsmSolver<SymmetricCscMatrix> solver = solverFactory.BuildSolver(model, algebraicModel);
+
+			// Enable surrogate predictions
+			string pythonScriptPath = PythonProjectDirectoryPath + "\\src\\tests\\Krr_surrogate.py";
+			environment.DoPerNode(subdomainID =>
+			{
+				((PFetiDPSolverV2)solver).subdomainMatricesFetiDP[subdomainID].SolutionPredictor =
+					new AlgebraicImplementationInPythonProvider(
+						WorkDirectoryPath, PythonInterpreterPath, pythonScriptPath, subdomainID);
+			});
 
 			//string basePath = @"C:\Users\Geras\Desktop\a_proxeiro\ddm_operator_example_runs\exam1\input";
 			//environment.DoPerNode(subdomainID =>
@@ -423,6 +437,33 @@ namespace MGroup.Solvers.DDM.Tests.PFetiDP
 			NodalResults globalComputedResults = algebraicModel.ExtractGlobalResults(solver.LinearSystem.Solution, 1E-6);
 			double error = expectedResults.Subtract(globalComputedResults).Norm2() / expectedResults.Norm2();
 			Assert.InRange(error, 0, errorExpected);
+		}
+
+		static PapagiannakisPFetiDPSolverTestsV2()
+		{
+			if (ComputerName == "Serafeim")
+			{
+				WorkDirectoryPath = "C:\\Users\\Serafeim\\Desktop\\AISolve\\SurrogateForPfetidpKrr";
+				PythonProjectDirectoryPath = "G:\\Coding\\MGroup\\AISolve\\python_net_interop";
+				PythonInterpreterPath = PythonProjectDirectoryPath + "\\venv\\Scripts\\python.exe";
+			}
+			else if (ComputerName == "Gerasimos")
+			{
+				throw new NotImplementedException();
+			}
+			else if (ComputerName == "Cluster-old")
+			{
+				throw new NotImplementedException();
+			}
+			else if (ComputerName == "Cluster-new")
+			{
+				throw new NotImplementedException();
+			}
+			else
+			{
+				throw new DirectoryNotFoundException(
+					"Invalid computer name. Use 'Serafeim', 'Gerasimos', 'Cluster-old' or 'Cluster-new'");
+			}
 		}
 	}
 }
