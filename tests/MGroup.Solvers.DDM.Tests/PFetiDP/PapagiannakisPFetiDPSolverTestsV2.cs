@@ -104,7 +104,7 @@ namespace MGroup.Solvers.DDM.Tests.PFetiDP
 			PsmSolver<SymmetricCscMatrix> solver = solverFactory.BuildSolver(model, algebraicModel);
 
 			// Enable surrogate predictions
-			string pythonScriptPath = PythonProjectDirectoryPath + "\\src\\tests\\Krr_surrogate.py";
+			string pythonScriptPath = PythonProjectDirectoryPath + "\\tests\\Krr_surrogate.py";
 			environment.DoPerNode(subdomainID =>
 			{
 				((PFetiDPSolverV2)solver).subdomainMatricesFetiDP[subdomainID].SolutionPredictor =

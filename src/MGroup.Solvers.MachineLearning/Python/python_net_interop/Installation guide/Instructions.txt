@@ -1,0 +1,79 @@
+1) Project creation
+	1.1) Create a Pycharm project somewhere on your disc drive
+		- It cannot be on a network drive
+		- Use a virtual environment when creating the project 
+	1.2) Install the common packages (at least numpy and scipy)
+
+2) Understand how paths work. 
+	2.1) Example of folders structure:
+		- Let's say that the root location of the project is in "C:\Users\Serafeim\Documents\Coding\Python\python_net_interop"
+		- The packages will be installed in "C:\Users\Serafeim\Documents\Coding\Python\python_net_interop\venv\Lib\site-packages"
+	2.2) Example of how to call python code from different files:
+		- The file "{root}\src\my_utilities\csharp_interop.py" contains a useful function "call_python_func"
+		- You want to use it in a different file, such as "{root}\tests\Krr_surrogate.py"
+		- To do so, there must be a helper file called "__init__.py" inside the folder "{root}\src\my_utilities\"
+			- This "__init__.py" file can be empty
+	2.3) When calling a python script from C#, it does not know where the rest of the python files are located. The easiest way to solve this is:
+		- Create a file named, e.g. "my_project.pth". The name is not important.
+		- Inside "my_project.pth" write the root path of the project.
+			- For the example above, you would write "C:/Users/Serafeim/Documents/Coding/Python/python_net_interop"
+			- Do not use backslash (\) in this. Use regular slashes (/) to separate folders.
+		- Place the file "my_project.pth" inside the site-packages folder.
+			- E.g. inside "C:\Users\Serafeim\Documents\Coding\Python\python_net_interop\venv\Lib\site-packages"
+		- Unfortunately this file (and the whole venv folder) cannot be under version control. 
+			- Do not try to force it. It will create many more problems, than simply copying and adjusting this file.
+		- There is an example ".pth" file in the same folder as the guide you are currently reading. You can edit it with notepad or Pycharm.
+	2.4) When running Python from inside Pycharm all the above are done automatically and without creating these helper files. 
+		- From C# we need to do them manually. 
+
+3) How to structure your code
+	3.1) Input and output:
+		a) The inputs and ouputs between C# and Python must be dedicated classes (see example in "{root}\tests\vector_linear_combination_test.py")
+		b) Each class must class fields/properties with the EXACT SAME NAME in both languages (and the closest possible data types)
+		c) You need one class for the inputs and one for the outputs. E.g. InputParams and OutputParams 
+			- The names of the classes are not important. The names of their properties/fields ARE important.
+	3.2) Main script called by C#:
+		a) Example: C# calls "{root}\tests\vector_linear_combination_test.py". Inside it we must have:
+			class InputParams:
+				... # define your input fields (C# passes them to Python)
+				
+			class OutputParams:
+				... # define your output fields (Python returns them to C#)
+				
+			def predict(inputs: InputParams, outputs: OutputParams):
+				... # here you do the actual work
+			
+			if __name__ == '__main__': # main segment
+				csharp_interop.call_python_func(predict, InputParams, OutputParams)
+				
+		b) In C# you decide which python file to call. That file must have (at the end) a main segment.
+		c) Inside this main segment you must call the helper function "csharp_interop.call_python_func"
+			- This will take care of reading and writing inputs & outputs, performance timing and error reporting 
+		d) "csharp_interop.call_python_func" needs exactly 3 parameters to work:
+			- The names of the classes of the inputs and outputs. E.g. InputParams, OutputParams
+			- The name of the callback python function that does the actual work. Here I named it "predict".
+				- Its name is not important, but its signature must accept 1 object of type InputParams and 1 object of type OutputParams. And nothing else. 
+			- I usually place the input/output classes and callback function inside the file called by C#.
+			
+4) Debugging
+	4.1) Main idea:
+		- Debugging Python code when called by C# is impossible for now.
+		- Instead we can debug Python code by itself inside Pycharm.
+		- This needs the following changes inside the main segment of the Python script called by C#, immediately befor before "csharp_interop.call_python_func"
+	4.2) Create the files needed for communication inside a temporary work folder.
+		- E.g. inside C:\Users\Serafeim\Documents\Coding\AISolve\temp
+		- The best way is to reuse temporary files from a previous run and modify them.
+		- Input and output files must be in json format, unless they are arrays.
+		- Arrays must be in .npy (numpy) format
+		- When debugging, the content of the error and performance log files can be ignored, as long as the files themselves exist.
+	4.3) Code changes:
+		if __name__ == '__main__':
+			# To debug, run this file by itself after uncommenting the next 2 lines:
+			import sys
+			sys.argv[1] = "C:\\Users\\Serafeim\\Documents\\Coding\\AISolve\\temp" # e.g. for temporary work directory
+			
+			csharp_interop.call_python_func(linear_combo_and_dot_product, InputParams, OutputParams)
+		
+			
+		
+
