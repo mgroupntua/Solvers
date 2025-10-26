@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -14,13 +14,26 @@
     <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>
-  
+
+  <!-- Import the global props file for development on local machines-->
+  <Import Project="..\..\..\Directory.Build.props" Condition="Exists('..\..\Directory.Build.props')" />
+
+  <PropertyGroup>
+    <UseLocalMSolveProjects Condition="'$(UseLocalMSolveProjects)' == ''">false</UseLocalMSolveProjects>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="MGroup.LinearAlgebra" Version="0.1.0-unstable.224" />
-    <PackageReference Include="MGroup.MSolve.Core" Version="0.2.0-unstable.94" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
-  
+
+  <ItemGroup Condition="'$(UseLocalMSolveProjects)' != 'true'">
+    <PackageReference Include="MGroup.MSolve.Core" Version="0.2.0-unstable.94" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'true'">
+    <ProjectReference Include="..\..\..\MSolve.Core\src\MGroup.MSolve.Core.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.2">
       <PrivateAssets>all</PrivateAssets>
