@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MGroup.Environments" Version="0.2.0-unstable.12" />
     <PackageReference Include="MGroup.FEM.Structural" Version="0.2.0-unstable.137" />
-    <PackageReference Include="MGroup.LinearAlgebra.Distributed" Version="0.1.0-unstable.224" />
     <PackageReference Include="MGroup.LinearAlgebra.Implementations.NativeWin64" Version="0.1.0-unstable.222" />
     <PackageReference Include="MGroup.NumericalAnalyzers.Discretization" Version="0.2.0-unstable.68" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0-release-24177-07" />
