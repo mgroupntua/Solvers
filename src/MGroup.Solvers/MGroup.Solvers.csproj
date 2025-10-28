@@ -16,8 +16,7 @@
   </PropertyGroup>
 
   <!-- Import the global props file for development on local machines-->
-  <Import Project="..\..\..\Directory.Build.props" Condition="Exists('..\..\Directory.Build.props')" />
-
+  <Import Project="..\..\..\Directory.Build.props" Condition="Exists('..\..\..\Directory.Build.props')" />
   <PropertyGroup>
     <UseLocalMSolveProjects Condition="'$(UseLocalMSolveProjects)' == ''">false</UseLocalMSolveProjects>
   </PropertyGroup>
@@ -26,7 +25,7 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(UseLocalMSolveProjects)' != 'true'">
+  <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'false'">
     <PackageReference Include="MGroup.MSolve.Core" Version="0.2.0-unstable.94" />
   </ItemGroup>
 
