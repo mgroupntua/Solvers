@@ -2,10 +2,10 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 {
 	using MGroup.Constitutive.Structural;
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG.Reorthogonalization;
 	using MGroup.LinearAlgebra.Implementations;
 	using MGroup.LinearAlgebra.Iterative;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient.Reorthogonalization;
 	using MGroup.LinearAlgebra.Iterative.Termination.Iterations;
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.MSolve.Discretization.Entities;
@@ -72,7 +72,7 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 				var coarseProblemFactory = new FetiDPCoarseProblemDistributed.Factory();
 				if (useReorthogonalizedPcg)
 				{
-					var coarseProblemPcgBuilder = new ReorthogonalizedPcg.Builder();
+					var coarseProblemPcgBuilder = new ReorthogonalizedPcg.Factory();
 					coarseProblemPcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 					coarseProblemPcgBuilder.ResidualTolerance = 2E-12;
 					coarseProblemPcgBuilder.DirectionVectorsRetention = new FixedDirectionVectorsRetention(40, true);
@@ -80,7 +80,7 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 				}
 				else
 				{
-					var coarseProblemPcgBuilder = new PcgAlgorithm.Builder();
+					var coarseProblemPcgBuilder = new PcgAlgorithm.Factory();
 					coarseProblemPcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 					coarseProblemPcgBuilder.ResidualTolerance = 2E-12;
 					coarseProblemFactory.CoarseProblemSolver = coarseProblemPcgBuilder.Build();
@@ -178,7 +178,7 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 				var coarseProblemFactory = new FetiDPCoarseProblemDistributed.Factory();
 				if (useReorthogonalizedPcg)
 				{
-					var coarseProblemPcgBuilder = new ReorthogonalizedPcg.Builder();
+					var coarseProblemPcgBuilder = new ReorthogonalizedPcg.Factory();
 					coarseProblemPcgBuilder.DirectionVectorsRetention = new FixedDirectionVectorsRetention(30, true);
 					coarseProblemPcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 					coarseProblemPcgBuilder.ResidualTolerance = 2E-12;
@@ -186,7 +186,7 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 				}
 				else
 				{
-					var coarseProblemPcgBuilder = new PcgAlgorithm.Builder();
+					var coarseProblemPcgBuilder = new PcgAlgorithm.Factory();
 					coarseProblemPcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 					coarseProblemPcgBuilder.ResidualTolerance = 2E-12;
 					coarseProblemFactory.CoarseProblemSolver = coarseProblemPcgBuilder.Build();

@@ -4,11 +4,10 @@ namespace MGroup.Solvers.DDM.PSM.InterfaceProblem
 	using System.Diagnostics;
 
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG;
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.LinearAlgebra.Vectors;
-	using MGroup.MSolve.Solution.LinearSystem;
 	using MGroup.Solvers.DDM.LinearSystem;
 	using MGroup.Solvers.DDM.PSM.Vectors;
 
@@ -39,6 +38,9 @@ namespace MGroup.Solvers.DDM.PSM.InterfaceProblem
 
 		public long EllapsedMilliseconds { get; set; } = 0;
 
+		public IPcgResidualConvergence CopyWithInitialSettings()
+			=> new ObjectiveConvergenceCriterion<TMatrix>(environment, algebraicModel, getSubdomainVectors);
+
 		public double EstimateResidualNormRatio(PcgAlgorithmBase pcg)
 		{
 			var watch = new Stopwatch();
@@ -54,20 +56,20 @@ namespace MGroup.Solvers.DDM.PSM.InterfaceProblem
 				Uf.LocalVectors[subdomainID] = ufs;
 			});
 
-			IGlobalVector Ff = algebraicModel.LinearSystem.RhsVector;
-			IGlobalVector residual = Ff.CreateZero();
+			IVector Ff = algebraicModel.LinearSystem.RhsVector;
+			IVector residual = Ff.CreateZeroVectorWithSameFormat();
 			if (optimizationsForSymmetricCscMatrix)
 			{
 				if (KffCsr == null)
 				{
 					KffCsr = CopyKffToCsr();
 				}
-				KffCsr.MultiplyVector(Uf, residual);
+				KffCsr.MultiplyIntoResult(Uf, residual);
 			}
 			else
 			{
-				IGlobalMatrix Kff = algebraicModel.LinearSystem.Matrix;
-				Kff.MultiplyVector(Uf, residual);
+				IMatrix Kff = algebraicModel.LinearSystem.Matrix;
+				Kff.MultiplyIntoResult(Uf, residual);
 			}
 			residual.LinearCombinationIntoThis(-1.0, Ff, +1.0);
 			double result = residual.Norm2() / normF0;

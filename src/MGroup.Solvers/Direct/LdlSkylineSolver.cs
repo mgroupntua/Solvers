@@ -1,12 +1,12 @@
 using System;
 using System.Diagnostics;
+
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Triangulation;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization;
 using MGroup.MSolve.Discretization.Entities;
 using MGroup.MSolve.Solution.LinearSystem;
-using MGroup.Solvers.AlgebraicModel;
 using MGroup.Solvers.Assemblers;
 using MGroup.Solvers.DofOrdering;
 using MGroup.Solvers.DofOrdering.Reordering;
@@ -49,11 +49,11 @@ namespace MGroup.Solvers.Direct
 		public override void Solve()
 		{
 			var watch = new Stopwatch();
-			SkylineMatrix matrix = LinearSystem.Matrix.SingleMatrix;
+			SkylineMatrix matrix = LinearSystem.Matrix;
 			int systemSize = matrix.NumRows;
-			if (LinearSystem.Solution.SingleVector == null)
+			if (LinearSystem.Solution == null)
 			{
-				LinearSystem.Solution.SingleVector = Vector.CreateZero(systemSize);
+				LinearSystem.Solution = Vector.CreateZero(systemSize);
 			}
 			else LinearSystem.Solution.Clear();// no need to waste computational time on this in a direct solver
 
@@ -70,7 +70,7 @@ namespace MGroup.Solvers.Direct
 
 			// Substitutions
 			watch.Start();
-			factorizedMatrix.SolveLinearSystem(LinearSystem.RhsVector.SingleVector, LinearSystem.Solution.SingleVector);
+			factorizedMatrix.SolveLinearSystem(LinearSystem.RhsVector, LinearSystem.Solution);
 			watch.Stop();
 			Logger.LogTaskDuration("Back/forward substitutions", watch.ElapsedMilliseconds);
 			Logger.IncrementAnalysisStep();
@@ -81,7 +81,7 @@ namespace MGroup.Solvers.Direct
 			var watch = new Stopwatch();
 
 			// Factorization
-			SkylineMatrix matrix = LinearSystem.Matrix.SingleMatrix;
+			SkylineMatrix matrix = LinearSystem.Matrix;
 			int systemSize = matrix.NumRows;
 			if (mustFactorize)
 			{

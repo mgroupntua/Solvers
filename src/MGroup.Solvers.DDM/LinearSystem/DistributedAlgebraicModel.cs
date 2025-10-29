@@ -9,6 +9,7 @@ namespace MGroup.Solvers.DDM.LinearSystem
 
 	using MGroup.Environments;
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
+	using MGroup.LinearAlgebra.Exceptions;
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.LinearAlgebra.Vectors;
 	using MGroup.MSolve.DataStructures;
@@ -85,9 +86,9 @@ namespace MGroup.Solvers.DDM.LinearSystem
 
 		public ISubdomainTopology SubdomainTopology { get; }
 
-		public void AddToGlobalVector(IGlobalVector vector, IElementVectorProvider vectorProvider)
+		public void AddToGlobalVector(IVector vector, IElementVectorProvider vectorProvider)
 		{
-			DistributedOverlappingVector distributedVector = FreeDofIndexer.CheckCompatibleVector(vector);
+			DistributedOverlappingVector distributedVector = CheckCompatibleVector(vector);
 			environment.DoPerNode(subdomainID =>
 			{
 				ISubdomainFreeDofOrdering subdomainDofs = SubdomainFreeDofOrderings[subdomainID];
@@ -101,9 +102,9 @@ namespace MGroup.Solvers.DDM.LinearSystem
 			distributedVector.SumOverlappingEntries();
 		}
 
-		public void AddToGlobalVector(Func<int, IEnumerable<INodalModelQuantity<IDofType>>> accessLoads, IGlobalVector vector)
+		public void AddToGlobalVector(Func<int, IEnumerable<INodalModelQuantity<IDofType>>> accessLoads, IVector vector)
 		{
-			DistributedOverlappingVector distributedVector = FreeDofIndexer.CheckCompatibleVector(vector);
+			DistributedOverlappingVector distributedVector = CheckCompatibleVector(vector);
 			environment.DoPerNode(subdomainID =>
 			{
 				ISubdomainFreeDofOrdering subdomainDofs = SubdomainFreeDofOrderings[subdomainID];
@@ -116,7 +117,7 @@ namespace MGroup.Solvers.DDM.LinearSystem
 			// so we do not need to sum overlapping entries
 		}
 
-		public IGlobalMatrix BuildGlobalMatrix(IElementMatrixProvider elementMatrixProvider)
+		public IMatrix BuildGlobalMatrix(IElementMatrixProvider elementMatrixProvider)
 		{
 			var globalMatrix = new DistributedOverlappingMatrix<TMatrix>(FreeDofIndexer);
 			environment.DoPerNode(subdomainID =>
@@ -129,7 +130,7 @@ namespace MGroup.Solvers.DDM.LinearSystem
 			return globalMatrix;
 		}
 
-		public IGlobalMatrix CreateEmptyMatrix()
+		public IMatrix CreateEmptyMatrix()
 		{
 			var globalMatrix = new DistributedOverlappingMatrix<TMatrix>(FreeDofIndexer);
 			environment.DoPerNode(subdomainID =>
@@ -141,7 +142,7 @@ namespace MGroup.Solvers.DDM.LinearSystem
 			return globalMatrix;
 		}
 
-		IGlobalVector IGlobalVectorAssembler.CreateZeroVector() => CreateZeroVector();
+		IVector IGlobalVectorAssembler.CreateZeroVector() => CreateZeroVector();
 
 		public DistributedOverlappingVector CreateZeroVector() => new DistributedOverlappingVector(FreeDofIndexer);
 
@@ -157,7 +158,7 @@ namespace MGroup.Solvers.DDM.LinearSystem
 			});
 		}
 
-		public NodalResults ExtractAllResults(int subdomainID, IGlobalVector vector)
+		public NodalResults ExtractAllResults(int subdomainID, IVector vector)
 		{
 			var results = new Table<int, int, double>();
 
@@ -181,7 +182,7 @@ namespace MGroup.Solvers.DDM.LinearSystem
 			return new NodalResults(results);
 		}
 
-		public double[] ExtractElementVector(IGlobalVector vector, IElementType element)
+		public double[] ExtractElementVector(IVector vector, IElementType element)
 		{
 			DistributedOverlappingVector distributedVector = CheckCompatibleVector(vector);
 
@@ -196,7 +197,7 @@ namespace MGroup.Solvers.DDM.LinearSystem
 			return subdomainDofs.ExtractVectorElementFromSubdomain(element, distributedVector.LocalVectors[s]);
 		}
 
-		public NodalResults ExtractGlobalResults(IGlobalVector vector, double differentValueTolerance)
+		public NodalResults ExtractGlobalResults(IVector vector, double differentValueTolerance)
 		{
 			if (!(environment is SequentialSharedEnvironment) && !(environment is TplSharedEnvironment))
 			{
@@ -211,7 +212,7 @@ namespace MGroup.Solvers.DDM.LinearSystem
 			return globalResults;
 		}
 
-		public double[] ExtractNodalValues(IGlobalVector vector, INode node, IDofType[] dofs)
+		public double[] ExtractNodalValues(IVector vector, INode node, IDofType[] dofs)
 		{
 			if (!(environment is SequentialSharedEnvironment) && !(environment is TplSharedEnvironment))
 			{
@@ -254,7 +255,7 @@ namespace MGroup.Solvers.DDM.LinearSystem
 			}
 		}
 
-		public double ExtractSingleValue(IGlobalVector vector, INode node, IDofType dof)
+		public double ExtractSingleValue(IVector vector, INode node, IDofType dof)
 		{
 			if (!(environment is SequentialSharedEnvironment) && !(environment is TplSharedEnvironment))
 			{
@@ -393,11 +394,10 @@ namespace MGroup.Solvers.DDM.LinearSystem
 			LinearSystem.Solution = CreateZeroVector();
 		}
 
-		public void RebuildGlobalMatrixPartially(IGlobalMatrix currentMatrix, Func<int, IEnumerable<IElementType>> accessElements, 
+		public void RebuildGlobalMatrixPartially(IMatrix currentMatrix, Func<int, IEnumerable<IElementType>> accessElements, 
 			IElementMatrixProvider elementMatrixProvider, IElementMatrixPredicate predicate)
 		{
-			DistributedOverlappingMatrix<TMatrix> distributedMatrix = 
-				FreeDofIndexer.CheckCompatibleMatrix<TMatrix>(currentMatrix);
+			DistributedOverlappingMatrix<TMatrix> distributedMatrix = CheckCompatibleMatrix(currentMatrix);
 			environment.DoPerNode(subdomainID =>
 			{
 				IEnumerable<IElementType> subdomainElements = accessElements(subdomainID);
@@ -411,7 +411,7 @@ namespace MGroup.Solvers.DDM.LinearSystem
 			});
 		}
 
-		public IGlobalMatrix RebuildGlobalMatrixPartially(IGlobalMatrix previousMatrix, 
+		public IMatrix RebuildGlobalMatrixPartially(IMatrix previousMatrix, 
 			Func<int, IEnumerable<IElementType>> accessElements, IElementMatrixProvider elementMatrixProvider)
 		{
 			var previousMatrixDistributed = (DistributedOverlappingMatrix<TMatrix>)previousMatrix;
@@ -487,10 +487,34 @@ namespace MGroup.Solvers.DDM.LinearSystem
 			return totalResult;
 		}
 
-		internal DistributedOverlappingMatrix<TMatrix> CheckCompatibleMatrix(IGlobalMatrix matrix) 
-			=> FreeDofIndexer.CheckCompatibleMatrix<TMatrix>(matrix);
+		internal DistributedOverlappingMatrix<TMatrix> CheckCompatibleMatrix(IMatrix matrix)
+		{
+			if (matrix is DistributedOverlappingMatrix<TMatrix> distributed)
+			{
+				if (FreeDofIndexer.IsCompatibleWith(distributed.Indexer))
+				{
+					return distributed;
+				}
+			}
 
-		internal DistributedOverlappingVector CheckCompatibleVector(IGlobalVector vector) 
-			=> FreeDofIndexer.CheckCompatibleVector(vector);
+			throw new NonMatchingFormatException(
+				"The provided matrix has a different format than the current distributed linear system."
+				+ $" Ensure it was created by this linear system object and that the type {typeof(TMatrix)} is used.");
+		}
+
+		internal DistributedOverlappingVector CheckCompatibleVector(IVector vector)
+		{
+			if (vector is DistributedOverlappingVector distributed)
+			{
+				if (FreeDofIndexer.IsCompatibleWith(distributed.Indexer))
+				{
+					return distributed;
+				}
+			}
+
+			throw new NonMatchingFormatException(
+				"The provided vector has a different format than the current distributed linear system."
+				+ $" Ensure it was created by this linear system object.");
+		}
 	}
 }

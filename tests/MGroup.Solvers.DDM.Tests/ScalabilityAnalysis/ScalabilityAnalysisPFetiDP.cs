@@ -2,8 +2,8 @@ namespace MGroup.Solvers.DDM.Tests.ScalabilityAnalysis
 {
 	using MGroup.Environments;
 	using MGroup.Environments.Mpi;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG;
 	using MGroup.LinearAlgebra.Implementations;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 	using MGroup.LinearAlgebra.Iterative.Termination.Iterations;
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.MSolve.Discretization.Entities;
@@ -149,7 +149,7 @@ namespace MGroup.Solvers.DDM.Tests.ScalabilityAnalysis
 			//		I should probably use that instead of distributed coarse problem.
 			if (environment is MpiEnvironment) 
 			{
-				var coarseProblemPcgBuilder = new PcgAlgorithm.Builder();
+				var coarseProblemPcgBuilder = new PcgAlgorithm.Factory();
 				coarseProblemPcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 				coarseProblemPcgBuilder.ResidualTolerance = 1E-12;
 				var coarseProblemFactory = new FetiDPCoarseProblemDistributed.Factory();

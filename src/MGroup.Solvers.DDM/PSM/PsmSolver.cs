@@ -5,12 +5,11 @@ namespace MGroup.Solvers.DDM.Psm
 	using System.Diagnostics;
 
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG;
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
 	using MGroup.LinearAlgebra.Implementations;
 	using MGroup.LinearAlgebra.Implementations.Managed;
 	using MGroup.LinearAlgebra.Iterative;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.LinearAlgebra.Vectors;
 	using MGroup.MSolve.Discretization.Entities;
@@ -39,7 +38,7 @@ namespace MGroup.Solvers.DDM.Psm
 		protected readonly IComputeEnvironment environment;
 		protected readonly IInitialSolutionGuessStrategy initialSolutionGuessStrategy;
 		protected readonly IPsmInterfaceProblemMatrix interfaceProblemMatrix;
-		protected readonly IDistributedIterativeMethod interfaceProblemSolver;
+		protected readonly ISystemSolutionIterativeMethod interfaceProblemSolver;
 		protected readonly IPsmInterfaceProblemVectors interfaceProblemVectors;
 		protected readonly IModel model;
 		protected readonly string name;
@@ -138,7 +137,7 @@ namespace MGroup.Solvers.DDM.Psm
 			}
 			else
 			{
-				convergenceCriterion = new RegularPcgConvergence();
+				convergenceCriterion = new DefaultPcgConvergence();
 			}
 			this.interfaceProblemSolver = interfaceProblemSolverFactory.BuildIterativeMethod(convergenceCriterion);
 
@@ -233,8 +232,8 @@ namespace MGroup.Solvers.DDM.Psm
 			if (LoggerDdm != null)
 			{
 				LoggerDdm.LogSolverConvergenceData(stats.NumIterationsRequired, stats.ResidualNormRatioEstimation);
-				LoggerDdm.LogProblemSize(0, algebraicModel.FreeDofIndexer.CountUniqueEntries());
-				LoggerDdm.LogProblemSize(1, boundaryDofIndexer.CountUniqueEntries());
+				LoggerDdm.LogProblemSize(0, algebraicModel.FreeDofIndexer.NumGlobalIndices);
+				LoggerDdm.LogProblemSize(1, boundaryDofIndexer.NumGlobalIndices);
 
 				Dictionary<int, int> subdomainProblemSize = environment.AllGather(
 					subdomainID => algebraicModel.LinearSystem.RhsVector.LocalVectors[subdomainID].Length);
@@ -247,9 +246,9 @@ namespace MGroup.Solvers.DDM.Psm
 				}
 
 				int totalLocalTransfers = environment.AllReduceSum(
-					subdomainID => boundaryDofIndexer.GetLocalComponent(subdomainID).CountCommonEntries().local);
+					subdomainID => boundaryDofIndexer.CountCommonEntriesOfNodeWithNeighbors(subdomainID).local);
 				int totalRemoteTransfers = environment.AllReduceSum(
-					subdomainID => boundaryDofIndexer.GetLocalComponent(subdomainID).CountCommonEntries().remote);
+					subdomainID => boundaryDofIndexer.CountCommonEntriesOfNodeWithNeighbors(subdomainID).remote);
 				LoggerDdm.LogTransfers(totalLocalTransfers, totalRemoteTransfers);
 			}
 		}

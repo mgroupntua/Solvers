@@ -30,12 +30,11 @@ namespace MGroup.Solvers.Tests.Benchmarks
 	using MGroup.Constitutive.Structural.Transient;
 	using MGroup.FEM.Structural.Continuum;
 	using MGroup.LinearAlgebra.Matrices;
+	using MGroup.LinearAlgebra.Vectors;
 	using MGroup.MSolve.DataStructures;
 	using MGroup.MSolve.Discretization.Entities;
-	using MGroup.MSolve.Discretization.Meshes.Generation;
 	using MGroup.MSolve.Discretization.Meshes.Generation.Custom;
 	using MGroup.MSolve.Solution.AlgebraicModel;
-	using MGroup.MSolve.Solution.LinearSystem;
 	using MGroup.NumericalAnalyzers;
 	using MGroup.Solvers;
 
@@ -78,7 +77,7 @@ namespace MGroup.Solvers.Tests.Benchmarks
 			return endPointLoad * Math.Pow(length, 3.0) / (3.0 * youngModulus * momentOfInertia);
 		}
 
-		public double CalculateAverageEndDeflectionFromSolution(IGlobalVector solution, IVectorValueExtractor resultsExtractor)
+		public double CalculateAverageEndDeflectionFromSolution(IVector solution, IVectorValueExtractor resultsExtractor)
 		{
 			//DofTable subdomainDofs = solver.LinearSystem.DofOrdering.SubdomainDofOrderings[subdomainID].FreeDofs;
 			var endDeflectionSum = 0.0;

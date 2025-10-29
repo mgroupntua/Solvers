@@ -45,7 +45,7 @@ namespace MGroup.Solvers.DDM
 		public DistributedOverlappingIndexer CreateDistributedVectorIndexer(Func<int, IntDofTable> getSubdomainDofs)
 		{
 			var indexer = new DistributedOverlappingIndexer(environment);
-			environment.DoPerNode(subdomainID => InitializeIndexer(subdomainID, indexer, getSubdomainDofs));
+			indexer.Initialize(subdomainID => InitializeIndexer(subdomainID, getSubdomainDofs));
 			return indexer;
 		}
 
@@ -163,23 +163,18 @@ namespace MGroup.Solvers.DDM
 		public DistributedOverlappingIndexer RecreateDistributedVectorIndexer(Func<int, IntDofTable> getSubdomainDofs,
 			DistributedOverlappingIndexer previousIndexer, Func<int, bool> isModifiedSubdomain)
 		{
-			var newIndexer = new DistributedOverlappingIndexer(environment);
-			environment.DoPerNode(subdomainID =>
+			DistributedOverlappingIndexer newIndexer = previousIndexer.ReuseAsBasisForNewIndexer(subdomainID =>
 			{
 				if (isModifiedSubdomain(subdomainID))
 				{
-					#region log
-					//Debug.WriteLine($"Initializing dof indexer for subdomain {subdomainID}");
-					//Console.WriteLine($"Initializing dof indexer for subdomain {subdomainID}");
-					#endregion
-
-					InitializeIndexer(subdomainID, newIndexer, getSubdomainDofs);
+					return InitializeIndexer(subdomainID, getSubdomainDofs);
 				}
 				else
 				{
-					newIndexer.GetLocalComponent(subdomainID).InitializeFrom(previousIndexer.GetLocalComponent(subdomainID));
+					return LocalIndexerDto.CreateUnmodified();
 				}
 			});
+
 			return newIndexer;
 		}
 
@@ -204,8 +199,7 @@ namespace MGroup.Solvers.DDM
 			return commonDofsOfSubdomain;
 		}
 
-		private void InitializeIndexer(
-			int subdomainID, DistributedOverlappingIndexer indexer, Func<int, IntDofTable> getSubdomainDofs)
+		private LocalIndexerDto InitializeIndexer(int subdomainID, Func<int, IntDofTable> getSubdomainDofs)
 		{
 			IntDofTable subdomainDofs = getSubdomainDofs(subdomainID);
 
@@ -227,7 +221,7 @@ namespace MGroup.Solvers.DDM
 				allCommonDofIndices[neighborID] = commonDofIndices.ToArray();
 			}
 
-			indexer.GetLocalComponent(subdomainID).Initialize(subdomainDofs.NumEntries, allCommonDofIndices);
+			return LocalIndexerDto.CreateWithNewContent(subdomainDofs.NumEntries, allCommonDofIndices);
 		}
 
 		//TODOMPI: Avoid finding and storing the common nodes of a subdomain pair twice. Actually, the GetCommonNodesOfSubdomains 

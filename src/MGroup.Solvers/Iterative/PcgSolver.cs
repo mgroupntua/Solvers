@@ -16,7 +16,6 @@ using MGroup.Solvers.DofOrdering;
 using MGroup.Solvers.DofOrdering.Reordering;
 using MGroup.MSolve.Solution.LinearSystem;
 using MGroup.Solvers.LinearSystem;
-using MGroup.Solvers.AlgebraicModel;
 
 namespace MGroup.Solvers.Iterative
 {
@@ -59,11 +58,11 @@ namespace MGroup.Solvers.Iterative
 		{
 			var watch = new Stopwatch();
 
-			IMatrix matrix = LinearSystem.Matrix.SingleMatrix;
+			IMatrix matrix = LinearSystem.Matrix;
 			int systemSize = matrix.NumRows;
-			if (LinearSystem.Solution.SingleVector == null)
+			if (LinearSystem.Solution == null)
 			{
-				LinearSystem.Solution.SingleVector = Vector.CreateZero(systemSize);
+				LinearSystem.Solution = Vector.CreateZero(systemSize);
 			}
 			else LinearSystem.Solution.Clear();
 
@@ -81,8 +80,8 @@ namespace MGroup.Solvers.Iterative
 			// Iterative algorithm
 			watch.Start();
 			IterativeStatistics stats = pcgAlgorithm.Solve(matrix, preconditioner,
-				LinearSystem.RhsVector.SingleVector, LinearSystem.Solution.SingleVector,
-				true, () => Vector.CreateZero(systemSize)); //TODO: This way, we don't know that x0=0, which will result in an extra b-A*0
+				LinearSystem.RhsVector, LinearSystem.Solution,
+				true); //TODO: This way, we don't know that x0=0, which will result in an extra b-A*0
 			if (!stats.HasConverged)
 			{
 				throw new IterativeSolverNotConvergedException(Name + " did not converge to a solution. PCG algorithm run for"
@@ -102,7 +101,7 @@ namespace MGroup.Solvers.Iterative
 			var watch = new Stopwatch();
 
 			// Preconditioning
-			IMatrix matrix = LinearSystem.Matrix.SingleMatrix;
+			IMatrix matrix = LinearSystem.Matrix;
 			int systemSize = matrix.NumRows;
 			if (mustUpdatePreconditioner)
 			{
@@ -130,7 +129,7 @@ namespace MGroup.Solvers.Iterative
 				Vector rhsVector = otherMatrix.GetColumn(j);
 
 				IterativeStatistics stats = pcgAlgorithm.Solve(matrix, preconditioner, rhsVector,
-					solutionVector, true, () => Vector.CreateZero(systemSize));
+					solutionVector, true);
 
 				solutionVectors.SetSubcolumn(j, solutionVector);
 			}

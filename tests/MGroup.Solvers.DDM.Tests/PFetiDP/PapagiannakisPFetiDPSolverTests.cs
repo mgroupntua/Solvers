@@ -2,9 +2,9 @@ namespace MGroup.Solvers.DDM.Tests.PFetiDP
 {
 	using MGroup.Constitutive.Structural;
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG;
 	using MGroup.LinearAlgebra.Implementations;
 	using MGroup.LinearAlgebra.Iterative;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 	using MGroup.LinearAlgebra.Iterative.Termination.Iterations;
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.MSolve.Discretization.Entities;
@@ -87,7 +87,7 @@ namespace MGroup.Solvers.DDM.Tests.PFetiDP
 
 			if (isCoarseProblemDistributed)
 			{
-				var pcgBuilder = new PcgAlgorithm.Builder();
+				var pcgBuilder = new PcgAlgorithm.Factory();
 				pcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 				pcgBuilder.ResidualTolerance = 1E-7;
 				var coarseProblemFactory = new FetiDPCoarseProblemDistributed.Factory();
@@ -183,7 +183,7 @@ namespace MGroup.Solvers.DDM.Tests.PFetiDP
 
 			if (isCoarseProblemDistributed)
 			{
-				var pcgBuilder = new PcgAlgorithm.Builder();
+				var pcgBuilder = new PcgAlgorithm.Factory();
 				pcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 				pcgBuilder.ResidualTolerance = 1E-5;
 				var coarseProblemFactory = new FetiDPCoarseProblemDistributed.Factory();
@@ -279,7 +279,7 @@ namespace MGroup.Solvers.DDM.Tests.PFetiDP
 
 			if (isCoarseProblemDistributed)
 			{
-				var pcgBuilder = new PcgAlgorithm.Builder();
+				var pcgBuilder = new PcgAlgorithm.Factory();
 				pcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 				pcgBuilder.ResidualTolerance = 1E-7;
 				var coarseProblemFactory = new FetiDPCoarseProblemDistributed.Factory();

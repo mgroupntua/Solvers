@@ -11,7 +11,6 @@ namespace MGroup.Solvers.Direct
 	using MGroup.MSolve.Discretization;
 	using MGroup.MSolve.Discretization.Entities;
 	using MGroup.MSolve.Solution.LinearSystem;
-	using MGroup.Solvers.AlgebraicModel;
 	using MGroup.Solvers.Assemblers;
 	using MGroup.Solvers.DofOrdering;
 	using MGroup.Solvers.DofOrdering.Reordering;
@@ -71,11 +70,11 @@ namespace MGroup.Solvers.Direct
 		public override void Solve()
 		{
 			var watch = new Stopwatch();
-			SymmetricCscMatrix matrix = LinearSystem.Matrix.SingleMatrix;
+			SymmetricCscMatrix matrix = LinearSystem.Matrix;
 			int systemSize = matrix.NumRows;
-			if (LinearSystem.Solution.SingleVector == null)
+			if (LinearSystem.Solution == null)
 			{
-				LinearSystem.Solution.SingleVector = Vector.CreateZero(systemSize);
+				LinearSystem.Solution = Vector.CreateZero(systemSize);
 			}
 			else LinearSystem.Solution.Clear();// no need to waste computational time on this in a direct solver
 
@@ -93,7 +92,7 @@ namespace MGroup.Solvers.Direct
 
 			// Substitutions
 			watch.Start();
-			factorization.SolveLinearSystem(LinearSystem.RhsVector.SingleVector, LinearSystem.Solution.SingleVector);
+			factorization.SolveLinearSystem(LinearSystem.RhsVector, LinearSystem.Solution);
 			watch.Stop();
 			Logger.LogTaskDuration("Back/forward substitutions", watch.ElapsedMilliseconds);
 			Logger.IncrementAnalysisStep();
@@ -104,7 +103,7 @@ namespace MGroup.Solvers.Direct
 			var watch = new Stopwatch();
 
 			// Factorization
-			SymmetricCscMatrix matrix = LinearSystem.Matrix.SingleMatrix;
+			SymmetricCscMatrix matrix = LinearSystem.Matrix;
 			int systemSize = matrix.NumRows;
 			if (mustFactorize)
 			{

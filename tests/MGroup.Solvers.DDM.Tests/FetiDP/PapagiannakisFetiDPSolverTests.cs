@@ -4,9 +4,10 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 
 	using MGroup.Constitutive.Structural;
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG;
+	using MGroup.LinearAlgebra.Implementations;
 	using MGroup.LinearAlgebra.Implementations.Managed;
 	using MGroup.LinearAlgebra.Iterative;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 	using MGroup.LinearAlgebra.Iterative.Termination.Iterations;
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.MSolve.Discretization.Entities;
@@ -20,11 +21,9 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 	using MGroup.Solvers.DDM.LinearSystem;
 	using MGroup.Solvers.DDM.Tests.ExampleModels;
 	using MGroup.Solvers.Results;
-	using MGroup.Solvers.Tests.TempUtilityClasses;
 	using MGroup.Solvers.Tests;
-
+	using MGroup.Solvers.Tests.TempUtilityClasses;
 	using Xunit;
-	using MGroup.LinearAlgebra.Implementations;
 
 	[Collection("Sequential")]
 	public static class PapagiannakisFetiDPSolverTests
@@ -103,7 +102,7 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 
 			if (isCoarseProblemDistributed)
 			{
-				var pcgBuilder = new PcgAlgorithm.Builder();
+				var pcgBuilder = new PcgAlgorithm.Factory();
 				pcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 				pcgBuilder.ResidualTolerance = 1E-7;
 				var coarseProblemFactory = new FetiDPCoarseProblemDistributed.Factory();
@@ -208,7 +207,7 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 
 			if (isCoarseProblemDistributed)
 			{
-				var pcgBuilder = new PcgAlgorithm.Builder();
+				var pcgBuilder = new PcgAlgorithm.Factory();
 				pcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 				pcgBuilder.ResidualTolerance = 1E-5;
 				var coarseProblemFactory = new FetiDPCoarseProblemDistributed.Factory();
@@ -316,7 +315,7 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 
 			if (isCoarseProblemDistributed)
 			{
-				var pcgBuilder = new PcgAlgorithm.Builder();
+				var pcgBuilder = new PcgAlgorithm.Factory();
 				pcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 				pcgBuilder.ResidualTolerance = 1E-7;
 				var coarseProblemFactory = new FetiDPCoarseProblemDistributed.Factory();

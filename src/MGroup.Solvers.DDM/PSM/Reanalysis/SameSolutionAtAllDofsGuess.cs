@@ -25,7 +25,7 @@ namespace MGroup.Solvers.DDM.PSM.Reanalysis
 		public (DistributedOverlappingVector guess, bool isZero) GuessNextSolution(
 			DistributedOverlappingIndexer currentBoundaryDofIndexer, DistributedOverlappingVector previousSolution)
 		{
-			if (currentBoundaryDofIndexer.IsCompatibleVector(previousSolution))
+			if (currentBoundaryDofIndexer.IsCompatibleWith(previousSolution.Indexer))
 			{
 				// Reuse the existing whole vector.
 				//TODO: Won't this cause problems with references? Should I just copy the subvectors to a new one? 

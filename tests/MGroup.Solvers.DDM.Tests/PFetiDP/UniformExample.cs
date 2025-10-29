@@ -40,7 +40,7 @@ namespace MGroup.Solvers.DDM.Tests.PFetiDP
 			parentAnalyzer.Initialize();
 			parentAnalyzer.Solve();
 
-			Console.WriteLine($"Num dofs = {solver.LinearSystem.Solution.Length()}");
+			Console.WriteLine($"Num dofs = {solver.LinearSystem.Solution.Length}");
 		}
 
 		private static UniformDdmModelBuilder3D DescribeModel()
