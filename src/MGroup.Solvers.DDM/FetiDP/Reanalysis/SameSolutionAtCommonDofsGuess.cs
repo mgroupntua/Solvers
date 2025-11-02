@@ -81,10 +81,6 @@ namespace MGroup.Solvers.DDM.FetiDP.Reanalysis
 			});
 
 			StoreCurrentInterationData();
-			#region debug
-			//double tol = 1E-7;
-			//bool check = newSolution.AreOverlappingEntriesEqual(tol);
-			#endregion
 			return (newSolution, isZero);
 		}
 

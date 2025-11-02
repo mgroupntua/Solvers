@@ -305,9 +305,7 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 
 			solverFactory.InterfaceProblemSolverFactory = new FetiDPInterfaceProblemSolverFactoryPcg()
 			{
-				#region debug uncomment
-				//UseObjectiveConvergenceCriterion = true,
-				#endregion
+				UseObjectiveConvergenceCriterion = true,
 				MaxIterations = numIterationsExpected,
 				ResidualTolerance = 1E-20,
 				ThrowExceptionIfNotConvergence = false,

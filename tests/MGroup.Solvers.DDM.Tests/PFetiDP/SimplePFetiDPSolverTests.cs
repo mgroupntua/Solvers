@@ -1,5 +1,7 @@
 namespace MGroup.Solvers.DDM.Tests.PFetiDP
 {
+	using System.Diagnostics;
+
 	using MGroup.Constitutive.Structural;
 	using MGroup.Environments;
 	using MGroup.LinearAlgebra.Implementations;
@@ -81,6 +83,8 @@ namespace MGroup.Solvers.DDM.Tests.PFetiDP
 					coarseProblemPcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 					coarseProblemPcgBuilder.ResidualTolerance = 2E-12;
 					coarseProblemPcgBuilder.DirectionVectorsRetention = new FixedDirectionVectorsRetention(40, true);
+					coarseProblemPcgBuilder.Convergence = new PureResidualConvergence();
+					coarseProblemPcgBuilder.ThrowExceptionIfNotConvergence = true;
 					coarseProblemFactory.CoarseProblemSolver = coarseProblemPcgBuilder.Build();
 				}
 				else
@@ -172,7 +176,9 @@ namespace MGroup.Solvers.DDM.Tests.PFetiDP
 					var coarseProblemPcgBuilder = new ReorthogonalizedPcg.Factory();
 					coarseProblemPcgBuilder.DirectionVectorsRetention = new FixedDirectionVectorsRetention(30, true);
 					coarseProblemPcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
-					coarseProblemPcgBuilder.ResidualTolerance = 2E-12;
+					coarseProblemPcgBuilder.ResidualTolerance = 1E-11;
+					coarseProblemPcgBuilder.Convergence = new PureResidualConvergence();
+					coarseProblemPcgBuilder.ThrowExceptionIfNotConvergence = true;
 					coarseProblemFactory.CoarseProblemSolver = coarseProblemPcgBuilder.Build();
 				}
 				else

@@ -1,6 +1,7 @@
 namespace MGroup.Solvers.DDM.PSM.InterfaceProblem
 {
 	using System;
+	using System.Diagnostics;
 
 	using MGroup.Environments;
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
@@ -74,6 +75,8 @@ namespace MGroup.Solvers.DDM.PSM.InterfaceProblem
 		/// <param name="input">The displacements that correspond to boundary dofs of this subdomain.</param>
 		/// <param name="output">The forces that correspond to boundary dofs of this subdomain.</param>
 		private void MultiplySubdomainSchurComplement(int subdomainID, Vector input, Vector output)
-			=> getSubdomainMatrices(subdomainID).MultiplySchurComplementImplicitly(input, output);
+		{
+			getSubdomainMatrices(subdomainID).MultiplySchurComplementImplicitly(input, output);
+		}
 	}
 }

@@ -76,6 +76,7 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 					coarseProblemPcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 					coarseProblemPcgBuilder.ResidualTolerance = 2E-12;
 					coarseProblemPcgBuilder.DirectionVectorsRetention = new FixedDirectionVectorsRetention(40, true);
+					coarseProblemPcgBuilder.Convergence = new PureResidualConvergence();
 					coarseProblemFactory.CoarseProblemSolver = coarseProblemPcgBuilder.Build();
 				}
 				else
@@ -182,6 +183,7 @@ namespace MGroup.Solvers.DDM.Tests.FetiDP
 					coarseProblemPcgBuilder.DirectionVectorsRetention = new FixedDirectionVectorsRetention(30, true);
 					coarseProblemPcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(200);
 					coarseProblemPcgBuilder.ResidualTolerance = 2E-12;
+					coarseProblemPcgBuilder.Convergence = new PureResidualConvergence();
 					coarseProblemFactory.CoarseProblemSolver = coarseProblemPcgBuilder.Build();
 				}
 				else

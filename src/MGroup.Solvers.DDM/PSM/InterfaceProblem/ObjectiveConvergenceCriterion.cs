@@ -77,7 +77,6 @@ namespace MGroup.Solvers.DDM.PSM.InterfaceProblem
 
 			this.EllapsedMilliseconds += watch.ElapsedMilliseconds;
 
-			//Console.WriteLine($"Residual norm ratio = {result}");
 			return result;
 		}
 

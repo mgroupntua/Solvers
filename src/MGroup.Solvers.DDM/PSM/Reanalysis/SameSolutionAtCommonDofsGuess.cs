@@ -83,10 +83,6 @@ namespace MGroup.Solvers.DDM.PSM.Reanalysis
 			});
 
 			StoreCurrentInterationData();
-			#region debug
-			//double tol = 1E-7;
-			//bool check = newSolution.AreOverlappingEntriesEqual(tol);
-			#endregion
 			return (newSolution, isZero);
 		}
 
