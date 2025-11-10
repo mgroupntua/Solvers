@@ -34,9 +34,9 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'false'">
-    <PackageReference Include="MGroup.FEM.Structural" Version="0.2.0-unstable.137" />
-    <PackageReference Include="MGroup.NumericalAnalyzers" Version="0.2.0-unstable.68" />
-    <PackageReference Include="MGroup.NumericalAnalyzers.Discretization" Version="0.2.0-unstable.68" />
+    <PackageReference Include="MGroup.FEM.Structural" Version="0.2.0-unstable.144" />
+    <PackageReference Include="MGroup.NumericalAnalyzers" Version="0.2.0-unstable.74" />
+    <PackageReference Include="MGroup.NumericalAnalyzers.Discretization" Version="0.2.0-unstable.74" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'true'">

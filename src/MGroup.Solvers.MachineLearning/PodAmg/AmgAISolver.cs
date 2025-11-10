@@ -167,7 +167,7 @@ namespace MGroup.Solvers.MachineLearning
 			}
 
 			// CAE-FFNN training. Dimension 0 must be the number of samples.
-			double[,] solutionsAsArray = solutionVectors.Transpose().CopytoArray2D();
+			double[,] solutionsAsArray = solutionVectors.Transpose().CopyToArray2D();
 			surrogate.TrainAndEvaluate(parametersAsArray, solutionsAsArray, null);
 		}
 

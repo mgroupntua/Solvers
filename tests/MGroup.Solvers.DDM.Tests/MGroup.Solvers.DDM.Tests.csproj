@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'false'">
-    <PackageReference Include="MGroup.FEM.Thermal" Version="0.2.0-unstable.137" />
+    <PackageReference Include="MGroup.FEM.Thermal" Version="0.2.0-unstable.144" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'true'">
