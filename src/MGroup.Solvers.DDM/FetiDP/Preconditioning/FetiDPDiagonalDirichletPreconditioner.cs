@@ -1,12 +1,11 @@
 namespace MGroup.Solvers.DDM.FetiDP.Preconditioning
 {
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.Preconditioning;
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
+	using MGroup.LinearAlgebra.Iterative.Preconditioning;
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.LinearAlgebra.Matrices.Operators;
 	using MGroup.LinearAlgebra.Vectors;
-	using MGroup.MSolve.Solution.LinearSystem;
 	using MGroup.Solvers.DDM.FetiDP.Dofs;
 	using MGroup.Solvers.DDM.FetiDP.Scaling;
 	using MGroup.Solvers.DDM.FetiDP.StiffnessMatrices;
@@ -19,10 +18,10 @@ namespace MGroup.Solvers.DDM.FetiDP.Preconditioning
 		private Func<int, IFetiDPSubdomainMatrixManager> getSubdomainMatrices;
 		private IFetiDPScaling scaling;
 
-		public void Apply(IGlobalVector input, IGlobalVector output)
+		public void SolveLinearSystem(IVectorView input, IVector output)
 		{
-			DistributedOverlappingVector ye = lagrangeVectorIndexer.CheckCompatibleVector(input);
-			DistributedOverlappingVector xe = lagrangeVectorIndexer.CheckCompatibleVector(output);
+			DistributedOverlappingVector ye = lagrangeVectorIndexer.CastCompatibleVector(input);
+			DistributedOverlappingVector xe = lagrangeVectorIndexer.CastCompatibleVector(output);
 			//xe.Clear(); //TODO: Clear the existing local vectors instead of reallocating them
 
 			environment.DoPerNode(s =>
@@ -64,6 +63,6 @@ namespace MGroup.Solvers.DDM.FetiDP.Preconditioning
 			this.scaling = scaling;
 		}
 
-		public void UpdateMatrix(IGlobalMatrix matrix, bool isPatternModified) { }
+		public void UpdateMatrix(IMatrixView matrix, bool isPatternModified) { }
 	}
 }

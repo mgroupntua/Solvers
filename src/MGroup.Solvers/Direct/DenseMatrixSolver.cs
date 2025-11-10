@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Discretization;
 using MGroup.MSolve.Discretization.Entities;
 using MGroup.MSolve.Solution.LinearSystem;
-using MGroup.Solvers.AlgebraicModel;
 using MGroup.Solvers.Assemblers;
 using MGroup.Solvers.DofOrdering;
 using MGroup.Solvers.DofOrdering.Reordering;
@@ -50,9 +50,9 @@ namespace MGroup.Solvers.Direct
 		public override void Solve()
 		{
 			var watch = new Stopwatch();
-			if (LinearSystem.Solution.SingleVector == null)
+			if (LinearSystem.Solution == null)
 			{
-				LinearSystem.Solution.SingleVector = Vector.CreateZero(LinearSystem.Matrix.SingleMatrix.NumRows);
+				LinearSystem.Solution = Vector.CreateZero(LinearSystem.Matrix.NumRows);
 			}
 			else LinearSystem.Solution.Clear(); // no need to waste computational time on this in a direct solver
 
@@ -60,14 +60,13 @@ namespace MGroup.Solvers.Direct
 			if (mustInvert)
 			{
 				watch.Start();
-				var matrix = LinearSystem.Matrix.SingleMatrix;
 				if (isMatrixPositiveDefinite)
 				{
-					inverse = matrix.FactorCholesky(factorizeInPlace).Invert(true);
+					inverse = LinearSystem.Matrix.FactorCholesky(factorizeInPlace).Invert(true);
 				}
 				else
 				{
-					inverse = matrix.FactorLU(factorizeInPlace).Invert(true);
+					inverse = LinearSystem.Matrix.FactorLU(factorizeInPlace).Invert(true);
 				}
 				watch.Stop();
 				Logger.LogTaskDuration("Matrix factorization", watch.ElapsedMilliseconds);
@@ -77,7 +76,7 @@ namespace MGroup.Solvers.Direct
 
 			// Substitutions
 			watch.Start();
-			inverse.MultiplyIntoResult(LinearSystem.RhsVector.SingleVector, LinearSystem.Solution.SingleVector);
+			inverse.MultiplyIntoResult(LinearSystem.RhsVector, LinearSystem.Solution);
 			watch.Stop();
 			Logger.LogTaskDuration("Back/forward substitutions", watch.ElapsedMilliseconds);
 			Logger.IncrementAnalysisStep();
@@ -89,14 +88,13 @@ namespace MGroup.Solvers.Direct
 			if (mustInvert)
 			{
 				watch.Start();
-				var matrix = LinearSystem.Matrix.SingleMatrix;
 				if (isMatrixPositiveDefinite)
 				{
-					inverse = matrix.FactorCholesky(factorizeInPlace).Invert(true);
+					inverse = LinearSystem.Matrix.FactorCholesky(factorizeInPlace).Invert(true);
 				}
 				else
 				{
-					inverse = matrix.FactorLU(factorizeInPlace).Invert(true);
+					inverse = LinearSystem.Matrix.FactorLU(factorizeInPlace).Invert(true);
 				}
 				watch.Stop();
 				Logger.LogTaskDuration("Matrix factorization", watch.ElapsedMilliseconds);

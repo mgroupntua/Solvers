@@ -58,7 +58,7 @@ namespace MGroup.Solvers.MachineLearning.Tests.Examples
 					Debug.WriteLine($"Number of PCG iterations = {numPcgIterations}. Dofs = {solution.Length}.");
 					if (writeSolutionsToFile)
 					{
-						WriteSolutionToFile(solver.LinearSystem.Solution.SingleVector, response, i == 1);
+						WriteSolutionToFile(solver.LinearSystem.Solution, response, i == 1);
 					}
 				}
 			}
@@ -86,7 +86,7 @@ namespace MGroup.Solvers.MachineLearning.Tests.Examples
 			double computedDisplacement = solver.AlgebraicModel.ExtractSingleValue(
 				solver.LinearSystem.Solution, monitorNode, StructuralDof.TranslationZ);
 			int numIterations = solver.Logger.GetNumIterationsOfIterativeAlgorithm(analysisNo - 1);
-			return (computedDisplacement, solver.LinearSystem.Solution.SingleVector, numIterations);
+			return (computedDisplacement, solver.LinearSystem.Solution, numIterations);
 		}
 
 		private static (double response, Vector solution) ReadAnalysisResultsFromFile(int analysisID, AmgAISolver solver)

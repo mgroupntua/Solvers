@@ -30,15 +30,19 @@ namespace MGroup.Solvers.DDM.FetiDP.InterfaceProblem
 			this.subdomainMatrices = subdomainMatrices;
 		}
 
+		public int NumColumns => lagrangeVectorIndexer.NumGlobalIndices;
+
+		public int NumRows => lagrangeVectorIndexer.NumGlobalIndices;
+
 		public void Calculate(DistributedOverlappingIndexer lagrangeVectorIndexer)
 		{
 			this.lagrangeVectorIndexer = lagrangeVectorIndexer;
 		}
 
-		public void MultiplyVector(IGlobalVector input, IGlobalVector output)
+		public void Multiply(IVectorView input, IVector output)
 		{
-			DistributedOverlappingVector xe = lagrangeVectorIndexer.CheckCompatibleVector(input);
-			DistributedOverlappingVector ye = lagrangeVectorIndexer.CheckCompatibleVector(output);
+			DistributedOverlappingVector xe = lagrangeVectorIndexer.CastCompatibleVector(input);
+			DistributedOverlappingVector ye = lagrangeVectorIndexer.CastCompatibleVector(output);
 			//ye.Clear(); //TODO: Clear the existing local vectors instead of reallocating them
 
 			// Operations before coarse problem solution

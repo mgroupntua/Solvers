@@ -16,7 +16,6 @@ using MGroup.MSolve.Discretization.BoundaryConditions;
 using MGroup.Solvers.LinearSystem;
 using MGroup.Solvers.Assemblers;
 using MGroup.MSolve.Solution.AlgebraicModel;
-using MGroup.Solvers.AlgebraicModel;
 
 namespace MGroup.Solvers
 {

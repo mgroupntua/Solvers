@@ -2,10 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <!-- Import the global props file for development on local machines-->
+  <Import Project="..\..\..\Directory.Build.props" Condition="Exists('..\..\..\Directory.Build.props')" />
+  <PropertyGroup>
+    <UseLocalMSolveProjects Condition="'$(UseLocalMSolveProjects)' == ''">false</UseLocalMSolveProjects>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Compile Remove="Commons\**" />
     <EmbeddedResource Remove="Commons\**" />
@@ -17,10 +22,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MGroup.NumericalAnalyzers" Version="0.2.0-unstable.68" />
-    <PackageReference Include="MGroup.NumericalAnalyzers.Discretization" Version="0.2.0-unstable.68" /> 
-	<PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-    <PackageReference Include="MGroup.FEM.Structural" Version="0.2.0-unstable.137" />
+    <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0-release-24177-07" />
     <PackageReference Include="Moq" Version="4.13.0" />
     <PackageReference Include="OpenCover" Version="4.7.922" />
@@ -30,12 +32,27 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'false'">
+    <PackageReference Include="MGroup.FEM.Structural" Version="0.2.0-unstable.144" />
+    <PackageReference Include="MGroup.NumericalAnalyzers" Version="0.2.0-unstable.74" />
+    <PackageReference Include="MGroup.NumericalAnalyzers.Discretization" Version="0.2.0-unstable.74" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'true'">
+    <ProjectReference Include="..\..\..\FEM\src\MGroup.FEM.Structural\MGroup.FEM.Structural.csproj" />
+    <ProjectReference Include="..\..\..\NumericalAnalyzers\src\MGroup.NumericalAnalyzers\MGroup.NumericalAnalyzers.csproj" />
+    <ProjectReference Include="..\..\..\NumericalAnalyzers\src\MGroup.NumericalAnalyzers.Discretization\MGroup.NumericalAnalyzers.Discretization.csproj" />
+  </ItemGroup>
+  
   <ItemGroup>
     <None Remove="Commons\" />
   </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\..\src\MGroup.Solvers.MachineLearning\MGroup.Solvers.MachineLearning.csproj" />
   </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.2">
       <PrivateAssets>all</PrivateAssets>

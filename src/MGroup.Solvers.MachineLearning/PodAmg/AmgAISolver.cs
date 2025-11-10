@@ -14,7 +14,6 @@ namespace MGroup.Solvers.MachineLearning
 	using MGroup.MSolve.DataStructures;
 	using MGroup.MSolve.Discretization.Entities;
 	using MGroup.Solvers;
-	using MGroup.Solvers.AlgebraicModel;
 	using MGroup.Solvers.Assemblers;
 	using MGroup.Solvers.DofOrdering;
 	using MGroup.Solvers.DofOrdering.Reordering;
@@ -26,6 +25,7 @@ namespace MGroup.Solvers.MachineLearning
 	using MGroup.MachineLearning.TensorFlow;
 	using MGroup.LinearAlgebra.AlgebraicMultiGrid;
 	using MGroup.LinearAlgebra.Iterative.Stationary.CSR;
+	using MGroup.LinearAlgebra.Extensions;
 
 	public class AmgAISolver : ISolver
 	{
@@ -167,13 +167,13 @@ namespace MGroup.Solvers.MachineLearning
 			}
 
 			// CAE-FFNN training. Dimension 0 must be the number of samples.
-			double[,] solutionsAsArray = solutionVectors.Transpose().CopytoArray2D();
+			double[,] solutionsAsArray = solutionVectors.Transpose().CopyToArray2D();
 			surrogate.TrainAndEvaluate(parametersAsArray, solutionsAsArray, null);
 		}
 
 		private Vector SolveUsingInitialPreconditioner()
 		{
-			IMatrix matrix = LinearSystem.Matrix.SingleMatrix;
+			IMatrix matrix = LinearSystem.Matrix;
 			int systemSize = matrix.NumRows;
 
 			// Preconditioning
@@ -181,8 +181,7 @@ namespace MGroup.Solvers.MachineLearning
 
 			// Iterative algorithm
 			IterativeStatistics stats = pcgAlgorithm.Solve(matrix, initialPreconditioner,
-				LinearSystem.RhsVector.SingleVector, LinearSystem.Solution.SingleVector,
-				true, () => Vector.CreateZero(systemSize));
+				LinearSystem.RhsVector, LinearSystem.Solution, true);
 			if (!stats.HasConverged)
 			{
 				throw new IterativeSolverNotConvergedException(Name + " did not converge to a solution. PCG algorithm with "
@@ -191,25 +190,24 @@ namespace MGroup.Solvers.MachineLearning
 			}
 
 			Logger.LogIterativeAlgorithm(stats.NumIterationsRequired, stats.ResidualNormRatioEstimation);
-			return LinearSystem.Solution.SingleVector.Copy();
+			return LinearSystem.Solution.Copy();
 		}
 
 		private void SolveUsingPodAmgPreconditioner()
 		{
-			CsrMatrix matrix = LinearSystem.Matrix.SingleMatrix;
+			CsrMatrix matrix = LinearSystem.Matrix;
 			int systemSize = matrix.NumRows;
-			Vector rhs = LinearSystem.RhsVector.SingleVector;
+			Vector rhs = LinearSystem.RhsVector;
 
 			// Use ML prediction as initial guess.
 			double[] parameters = modelParametersCurrent.Copy();
 			double[] prediction = surrogate.Predict(parameters);
 			var solution = Vector.CreateFromArray(prediction);
-			LinearSystem.Solution.SingleVector = solution;
+			((IGlobalLinearSystem)LinearSystem).Solution = solution;
 
 			amgPreconditioner.UpdateMatrix(matrix, !matrixPatternWillNotBeModified);
 
-			IterativeStatistics stats = pcgAlgorithm.Solve(matrix, amgPreconditioner, rhs, solution,
-				false, () => Vector.CreateZero(systemSize));
+			IterativeStatistics stats = pcgAlgorithm.Solve(matrix, amgPreconditioner, rhs, solution, false);
 			if (!stats.HasConverged)
 			{
 				throw new IterativeSolverNotConvergedException(Name + " did not converge to a solution. PCG algorithm with "

@@ -8,10 +8,10 @@ namespace MGroup.Solvers.Direct
 	using MGroup.LinearAlgebra.Triangulation;
 	using MGroup.LinearAlgebra.Vectors;
 	using MGroup.MSolve.Discretization.Entities;
-	using MGroup.Solvers.AlgebraicModel;
 	using MGroup.Solvers.Assemblers;
 	using MGroup.Solvers.DofOrdering;
 	using MGroup.Solvers.DofOrdering.Reordering;
+	using MGroup.Solvers.LinearSystem;
 
 	public class LUCscSolver : SingleSubdomainSolverBase<CscMatrix>
 	{
@@ -44,11 +44,11 @@ namespace MGroup.Solvers.Direct
 		public override void Solve()
 		{
 			var watch = new Stopwatch();
-			CscMatrix matrix = LinearSystem.Matrix.SingleMatrix;
+			CscMatrix matrix = LinearSystem.Matrix;
 			int systemSize = matrix.NumRows;
-			if (LinearSystem.Solution.SingleVector == null)
+			if (LinearSystem.Solution == null)
 			{
-				LinearSystem.Solution.SingleVector = Vector.CreateZero(systemSize);
+				LinearSystem.Solution = Vector.CreateZero(systemSize);
 			}
 			//else linearSystem.Solution.Clear(); // no need to waste computational time on this in a direct solver
 
@@ -66,7 +66,7 @@ namespace MGroup.Solvers.Direct
 
 			// Substitutions
 			watch.Start();
-			factorization.SolveLinearSystem(LinearSystem.RhsVector.SingleVector, LinearSystem.Solution.SingleVector);
+			factorization.SolveLinearSystem(LinearSystem.RhsVector, LinearSystem.Solution);
 			watch.Stop();
 			Logger.LogTaskDuration("Back/forward substitutions", watch.ElapsedMilliseconds);
 			Logger.IncrementAnalysisStep();
@@ -77,7 +77,7 @@ namespace MGroup.Solvers.Direct
 			var watch = new Stopwatch();
 
 			// Factorization
-			CscMatrix matrix = LinearSystem.Matrix.SingleMatrix;
+			CscMatrix matrix = LinearSystem.Matrix;
 			int systemSize = matrix.NumRows;
 			if (mustFactorize)
 			{

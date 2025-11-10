@@ -45,7 +45,7 @@ namespace MGroup.Solvers.DDM.PSM.Scaling
 					int numBoundaryDofs = getSubdomainDofs(subdomainID).DofsBoundaryToFree.Length;
 
 					var subdomainW = new double[numBoundaryDofs];
-					double[] inverseMultiplicities = boundaryDofIndexer.GetLocalComponent(subdomainID).InverseMultiplicities;
+					double[] inverseMultiplicities = boundaryDofIndexer.GetInverseMultiplicities(subdomainID);
 					Array.Copy(inverseMultiplicities, subdomainW, numBoundaryDofs);
 
 					this.inverseMultiplicities[subdomainID] = subdomainW;

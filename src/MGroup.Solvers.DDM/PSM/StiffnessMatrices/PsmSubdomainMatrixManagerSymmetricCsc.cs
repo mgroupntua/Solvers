@@ -40,7 +40,7 @@ namespace MGroup.Solvers.DDM.PSM.StiffnessMatrices
 		{
 			//TODO: Implement SchurComplement with A11 being in CSR format.
 			TriangularUpper kbbUpper = Kbb.ExtractUpperAndDiagonalToPacked();
-			var kbbSymm = SymmetricMatrix.CreateFromPackedColumnMajorArray(kbbUpper.RawData);
+			var kbbSymm = SymmetricMatrix.CreateFromPackedColumnMajorArray(kbbUpper.RawValues);
 			return SchurComplementPckCsrSymCsc.CalcSchurComplement(kbbSymm, Kbi, inverseKii);
 		}
 

@@ -3,11 +3,10 @@ namespace MGroup.Solvers.DDM.PFetiDP.Preconditioner
 	using System.Collections.Concurrent;
 
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.Preconditioning;
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
+	using MGroup.LinearAlgebra.Iterative.Preconditioning;
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.LinearAlgebra.Vectors;
-	using MGroup.MSolve.Solution.LinearSystem;
 	using MGroup.Solvers.DDM.FetiDP.CoarseProblem;
 	using MGroup.Solvers.DDM.FetiDP.StiffnessMatrices;
 	using MGroup.Solvers.DDM.Mappings;
@@ -43,7 +42,7 @@ namespace MGroup.Solvers.DDM.PFetiDP.Preconditioner
 
 		public IPreconditioner Preconditioner => this;
 
-		public void Apply(IGlobalVector input, IGlobalVector output)
+		public void SolveLinearSystem(IVectorView input, IVector output)
 		{
 			throw new NotImplementedException();
 			//DistributedOverlappingVector ybe = getIndexer().CheckCompatibleVector(input);
@@ -124,7 +123,7 @@ namespace MGroup.Solvers.DDM.PFetiDP.Preconditioner
 
 		public IPreconditioner CopyWithInitialSettings() => throw new NotImplementedException();
 
-		public void UpdateMatrix(IGlobalMatrix matrix, bool isPatternModified) { }
+		public void UpdateMatrix(IMatrixView matrix, bool isPatternModified) { }
 
 		private static FullMatrixRowMajor SelectAndScaleRows(DiagonalMatrix Wb, MappingMatrixN Nrb, Matrix invKrr_Krc)
 		{

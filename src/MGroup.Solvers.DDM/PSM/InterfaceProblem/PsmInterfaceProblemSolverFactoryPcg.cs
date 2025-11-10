@@ -2,8 +2,8 @@
 //		Refactor the iterative methods in LinearAlgebra and remove this kind of adapters.
 namespace MGroup.Solvers.DDM.PSM.InterfaceProblem
 {
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG;
+	using MGroup.LinearAlgebra.Iterative;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 	using MGroup.LinearAlgebra.Iterative.Termination.Iterations;
 
 	public class PsmInterfaceProblemSolverFactoryPcg : IPsmInterfaceProblemSolverFactory
@@ -16,9 +16,9 @@ namespace MGroup.Solvers.DDM.PSM.InterfaceProblem
 
 		public bool UseObjectiveConvergenceCriterion { get; set; } = false;
 
-		public IDistributedIterativeMethod BuildIterativeMethod(IPcgResidualConvergence convergenceCriterion)
+		public ISystemSolutionIterativeMethod BuildIterativeMethod(IPcgResidualConvergence convergenceCriterion)
 		{
-			var pcgBuilder = new PcgAlgorithm.Builder();
+			var pcgBuilder = new PcgAlgorithm.Factory();
 			pcgBuilder.ResidualTolerance = this.ResidualTolerance;
 			pcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(this.MaxIterations);
 			pcgBuilder.Convergence = convergenceCriterion;

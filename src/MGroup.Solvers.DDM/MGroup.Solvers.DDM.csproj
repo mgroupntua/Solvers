@@ -6,8 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MGroup.LinearAlgebra.Distributed" Version="0.1.0-unstable.224" />
+  <!-- Import the global props file for development on local machines-->
+  <Import Project="..\..\..\Directory.Build.props" Condition="Exists('..\..\..\Directory.Build.props')" />
+  <PropertyGroup>
+    <UseLocalMSolveProjects Condition="'$(UseLocalMSolveProjects)' == ''">false</UseLocalMSolveProjects>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'false'">
+    <PackageReference Include="MGroup.LinearAlgebra.Distributed" Version="0.1.0-unstable.264" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'true'">
+    <ProjectReference Include="..\..\..\LinearAlgebra\src\MGroup.LinearAlgebra.Distributed\MGroup.LinearAlgebra.Distributed.csproj" />
   </ItemGroup>
 
   <ItemGroup>

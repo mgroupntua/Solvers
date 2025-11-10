@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using MGroup.LinearAlgebra.Matrices;
+using MGroup.LinearAlgebra.Vectors;
 using MGroup.MSolve.Solution.LinearSystem;
 
 //TODO: Perhaps the solvers should access directly the TMatrix Matrix, Vector Rhs, Vector Solution, instead of 
@@ -11,53 +12,60 @@ namespace MGroup.Solvers.LinearSystem
 	public class GlobalLinearSystem<TMatrix> : IGlobalLinearSystem
 		where TMatrix : class, IMatrix
 	{
-		private readonly Func<IGlobalVector, GlobalVector> checkCompatibleVector;
-		private readonly Func<IGlobalMatrix, GlobalMatrix<TMatrix>> checkCompatibleMatrix;
+		private readonly Func<IVector, Vector> checkCompatibleVector;
+		private readonly Func<IMatrix, TMatrix> checkCompatibleMatrix;
 
-		public GlobalLinearSystem(Func<IGlobalVector, GlobalVector> checkCompatibleVector,
-			Func<IGlobalMatrix, GlobalMatrix<TMatrix>> checkCompatibleMatrix)
+		public GlobalLinearSystem(Func<IVector, Vector> checkCompatibleVector,
+			Func<IMatrix, TMatrix> checkCompatibleMatrix)
 		{
 			this.checkCompatibleVector = checkCompatibleVector;
 			this.checkCompatibleMatrix = checkCompatibleMatrix;
 			Observers = new HashSet<ILinearSystemObserver>();
 		}
 
-		IGlobalMatrix IGlobalLinearSystem.Matrix
+		IMatrix IGlobalLinearSystem.Matrix
 		{
 			get => Matrix;
 			set
 			{
-				GlobalMatrix<TMatrix> globalMatrix = checkCompatibleMatrix(value);
+				TMatrix matrix = checkCompatibleMatrix(value);
 				foreach (var observer in Observers)
 				{
 					observer.HandleMatrixWillBeSet();
 				}
-				Matrix = globalMatrix;
+				Matrix = matrix;
 			}
 		}
 
 		//TODO: I would rather this was internal, but it is needed by the test classes
-		public GlobalMatrix<TMatrix> Matrix { get; internal set; }
-
+		public TMatrix Matrix { get; internal set; }
 
 		public HashSet<ILinearSystemObserver> Observers { get; }
 
-		IGlobalVector IGlobalLinearSystem.RhsVector
+		IVector IGlobalLinearSystem.RhsVector
 		{
 			get => RhsVector;
 			set
 			{
-				GlobalVector globalVector = checkCompatibleVector(value);
-				RhsVector = globalVector;
+				Vector vector = checkCompatibleVector(value);
+				RhsVector = vector;
 			}
 		}
 
 		//TODO: I would rather this was internal, but it is needed by the test classes
-		public GlobalVector RhsVector { get; internal set; }
+		public Vector RhsVector { get; internal set; }
 
-		IGlobalVector IGlobalLinearSystem.Solution => Solution;
+		IVector IGlobalLinearSystem.Solution
+		{
+			get => Solution;
+			set
+			{
+				Vector vector = checkCompatibleVector(value);
+				Solution = vector;
+			}
+		}
 
 		//TODO: I would rather this was internal, but it is needed by the test classes
-		public GlobalVector Solution { get; internal set; }
+		public Vector Solution { get; internal set; }
 	}
 }

@@ -16,10 +16,10 @@ namespace MGroup.Solvers.DDM.Tests.ExampleModels
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.MSolve.Discretization.Entities;
 	using MGroup.NumericalAnalyzers;
-	using MGroup.Solvers.AlgebraicModel;
 	using MGroup.Solvers.DDM.FetiDP.Dofs;
 	using MGroup.Solvers.DDM.Tests.Commons;
 	using MGroup.Solvers.Direct;
+	using MGroup.Solvers.LinearSystem;
 	using MGroup.Solvers.Results;
 
 	/// <summary>

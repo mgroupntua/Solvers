@@ -1,8 +1,8 @@
 namespace MGroup.Solvers.DDM.FetiDP.CoarseProblem
 {
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.Preconditioning;
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
+	using MGroup.LinearAlgebra.Iterative.Preconditioning;
 	using MGroup.LinearAlgebra.Vectors;
 	using MGroup.Solvers.DDM.FetiDP.StiffnessMatrices;
 

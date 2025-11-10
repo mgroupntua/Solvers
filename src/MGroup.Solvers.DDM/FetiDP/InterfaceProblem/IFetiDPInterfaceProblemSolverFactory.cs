@@ -1,7 +1,7 @@
 namespace MGroup.Solvers.DDM.FetiDP.InterfaceProblem
 {
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG;
+	using MGroup.LinearAlgebra.Iterative;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 
 	public interface IFetiDPInterfaceProblemSolverFactory
 	{
@@ -13,6 +13,6 @@ namespace MGroup.Solvers.DDM.FetiDP.InterfaceProblem
 
 		bool UseObjectiveConvergenceCriterion { get; set; }
 
-		IDistributedIterativeMethod BuildIterativeMethod(IPcgResidualConvergence convergenceCriterion);
+		ISystemSolutionIterativeMethod BuildIterativeMethod(IPcgResidualConvergence convergenceCriterion);
 	}
 }

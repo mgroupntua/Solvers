@@ -1,8 +1,8 @@
 namespace MGroup.Solvers.DDM.PSM.Preconditioning
 {
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.Preconditioning;
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
+	using MGroup.LinearAlgebra.Iterative.Preconditioning;
 	using MGroup.Solvers.DDM.PSM.InterfaceProblem;
 
 	public interface IPsmPreconditioner
