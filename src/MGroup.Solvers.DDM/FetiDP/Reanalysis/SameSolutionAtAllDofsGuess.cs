@@ -25,7 +25,7 @@ namespace MGroup.Solvers.DDM.FetiDP.Reanalysis
 		public (DistributedOverlappingVector guess, bool isZero) GuessNextSolution(
 			DistributedOverlappingIndexer currentLagrangeVectorIndexer, DistributedOverlappingVector previousSolution)
 		{
-			if (currentLagrangeVectorIndexer.IsCompatibleVector(previousSolution))
+			if (currentLagrangeVectorIndexer.IsCompatibleWith(previousSolution.Indexer))
 			{
 				// Reuse the existing whole vector.
 				//TODO: Won't this cause problems with references? Should I just copy the subvectors to a new one? 

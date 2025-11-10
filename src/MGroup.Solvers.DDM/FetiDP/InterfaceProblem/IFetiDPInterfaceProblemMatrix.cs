@@ -1,7 +1,7 @@
 namespace MGroup.Solvers.DDM.FetiDP.InterfaceProblem
 {
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
-	using MGroup.MSolve.Solution.LinearSystem;
+	using MGroup.LinearAlgebra.Iterative;
 
 	public interface IFetiDPInterfaceProblemMatrix : ILinearTransformation
 	{

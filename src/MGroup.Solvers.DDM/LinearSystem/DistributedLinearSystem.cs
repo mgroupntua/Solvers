@@ -5,23 +5,24 @@ namespace MGroup.Solvers.DDM.LinearSystem
 
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
 	using MGroup.LinearAlgebra.Matrices;
+	using MGroup.LinearAlgebra.Vectors;
 	using MGroup.MSolve.Solution.LinearSystem;
 
 	public class DistributedLinearSystem<TMatrix> : IGlobalLinearSystem
 		where TMatrix : class, IMatrix
 	{
-		private readonly Func<IGlobalVector, DistributedOverlappingVector> checkCompatibleVector;
-		private readonly Func<IGlobalMatrix, DistributedOverlappingMatrix<TMatrix>> checkCompatibleMatrix;
+		private readonly Func<IVector, DistributedOverlappingVector> checkCompatibleVector;
+		private readonly Func<IMatrix, DistributedOverlappingMatrix<TMatrix>> checkCompatibleMatrix;
 
-		public DistributedLinearSystem(Func<IGlobalVector, DistributedOverlappingVector> checkCompatibleVector,
-			Func<IGlobalMatrix, DistributedOverlappingMatrix<TMatrix>> checkCompatibleMatrix)
+		public DistributedLinearSystem(Func<IVector, DistributedOverlappingVector> checkCompatibleVector,
+			Func<IMatrix, DistributedOverlappingMatrix<TMatrix>> checkCompatibleMatrix)
 		{
 			this.checkCompatibleVector = checkCompatibleVector;
 			this.checkCompatibleMatrix = checkCompatibleMatrix;
 			Observers = new HashSet<ILinearSystemObserver>();
 		}
 
-		IGlobalMatrix IGlobalLinearSystem.Matrix
+		IMatrix IGlobalLinearSystem.Matrix
 		{
 			get => Matrix;
 			set
@@ -31,6 +32,7 @@ namespace MGroup.Solvers.DDM.LinearSystem
 				{
 					observer.HandleMatrixWillBeSet();
 				}
+
 				Matrix = globalMatrix;
 			}
 		}
@@ -39,7 +41,7 @@ namespace MGroup.Solvers.DDM.LinearSystem
 
 		public HashSet<ILinearSystemObserver> Observers { get; }
 
-		IGlobalVector IGlobalLinearSystem.RhsVector
+		IVector IGlobalLinearSystem.RhsVector
 		{
 			get => RhsVector;
 			set
@@ -51,7 +53,15 @@ namespace MGroup.Solvers.DDM.LinearSystem
 
 		public DistributedOverlappingVector RhsVector { get; set; }
 
-		IGlobalVector IGlobalLinearSystem.Solution => Solution;
+		IVector IGlobalLinearSystem.Solution
+		{
+			get => Solution;
+			set
+			{
+				DistributedOverlappingVector globalVector = checkCompatibleVector(value);
+				Solution = globalVector;
+			}
+		}
 
 		public DistributedOverlappingVector Solution { get; set; }
 	}

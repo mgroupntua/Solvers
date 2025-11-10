@@ -1,22 +1,16 @@
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+
 using MGroup.LinearAlgebra.Iterative;
-using MGroup.LinearAlgebra.Iterative.ConjugateGradient;
-using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
+using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient.BlockPcg;
 using MGroup.LinearAlgebra.Iterative.Preconditioning;
 using MGroup.LinearAlgebra.Matrices;
 using MGroup.LinearAlgebra.Vectors;
-using MGroup.MSolve.Discretization;
-using MGroup.MSolve.Discretization.Entities;
-using MGroup.MSolve.Solution;
 using MGroup.MSolve.DataStructures;
+using MGroup.MSolve.Discretization.Entities;
 using MGroup.Solvers.Assemblers;
 using MGroup.Solvers.DofOrdering;
 using MGroup.Solvers.DofOrdering.Reordering;
-using MGroup.MSolve.Solution.LinearSystem;
 using MGroup.Solvers.LinearSystem;
-using MGroup.Solvers.AlgebraicModel;
 
 namespace MGroup.Solvers.Iterative
 {
@@ -59,11 +53,11 @@ namespace MGroup.Solvers.Iterative
 		{
 			var watch = new Stopwatch();
 
-			IMatrix matrix = LinearSystem.Matrix.SingleMatrix;
+			IMatrix matrix = LinearSystem.Matrix;
 			int systemSize = matrix.NumRows;
-			if (LinearSystem.Solution.SingleVector == null)
+			if (LinearSystem.Solution == null)
 			{
-				LinearSystem.Solution.SingleVector = Vector.CreateZero(systemSize);
+				LinearSystem.Solution = Vector.CreateZero(systemSize);
 			}
 			else LinearSystem.Solution.Clear();
 
@@ -81,8 +75,8 @@ namespace MGroup.Solvers.Iterative
 			// Iterative algorithm
 			watch.Start();
 			IterativeStatistics stats = blockPcgAlgorithm.Solve(matrix, preconditioner,
-				LinearSystem.RhsVector.SingleVector, LinearSystem.Solution.SingleVector,
-				true, () => Vector.CreateZero(systemSize)); //TODO: This way, we don't know that x0=0, which will result in an extra b-A*0
+				LinearSystem.RhsVector, LinearSystem.Solution,
+				true); //TODO: This way, we don't know that x0=0, which will result in an extra b-A*0
 			if (!stats.HasConverged)
 			{
 				throw new IterativeSolverNotConvergedException(Name + " did not converge to a solution. BlockPCG algorithm run for"
@@ -102,7 +96,7 @@ namespace MGroup.Solvers.Iterative
 			var watch = new Stopwatch();
 
 			// Preconditioning
-			IMatrix matrix = LinearSystem.Matrix.SingleMatrix;
+			IMatrix matrix = LinearSystem.Matrix;
 			int systemSize = matrix.NumRows;
 			if (mustUpdatePreconditioner)
 			{
@@ -129,8 +123,7 @@ namespace MGroup.Solvers.Iterative
 				//      in CG will be slow.
 				Vector rhsVector = otherMatrix.GetColumn(j);
 
-				IterativeStatistics stats = blockPcgAlgorithm.Solve(matrix, preconditioner, rhsVector,
-					solutionVector, true, () => Vector.CreateZero(systemSize));
+				IterativeStatistics stats = blockPcgAlgorithm.Solve(matrix, preconditioner, rhsVector, solutionVector, true);
 
 				solutionVectors.SetSubcolumn(j, solutionVector);
 			}

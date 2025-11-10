@@ -3,10 +3,9 @@ namespace MGroup.Solvers.DDM.FetiDP.CoarseProblem
 	using System.Diagnostics;
 
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG;
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
 	using MGroup.LinearAlgebra.Iterative;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 	using MGroup.LinearAlgebra.Iterative.Termination.Iterations;
 	using MGroup.LinearAlgebra.Vectors;
 	using MGroup.Solvers.DDM.FetiDP.Dofs;
@@ -20,7 +19,7 @@ namespace MGroup.Solvers.DDM.FetiDP.CoarseProblem
 		private readonly Func<int, FetiDPSubdomainDofs> getSubdomainDofs;
 		private readonly Func<int, IFetiDPSubdomainMatrixManager> getSubdomainMatrices;
 		private readonly IFetiDPCoarseProblemDistributedPreconditioner coarseProblemPreconditioner;
-		private readonly IDistributedIterativeMethod coarseProblemSolver;
+		private readonly ISystemSolutionIterativeMethod coarseProblemSolver;
 		//private readonly bool areSchurComplementsExplicit;
 
 		private DistributedOverlappingIndexer cornerDofIndexer;
@@ -28,7 +27,7 @@ namespace MGroup.Solvers.DDM.FetiDP.CoarseProblem
 
 		public FetiDPCoarseProblemDistributed(IComputeEnvironment environment, ISubdomainTopology subdomainTopology,
 			Func<int, FetiDPSubdomainDofs> getSubdomainDofs, Func<int, IFetiDPSubdomainMatrixManager> getSubdomainMatrices,
-			IDistributedIterativeMethod coarseProblemSolver, bool useJacobiPreconditioner/*, bool areSchurComplementsExplicit*/)
+			ISystemSolutionIterativeMethod coarseProblemSolver, bool useJacobiPreconditioner/*, bool areSchurComplementsExplicit*/)
 		{
 			this.environment = environment;
 			this.subdomainTopology = subdomainTopology;
@@ -56,7 +55,7 @@ namespace MGroup.Solvers.DDM.FetiDP.CoarseProblem
 
 			if (logger != null)
 			{
-				logger.LogProblemSize(2, cornerDofIndexer.CountUniqueEntries());
+				logger.LogProblemSize(2, cornerDofIndexer.NumGlobalIndices);
 			}
 		}
 
@@ -98,15 +97,15 @@ namespace MGroup.Solvers.DDM.FetiDP.CoarseProblem
 				//AreSchurComplementsExplicit = true;
 				UseJacobiPreconditioner = true;
 
-				var pcgBuilder = new PcgAlgorithm.Builder();
-				pcgBuilder.ResidualTolerance = 1E-6;
-				pcgBuilder.MaxIterationsProvider = new FixedMaxIterationsProvider(100);
-				CoarseProblemSolver = pcgBuilder.Build();
+				var pcgFactory = new PcgAlgorithm.Factory();
+				pcgFactory.ResidualTolerance = 1E-6;
+				pcgFactory.MaxIterationsProvider = new FixedMaxIterationsProvider(100);
+				CoarseProblemSolver = pcgFactory.Build();
 			}
 
 			//public bool AreSchurComplementsExplicit { get; set; }
 
-			public IDistributedIterativeMethod CoarseProblemSolver { get; set; }
+			public ISystemSolutionIterativeMethod CoarseProblemSolver { get; set; }
 
 			public bool UseJacobiPreconditioner { get; set; }
 

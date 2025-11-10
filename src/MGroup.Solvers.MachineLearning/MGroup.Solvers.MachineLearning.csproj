@@ -9,15 +9,29 @@
     <Description>A collection of classes combining MachineLearning and Solvers for the implementation of custom-tailored solvers for the solution of computational mechanics problems using AI techniques</Description>
     <PackageIconUrl>https://github.com/mgroupntua/Solvers/raw/develop/MGroupSolversMachineLearning.png</PackageIconUrl>
   </PropertyGroup>
+  
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>
+
+  <!-- Import the global props file for development on local machines-->
+  <Import Project="..\..\..\Directory.Build.props" Condition="Exists('..\..\..\Directory.Build.props')" />
+  <PropertyGroup>
+    <UseLocalMSolveProjects Condition="'$(UseLocalMSolveProjects)' == ''">false</UseLocalMSolveProjects>
+  </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="MGroup.Constitutive.Structural.MachineLearning" Version="0.2.0-unstable.43" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'false'">
+    <PackageReference Include="MGroup.Constitutive.Structural.MachineLearning" Version="0.2.0-unstable.54" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'true'">
+    <ProjectReference Include="..\..\..\MachineLearning\src\MGroup.Constitutive.Structural.MachineLearning\MGroup.Constitutive.Structural.MachineLearning.csproj" />
   </ItemGroup>
   
   <ItemGroup>

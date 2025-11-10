@@ -1,6 +1,6 @@
 namespace MGroup.Solvers.DDM.FetiDP.InterfaceProblem
 {
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.Solvers.DDM.LinearSystem;
 
@@ -15,6 +15,9 @@ namespace MGroup.Solvers.DDM.FetiDP.InterfaceProblem
 		{
 			this.algebraicModel = algebraicModel;
 		}
+
+		public IPcgResidualConvergence CopyWithInitialSettings()
+			=> new ApproximatePcgResidualConvergence<TMatrix>(algebraicModel);
 
 		public double EstimateResidualNormRatio(PcgAlgorithmBase pcg)
 		{

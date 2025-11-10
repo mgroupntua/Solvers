@@ -4,12 +4,11 @@ namespace MGroup.Solvers.DDM.FetiDP
 	using System.Diagnostics;
 
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG;
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
 	using MGroup.LinearAlgebra.Implementations;
 	using MGroup.LinearAlgebra.Implementations.Managed;
 	using MGroup.LinearAlgebra.Iterative;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.MSolve.Discretization.Entities;
 	using MGroup.MSolve.Solution;
@@ -39,7 +38,7 @@ namespace MGroup.Solvers.DDM.FetiDP
 		private readonly IComputeEnvironment environment;
 		private readonly IInitialSolutionGuessStrategy initialSolutionGuessStrategy;
 		private readonly IFetiDPInterfaceProblemMatrix interfaceProblemMatrix;
-		private readonly IDistributedIterativeMethod interfaceProblemSolver;
+		private readonly ISystemSolutionIterativeMethod interfaceProblemSolver;
 		private readonly IFetiDPInterfaceProblemVectors interfaceProblemVectors;
 		private readonly IModel model;
 		private readonly IModifiedCornerDofs modifiedCornerDofs;
@@ -270,9 +269,9 @@ namespace MGroup.Solvers.DDM.FetiDP
 				environment.DoPerNode(subdomainID =>
 				{
 					subdomainLagranges[subdomainID].FindCommonLagrangesWithNeighbors();
-					subdomainLagranges[subdomainID].InitializeDistributedVectorIndexer(
-						this.lagrangeVectorIndexer.GetLocalComponent(subdomainID));
 				});
+				this.lagrangeVectorIndexer.Initialize(
+					subdomainID => subdomainLagranges[subdomainID].InitializeDistributedVectorIndexer());
 			}
 			else
 			{
@@ -466,8 +465,8 @@ namespace MGroup.Solvers.DDM.FetiDP
 			if (LoggerDdm != null)
 			{
 				LoggerDdm.LogSolverConvergenceData(stats.NumIterationsRequired, stats.ResidualNormRatioEstimation);
-				LoggerDdm.LogProblemSize(0, algebraicModel.FreeDofIndexer.CountUniqueEntries());
-				LoggerDdm.LogProblemSize(1, lagrangeVectorIndexer.CountUniqueEntries());
+				LoggerDdm.LogProblemSize(0, algebraicModel.FreeDofIndexer.NumGlobalIndices);
+				LoggerDdm.LogProblemSize(1, lagrangeVectorIndexer.NumGlobalIndices);
 
 				Dictionary<int, int> subdomainProblemSize = environment.AllGather(
 					subdomainID => algebraicModel.LinearSystem.RhsVector.LocalVectors[subdomainID].Length);
@@ -480,9 +479,9 @@ namespace MGroup.Solvers.DDM.FetiDP
 				}
 
 				int totalLocalTransfers = environment.AllReduceSum(
-					subdomainID => lagrangeVectorIndexer.GetLocalComponent(subdomainID).CountCommonEntries().local);
+					subdomainID => lagrangeVectorIndexer.CountCommonEntriesOfNodeWithNeighbors(subdomainID).local);
 				int totalRemoteTransfers = environment.AllReduceSum(
-					subdomainID => lagrangeVectorIndexer.GetLocalComponent(subdomainID).CountCommonEntries().remote);
+					subdomainID => lagrangeVectorIndexer.CountCommonEntriesOfNodeWithNeighbors(subdomainID).remote);
 				LoggerDdm.LogTransfers(totalLocalTransfers, totalRemoteTransfers);
 			}
 		}

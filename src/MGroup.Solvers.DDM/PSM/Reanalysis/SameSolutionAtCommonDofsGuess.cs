@@ -50,7 +50,7 @@ namespace MGroup.Solvers.DDM.PSM.Reanalysis
 				if (reanalysisOptions.ModifiedSubdomains.IsConnectivityModified(subdomainID))
 				{
 					// Use the previous values of the unmodified dofs. The rest will be 0.
-					var currentVector = Vector.CreateZero(currentBoundaryDofIndexer.GetLocalComponent(subdomainID).NumEntries);
+					var currentVector = Vector.CreateZero(currentBoundaryDofIndexer.GetNumLocalIndices(subdomainID));
 					Vector previousVector = previousSolution.LocalVectors[subdomainID];
 
 					IntDofTable currentBoundaryDofs = getSubdomainDofs(subdomainID).DofOrderingBoundary;
@@ -83,10 +83,6 @@ namespace MGroup.Solvers.DDM.PSM.Reanalysis
 			});
 
 			StoreCurrentInterationData();
-			#region debug
-			//double tol = 1E-7;
-			//bool check = newSolution.AreOverlappingEntriesEqual(tol);
-			#endregion
 			return (newSolution, isZero);
 		}
 

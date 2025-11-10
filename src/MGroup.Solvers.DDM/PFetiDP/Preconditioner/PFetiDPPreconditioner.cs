@@ -3,8 +3,8 @@ namespace MGroup.Solvers.DDM.PFetiDP.Preconditioner
 	using System.Collections.Concurrent;
 
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.Preconditioning;
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
+	using MGroup.LinearAlgebra.Iterative.Preconditioning;
 	using MGroup.LinearAlgebra.Matrices;
 	using MGroup.LinearAlgebra.Vectors;
 	using MGroup.MSolve.Solution.LinearSystem;
@@ -39,10 +39,11 @@ namespace MGroup.Solvers.DDM.PFetiDP.Preconditioner
 
 		public IPreconditioner Preconditioner => this;
 
-		public void Apply(IGlobalVector input, IGlobalVector output)
+		public void SolveLinearSystem(IVectorView input, IVector output)
 		{
-			DistributedOverlappingVector ybe = getIndexer().CheckCompatibleVector(input);
-			DistributedOverlappingVector xbe = getIndexer().CheckCompatibleVector(output);
+			DistributedOverlappingIndexer indexer = getIndexer();
+			DistributedOverlappingVector ybe = indexer.CastCompatibleVector(input);
+			DistributedOverlappingVector xbe = indexer.CastCompatibleVector(output);
 			xbe.Clear();
 
 			// Operations before coarse problem solution
@@ -106,6 +107,7 @@ namespace MGroup.Solvers.DDM.PFetiDP.Preconditioner
 		}
 
 		public IPreconditioner CopyWithInitialSettings() => throw new NotImplementedException();
-		public void UpdateMatrix(IGlobalMatrix matrix, bool isPatternModified) => throw new NotImplementedException();
+
+		public void UpdateMatrix(IMatrixView matrix, bool isPatternModified) => throw new NotImplementedException();
 	}
 }

@@ -51,7 +51,7 @@ namespace MGroup.Solvers.DDM.PSM.InterfaceProblem
 
 			InterfaceProblemRhs = new DistributedOverlappingVector(indexer, fbCondensed);
 			InterfaceProblemRhs.CacheSendRecvBuffers = cacheDistributedVectorBuffers;
-			previousCondensedFbVectors = InterfaceProblemRhs.Copy();
+			previousCondensedFbVectors = InterfaceProblemRhs.CopyAsDistributed();
 			InterfaceProblemRhs.SumOverlappingEntries();
 		}
 

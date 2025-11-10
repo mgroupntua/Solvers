@@ -3,12 +3,14 @@ namespace MGroup.Solvers.DDM.FetiDP.InterfaceProblem
 	using System.Diagnostics;
 
 	using MGroup.Environments;
-	using MGroup.LinearAlgebra.Distributed.IterativeMethods.PCG;
 	using MGroup.LinearAlgebra.Distributed.Overlapping;
+	using MGroup.LinearAlgebra.Iterative.PreconditionedConjugateGradient;
 	using MGroup.LinearAlgebra.Matrices;
+	using MGroup.LinearAlgebra.Vectors;
 	using MGroup.MSolve.Solution.LinearSystem;
 	using MGroup.Solvers.DDM.FetiDP.Vectors;
 	using MGroup.Solvers.DDM.LinearSystem;
+	using MGroup.Solvers.DDM.PSM.InterfaceProblem;
 
 	/// <summary>
 	/// At each iteration, it checks if ||K * u - f|| / ||f|| &lt; tol, where all vectors and matrices correspond to the free 
@@ -36,6 +38,9 @@ namespace MGroup.Solvers.DDM.FetiDP.InterfaceProblem
 
 		public long EllapsedMilliseconds { get; set; } = 0;
 
+		public IPcgResidualConvergence CopyWithInitialSettings()
+			=> new ObjectiveConvergenceCriterion<TMatrix>(environment, algebraicModel, solutionRecovery);
+
 		public double EstimateResidualNormRatio(PcgAlgorithmBase pcg)
 		{
 			var watch = new Stopwatch();
@@ -46,8 +51,8 @@ namespace MGroup.Solvers.DDM.FetiDP.InterfaceProblem
 			var Uf = new DistributedOverlappingVector(algebraicModel.FreeDofIndexer);
 			solutionRecovery.CalcPrimalSolution(lambda, Uf);
 
-			IGlobalVector Ff = algebraicModel.LinearSystem.RhsVector;
-			IGlobalVector residual = Ff.CreateZero();
+			IVector Ff = algebraicModel.LinearSystem.RhsVector;
+			IVector residual = Ff.CreateZeroVectorWithSameFormat();
 
 			if (optimizationsForSymmetricCscMatrix)
 			{
@@ -55,12 +60,12 @@ namespace MGroup.Solvers.DDM.FetiDP.InterfaceProblem
 				{
 					KffCsr = CopyKffToCsr();
 				}
-				KffCsr.MultiplyVector(Uf, residual);
+				KffCsr.MultiplyIntoResult(Uf, residual);
 			}
 			else
 			{
-				IGlobalMatrix Kff = algebraicModel.LinearSystem.Matrix;
-				Kff.MultiplyVector(Uf, residual);
+				IMatrix Kff = algebraicModel.LinearSystem.Matrix;
+				Kff.MultiplyIntoResult(Uf, residual);
 			}
 
 			residual.LinearCombinationIntoThis(-1.0, Ff, +1.0);

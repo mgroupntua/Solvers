@@ -50,7 +50,7 @@ namespace MGroup.Solvers.DDM.FetiDP.Reanalysis
 				if (reanalysisOptions.ModifiedSubdomains.IsConnectivityModified(subdomainID))
 				{
 					// Use the previous values of the unmodified dofs. The rest will be 0.
-					var currentVector = Vector.CreateZero(currentLagrangeVectorIndexer.GetLocalComponent(subdomainID).NumEntries);
+					var currentVector = Vector.CreateZero(currentLagrangeVectorIndexer.GetNumLocalIndices(subdomainID));
 					Vector previousVector = previousSolution.LocalVectors[subdomainID];
 
 					List<LagrangeMultiplier> currentLagranges = getSubdomainLagranges(subdomainID).LagrangeMultipliers;
@@ -81,10 +81,6 @@ namespace MGroup.Solvers.DDM.FetiDP.Reanalysis
 			});
 
 			StoreCurrentInterationData();
-			#region debug
-			//double tol = 1E-7;
-			//bool check = newSolution.AreOverlappingEntriesEqual(tol);
-			#endregion
 			return (newSolution, isZero);
 		}
 

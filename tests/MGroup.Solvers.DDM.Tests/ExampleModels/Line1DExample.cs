@@ -96,7 +96,7 @@ namespace MGroup.Solvers.DDM.Tests.ExampleModels
 					commonEntriesExpected[6] = new int[] { 0 };
 				}
 
-				double[] inverseMultiplicities = indexer.GetLocalComponent(subdomainID).InverseMultiplicities;
+				double[] inverseMultiplicities = indexer.GetInverseMultiplicities(subdomainID);
 				var multiplicitiesComputed = new int[inverseMultiplicities.Length];
 				for (int i = 0; i < inverseMultiplicities.Length; ++i)
 				{
@@ -107,7 +107,7 @@ namespace MGroup.Solvers.DDM.Tests.ExampleModels
 				foreach (int neighborID in commonEntriesExpected.Keys)
 				{
 					int[] expected = commonEntriesExpected[neighborID];
-					int[] computed = indexer.GetLocalComponent(subdomainID).GetCommonEntriesWithNeighbor(neighborID);
+					int[] computed = indexer.GetCommonEntriesOfNodeWithNeighbor(subdomainID, neighborID);
 					Assert.True(Utilities.AreEqual(expected, computed));
 				}
 			};
