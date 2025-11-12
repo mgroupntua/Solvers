@@ -56,10 +56,10 @@ namespace MGroup.Solvers
 		/// <param name="otherMatrix">
 		/// The right hand side matrix for each subdomain. If the linear systems are A * X = B, then B is one of the matrices in
 		/// <paramref name="otherMatrix"/>.</param>
-		public Dictionary<int, Matrix> InverseSystemMatrixTimesOtherMatrix(Dictionary<int, IMatrixView> otherMatrix) //TODO: Remove this or make it subdomain agnostic
+		public Dictionary<int, Matrix> InverseSystemMatrixTimesOtherMatrix(Dictionary<int, IReadOnlyMatrix> otherMatrix) //TODO: Remove this or make it subdomain agnostic
 		{
 			if (otherMatrix.Count != 1) throw new InvalidSolverException("There can only be 1 subdomain when using this solver");
-			KeyValuePair<int, IMatrixView> idMatrixPair = otherMatrix.First();
+			KeyValuePair<int, IReadOnlyMatrix> idMatrixPair = otherMatrix.First();
 			int id = idMatrixPair.Key;
 			Debug.Assert(id == model.SubdomainID,
 				"The matrix that will be multiplied with the inverse system matrix belongs to a different subdomain.");
@@ -71,6 +71,6 @@ namespace MGroup.Solvers
 		public abstract void HandleMatrixWillBeSet();
 		public abstract void PreventFromOverwrittingSystemMatrices();
 		public abstract void Solve();
-		protected abstract Matrix InverseSystemMatrixTimesOtherMatrix(IMatrixView otherMatrix);
+		protected abstract Matrix InverseSystemMatrixTimesOtherMatrix(IReadOnlyMatrix otherMatrix);
 	}
 }

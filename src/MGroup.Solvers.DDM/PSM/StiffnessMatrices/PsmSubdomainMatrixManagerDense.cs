@@ -27,7 +27,7 @@ namespace MGroup.Solvers.DDM.PSM.StiffnessMatrices
 
 		public bool IsEmpty => inverseKii == null;
 
-		public IMatrixView CalcSchurComplement() => Kbb - Kbi * (inverseKii * Kib);
+		public IReadOnlyMatrix CalcSchurComplement() => Kbb - Kbi * (inverseKii * Kib);
 
 		public void ClearSubMatrices()
 		{

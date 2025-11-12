@@ -36,7 +36,7 @@ namespace MGroup.Solvers.DDM.PSM.StiffnessMatrices
 
 		public bool IsEmpty => inverseKii == null;
 
-		public IMatrixView CalcSchurComplement()
+		public IReadOnlyMatrix CalcSchurComplement()
 		{
 			//TODO: Implement SchurComplement with A11 being in CSR format.
 			TriangularUpper kbbUpper = Kbb.ExtractUpperAndDiagonalToPacked();

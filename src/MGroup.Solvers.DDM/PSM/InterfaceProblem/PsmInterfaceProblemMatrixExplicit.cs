@@ -19,8 +19,8 @@ namespace MGroup.Solvers.DDM.PSM.InterfaceProblem
 		private readonly IComputeEnvironment environment;
 		private readonly Func<int, IPsmSubdomainMatrixManager> getSubdomainMatrices;
 		private readonly PsmReanalysisOptions reanalysis;
-		private readonly ConcurrentDictionary<int, IMatrixView> schurComplementsPerSubdomain 
-			= new ConcurrentDictionary<int, IMatrixView>();
+		private readonly ConcurrentDictionary<int, IReadOnlyMatrix> schurComplementsPerSubdomain 
+			= new ConcurrentDictionary<int, IReadOnlyMatrix>();
 
 		public PsmInterfaceProblemMatrixExplicit(IComputeEnvironment environment, 
 			Func<int, IPsmSubdomainMatrixManager> getSubdomainMatrices, PsmReanalysisOptions reanalysis)
@@ -45,7 +45,7 @@ namespace MGroup.Solvers.DDM.PSM.InterfaceProblem
 					//Debug.WriteLine($"Calculating Schur complement of internal dofs of subdomain {subdomainID}");
 					#endregion
 
-					IMatrixView Sbb = getSubdomainMatrices(subdomainID).CalcSchurComplement();
+					IReadOnlyMatrix Sbb = getSubdomainMatrices(subdomainID).CalcSchurComplement();
 					schurComplementsPerSubdomain[subdomainID] = Sbb;
 				}
 			};
@@ -56,7 +56,7 @@ namespace MGroup.Solvers.DDM.PSM.InterfaceProblem
 
 		public double[] ExtractDiagonal(int subdomainID)
 		{
-			IMatrixView Sbb = schurComplementsPerSubdomain[subdomainID];
+			IReadOnlyMatrix Sbb = schurComplementsPerSubdomain[subdomainID];
 			return Sbb.GetDiagonalAsArray(); //TODO: this should be a polymorphic method, the extension can be too slow
 		}
 
