@@ -18,7 +18,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Debug'
   testProject: 'tests/MGroup.Solvers.Tests'
-  enableSonarCloud: false
+  enableSonarCloud: true
 
 steps:
 - task: PowerShell@2
