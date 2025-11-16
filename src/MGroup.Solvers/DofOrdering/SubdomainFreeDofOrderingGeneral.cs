@@ -53,7 +53,7 @@ namespace MGroup.Solvers.DofOrdering
             return numElementDofs;
         }
 
-        public double[] ExtractVectorElementFromSubdomain(IElementType element, IVectorView subdomainVector)
+        public double[] ExtractVectorElementFromSubdomain(IElementType element, IReadOnlyVector subdomainVector)
         {
             IReadOnlyList<INode> elementNodes = element.DofEnumerator.GetNodesForMatrixAssembly(element);
             IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.DofEnumerator.GetDofTypesForMatrixAssembly(element);
@@ -78,7 +78,7 @@ namespace MGroup.Solvers.DofOrdering
             return elementVector;
         }
 
-        public void ExtractVectorElementFromSubdomain(IElementType element, IVectorView subdomainVector, IVector elementVector)
+        public void ExtractVectorElementFromSubdomain(IElementType element, IReadOnlyVector subdomainVector, IVector elementVector)
         {
             IReadOnlyList<INode> elementNodes = element.DofEnumerator.GetNodesForMatrixAssembly(element);
             IReadOnlyList<IReadOnlyList<IDofType>> elementDofs = element.DofEnumerator.GetDofTypesForMatrixAssembly(element);

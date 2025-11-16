@@ -39,7 +39,7 @@ namespace MGroup.Solvers.DofOrdering
             return numAllDofs;
         }
 
-        public double[] ExtractVectorElementFromSubdomain(IElementType element, IVectorView subdomainVector)
+        public double[] ExtractVectorElementFromSubdomain(IElementType element, IReadOnlyVector subdomainVector)
         {
             (int numAllDofs, int[] elementDofIndices, int[] subdomainDofIndices) = GetElementData(element);
             var elementVector = new double[numAllDofs];

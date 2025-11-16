@@ -26,7 +26,7 @@ namespace MGroup.Solvers.DofOrdering
         //TODO: What should it contain for constrained dofs?
         //TODO: Should the element vector be passed in and modified instead. So far in all usecases the vector was created by 
         //      the client using CountElementDofs() immediately before passing it to this method.
-        double[] ExtractVectorElementFromSubdomain(IElementType element, IVectorView subdomainVector); 
+        double[] ExtractVectorElementFromSubdomain(IElementType element, IReadOnlyVector subdomainVector); 
 
         (int[] elementDofIndices, int[] subdomainDofIndices) MapFreeDofsElementToSubdomain(IElementType element);
 

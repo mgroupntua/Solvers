@@ -29,7 +29,7 @@ namespace MGroup.Solvers.DDM.SolversExtensions.Assemblers
 			// Do nothing, since there are no idexing arrays to cache.
 		}
 
-		private static void AddLocalToGlobalMatrix(Matrix globalMatrix, IMatrixView localMatrix,
+		private static void AddLocalToGlobalMatrix(Matrix globalMatrix, IReadOnlyMatrix localMatrix,
 			int[] localIndices, int[] globalIndices)
 		{
 			Debug.Assert(localMatrix.NumRows == localMatrix.NumColumns);

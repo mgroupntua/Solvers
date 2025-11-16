@@ -18,7 +18,7 @@ namespace MGroup.Solvers.DDM.FetiDP.Preconditioning
 		private Func<int, IFetiDPSubdomainMatrixManager> getSubdomainMatrices;
 		private IFetiDPScaling scaling;
 
-		public void SolveLinearSystem(IVectorView input, IVector output)
+		public void SolveLinearSystem(IReadOnlyVector input, IVector output)
 		{
 			DistributedOverlappingVector ye = lagrangeVectorIndexer.CastCompatibleVector(input);
 			DistributedOverlappingVector xe = lagrangeVectorIndexer.CastCompatibleVector(output);
@@ -63,6 +63,6 @@ namespace MGroup.Solvers.DDM.FetiDP.Preconditioning
 			this.scaling = scaling;
 		}
 
-		public void UpdateMatrix(IMatrixView matrix, bool isPatternModified) { }
+		public void UpdateMatrix(IReadOnlyMatrix matrix, bool isPatternModified) { }
 	}
 }

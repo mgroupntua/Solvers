@@ -39,7 +39,7 @@ namespace MGroup.Solvers.DDM.FetiDP.InterfaceProblem
 			this.lagrangeVectorIndexer = lagrangeVectorIndexer;
 		}
 
-		public void Multiply(IVectorView input, IVector output)
+		public void Multiply(IReadOnlyVector input, IVector output)
 		{
 			DistributedOverlappingVector xe = lagrangeVectorIndexer.CastCompatibleVector(input);
 			DistributedOverlappingVector ye = lagrangeVectorIndexer.CastCompatibleVector(output);
