@@ -7,7 +7,7 @@ namespace MGroup.Solvers.DDM.PSM.StiffnessMatrices
 	{
 		bool IsEmpty { get; }
 
-		IMatrixView CalcSchurComplement();
+		IReadOnlyMatrix CalcSchurComplement();
 
 		void ClearSubMatrices();
 

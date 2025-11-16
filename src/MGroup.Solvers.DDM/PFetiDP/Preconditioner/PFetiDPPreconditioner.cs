@@ -39,7 +39,7 @@ namespace MGroup.Solvers.DDM.PFetiDP.Preconditioner
 
 		public IPreconditioner Preconditioner => this;
 
-		public void SolveLinearSystem(IVectorView input, IVector output)
+		public void SolveLinearSystem(IReadOnlyVector input, IVector output)
 		{
 			DistributedOverlappingIndexer indexer = getIndexer();
 			DistributedOverlappingVector ybe = indexer.CastCompatibleVector(input);
@@ -108,6 +108,6 @@ namespace MGroup.Solvers.DDM.PFetiDP.Preconditioner
 
 		public IPreconditioner CopyWithInitialSettings() => throw new NotImplementedException();
 
-		public void UpdateMatrix(IMatrixView matrix, bool isPatternModified) => throw new NotImplementedException();
+		public void UpdateMatrix(IReadOnlyMatrix matrix, bool isPatternModified) => throw new NotImplementedException();
 	}
 }

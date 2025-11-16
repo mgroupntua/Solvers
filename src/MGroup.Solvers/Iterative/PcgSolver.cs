@@ -94,7 +94,7 @@ namespace MGroup.Solvers.Iterative
 			Logger.IncrementAnalysisStep();
 		}
 
-		protected override Matrix InverseSystemMatrixTimesOtherMatrix(IMatrixView otherMatrix)
+		protected override Matrix InverseSystemMatrixTimesOtherMatrix(IReadOnlyMatrix otherMatrix)
 		{
 			//TODO: Use a reorthogonalizetion approach when solving multiple rhs vectors. It would be even better if the CG
 			//      algorithm exposed a method for solving for multiple rhs vectors.

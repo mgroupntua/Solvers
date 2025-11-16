@@ -75,7 +75,7 @@ namespace MGroup.Solvers.Assemblers
            // Do nothing, since there are no idexing arrays to cache.
         }
 
-        private static void AddElementToGlobalMatrix(Matrix globalMatrix, IMatrixView elementMatrix,
+        private static void AddElementToGlobalMatrix(Matrix globalMatrix, IReadOnlyMatrix elementMatrix,
             int[] elementIndices, int[] globalIndices)
         {
             Debug.Assert(elementMatrix.NumRows == elementMatrix.NumColumns);
@@ -96,7 +96,7 @@ namespace MGroup.Solvers.Assemblers
             }
         }
 
-        private static void AddElementToGlobalMatrix(Matrix globalMatrix, IMatrixView elementMatrix,
+        private static void AddElementToGlobalMatrix(Matrix globalMatrix, IReadOnlyMatrix elementMatrix,
             IReadOnlyDictionary<int, int> elementRowsToGlobalRows, IReadOnlyDictionary<int, int> elementColsToGlobalCols)
         {
             foreach (var rowPair in elementRowsToGlobalRows)

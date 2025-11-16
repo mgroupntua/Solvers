@@ -98,7 +98,7 @@ namespace MGroup.Solvers.Direct
 			Logger.IncrementAnalysisStep();
 		}
 
-		protected override Matrix InverseSystemMatrixTimesOtherMatrix(IMatrixView otherMatrix)
+		protected override Matrix InverseSystemMatrixTimesOtherMatrix(IReadOnlyMatrix otherMatrix)
 		{
 			var watch = new Stopwatch();
 

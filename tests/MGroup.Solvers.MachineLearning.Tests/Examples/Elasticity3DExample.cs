@@ -297,7 +297,7 @@ namespace MGroup.Solvers.MachineLearning.Tests.Examples
 			return solver;
 		}
 
-		private static void WriteSolutionToFile(IVectorView solutionVector, double response, bool isFirstSolution)
+		private static void WriteSolutionToFile(IReadOnlyVector solutionVector, double response, bool isFirstSolution)
 		{
 			double[] u = solutionVector.CopyToArray();
 			var vectorWriter = new Array1DWriter();

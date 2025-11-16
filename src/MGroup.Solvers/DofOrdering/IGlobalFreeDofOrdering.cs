@@ -19,11 +19,11 @@ namespace MGroup.Solvers.DofOrdering
 
         IReadOnlyDictionary<int, ISubdomainFreeDofOrdering> SubdomainDofOrderings { get; }
 
-        void AddVectorSubdomainToGlobal(ISubdomain subdomain, IVectorView subdomainVector, IVector globalVector);
+        void AddVectorSubdomainToGlobal(ISubdomain subdomain, IReadOnlyVector subdomainVector, IVector globalVector);
 
-        void AddVectorSubdomainToGlobalMeanValue(ISubdomain subdomain, IVectorView subdomainVector, IVector globalVector);
+        void AddVectorSubdomainToGlobalMeanValue(ISubdomain subdomain, IReadOnlyVector subdomainVector, IVector globalVector);
 
-        void ExtractVectorSubdomainFromGlobal(ISubdomain subdomain, IVectorView globalVector, IVector subdomainVector);
+        void ExtractVectorSubdomainFromGlobal(ISubdomain subdomain, IReadOnlyVector globalVector, IVector subdomainVector);
 
         //TODO: the returned array should be readonly
         int[] MapFreeDofsSubdomainToGlobal(ISubdomain subdomain);

@@ -80,7 +80,8 @@ namespace MGroup.Solvers.MachineLearning
 
 		public void Initialize() { }
 
-		public Matrix InverseSystemMatrixTimesOtherMatrix(IMatrixView otherMatrix) => throw new NotImplementedException();
+		public Matrix InverseSystemMatrixTimesOtherMatrix(IReadOnlyMatrix otherMatrix)
+			=> throw new NotImplementedException();
 
 		public void PreventFromOverwrittingSystemMatrices()
 		{
