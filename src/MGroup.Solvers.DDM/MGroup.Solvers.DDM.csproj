@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'false'">
-    <PackageReference Include="MGroup.LinearAlgebra.Distributed" Version="0.1.0-unstable.273" />
+    <PackageReference Include="MGroup.LinearAlgebra.Distributed" Version="0.1.0-unstable.291" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'true'">
