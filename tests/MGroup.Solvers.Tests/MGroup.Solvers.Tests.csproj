@@ -25,9 +25,9 @@
 
   <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'false'">
     <PackageReference Include="MGroup.Environments" Version="0.2.0-unstable.12" />
-    <PackageReference Include="MGroup.FEM.Structural" Version="0.2.0-unstable.150" />
-    <PackageReference Include="MGroup.LinearAlgebra.Implementations.NativeWin64" Version="0.1.0-unstable.273" />
-    <PackageReference Include="MGroup.NumericalAnalyzers.Discretization" Version="0.2.0-unstable.77" />
+    <PackageReference Include="MGroup.FEM.Structural" Version="0.2.0-unstable.152" />
+    <PackageReference Include="MGroup.LinearAlgebra.Implementations.NativeWin64" Version="0.1.0-unstable.291" />
+    <PackageReference Include="MGroup.NumericalAnalyzers.Discretization" Version="0.2.0-unstable.83" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(UseLocalMSolveProjects)' == 'true'">
